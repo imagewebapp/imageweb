@@ -179,6 +179,16 @@ function removeimage(imagefilename, userid){
 
                 </li>
 
+		@if($usertype == 'admin')
+		
+                <li class="nav-item">
+
+                    <a href="/verifyimagesiface" data-no="4">Verify Images</a>
+
+                </li>
+ 
+		@endif
+
                 <li class="nav-item">
 
                     <a href="/logout" data-no="5">Logout</a>

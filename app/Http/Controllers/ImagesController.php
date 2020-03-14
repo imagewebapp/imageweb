@@ -236,7 +236,7 @@ class ImagesController extends BaseController
         //}
         $startpoint = $req->input('startpoint') || 0;
         $chunksize = 20;
-        $images = DB::table('images')->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
+        $images = DB::table('images')->where('verified', '1')->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
         $totalcount = count($images);
 	return view('gallery')->with(array('images' => $images, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint));
     }
@@ -443,10 +443,65 @@ class ImagesController extends BaseController
         $sessionid = Session::getId();
         $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
         $userid = $session->userid;
+        $user = DB::table('users')->where('id', $userid)->first();
+        $usertype = $user->usertype;
         $images = DB::table('images')->where('userid', $userid)->orderBy('uploadts', 'DESC')->get();
         $categories = DB::table('categories')->get();
-        return view('dashboard')->with(array('images' => $images, 'categories' => $categories ));
+        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype ));
     }
+
+
+    public function verifyimagesiface(Request $req){
+        $s = checksession();
+        if(!$s){
+            return view('login');
+        }
+        $sessionid = Session::getId();
+        $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        $userid = $session->userid;
+        $user = DB::table('users')->where('id', $userid)->first();
+        $usertype = $user->usertype;
+        if($usertype != 'admin'){
+            return view('login');
+        }
+        // Now allow user to verify images.
+        $images = DB::table('images')->where('verified', 0)->get();
+        $imagesdict = array();
+        $numimages = count($images);
+        for($i=0; $i < $numimages; $i++){
+            $imgid = $images[$i]->id;
+            $imgpath = $images[$i]->imagepath;
+            $ownerid = $images[$i]->userid;
+            $ownerobj = DB::table('users')->where('id', $ownerid)->first();
+            $ownername = $ownerobj->username;
+            $imagepathparts = explode($ownername, $imgpath);
+            $imgwebpath = "/image/".$ownername.$imagepathparts[1];
+            $imagesdict[$imgwebpath] = $imgid;
+        } 
+        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict));
+    }
+
+
+    public function verifyimages(Request $req){
+        $s = checksession();
+        if(!$s){
+            return view('login');
+        }
+        $sessionid = Session::getId();
+        $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        $userid = $session->userid;
+        $user = DB::table('users')->where('id', $userid)->first();
+        $usertype = $user->usertype;
+        if($usertype != 'admin'){
+            return view('login');
+        }
+        $imgverifylist = $_POST['imgverify'];
+        for($i=0; $i < count($imgverifylist); $i++){
+            DB::table('images')->where('id', $imgverifylist[$i])->update(array('verified' => 1)); 
+        }
+        return "All checked images has been verified successfully. You should now be able to view them in the 'Gallery' page.";
+    }
+
 }
 
 

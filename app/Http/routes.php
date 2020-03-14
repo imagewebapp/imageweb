@@ -55,5 +55,13 @@ Route::get('gallery', array(
     'uses' => 'ImagesController@showgallery'
 ));
 
+Route::get('verifyimagesiface', array(
+    'uses' => 'ImagesController@verifyimagesiface'
+));
+
+Route::post('verifyimages', array(
+    'uses' => 'ImagesController@verifyimages'
+));
+
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 
