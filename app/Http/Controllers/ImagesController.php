@@ -406,21 +406,21 @@ class ImagesController extends BaseController
         $randomtoken = str_random(32);
         $data['verificationtoken'] = $randomtoken;
         $hostname = $req->getHost();
-        $verificationurl = "http://".$hostname."/verify?token=".$randomtoken;
-        $mailcontent = "Thanking for signing up with ".$hostname.".\n\nPlease click on the link below to verify your email Id. You may start using your account once it is verified. Click here: <a href='".$verificationurl."' target='_blank'>".$verificationurl."</a>";
-        $subject = "Verify account on " + $hostname;
+        $verificationurl = "http://".$hostname.":".$_SERVER['SERVER_PORT']."/verify?token=".$randomtoken;
+        $mailcontent = "Thanks for signing up with imageweb.\n\nPlease click on the link below to verify your email Id. You may start using your account once it is verified. Click here: <a href='".$verificationurl."' target='_blank'>".$verificationurl."</a>";
+        $subject = "Verify account on ".$hostname;
         DB::table('users')->insert($data);
         // Create directory for user now...
         $userpath = "/var/www/html/imageweb/storage/users/".$username;
         mkdir($userpath);
         // Send email now.
-        $maildata = array('name' => $hostname + " admin");
-        Mail::send('register', $maildata, function ($mailcontent) use($emailid, $firstname, $lastname, $subject){
+        $maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
+        Mail::send('verify', $maildata, function ($mailcontent) use($emailid, $firstname, $lastname, $subject){
           $mailcontent->to($emailid, $firstname." ".$lastname)->subject($subject);
-          $mailcontent->from('imageweb@imageweb.com', 'imageweb admin');
+          $mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
         });
+        Session::flash('activation', 'Please activate your account by clicking on the verification link sent to your email. You would be able to login after that.');
         return view('login');
-        
     }
 
 
@@ -431,7 +431,8 @@ class ImagesController extends BaseController
         $regtoken = $req->input('token');
         //$user = DB::table('users')->where('verificationtoken', $regtoken)->first(); 
         DB::update('update users set verified=1 where verificationtoken=?',[$regtoken]);
-        return view('verified');
+        Session::flash('activation', 'Your acccount has been activated. Please login below.');
+        return view('login');
     }
 
     

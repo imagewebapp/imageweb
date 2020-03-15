@@ -7,6 +7,11 @@
       {{ Form::open(array('url' => 'login')) }}
       <h1>Login</h1>
       <!-- if there are login errors, show them here -->
+     <?php
+       if(Session::has('activation')){
+	 echo "<div style='color:0000AA;'>".Session::get("activation")."</div>";
+       }       
+      ?>
       <p>
          {{ $errors->first('username') }}
          {{ $errors->first('password') }}
