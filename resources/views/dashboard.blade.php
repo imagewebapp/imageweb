@@ -304,6 +304,19 @@ function removeimage(imagefilename, userid){
 								</tbody>
 
 							</table>
+							<?php
+
+							if($start < $max){
+							    echo "<div align='center'><a href='/dashboard?start=".$start."'>Next</a></div>";
+							}
+							if($start > $chunk){
+							    $prev = $start - 2*$chunk;
+							    if($prev < 0){
+								$prev = 0;
+							    }
+							    echo "<div align='center'><a href='/dashboard?start=".$prev."'>Prev</a></div>";
+							}
+							?>
 
 						</div>
 

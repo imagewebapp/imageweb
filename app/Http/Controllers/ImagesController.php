@@ -446,9 +446,16 @@ class ImagesController extends BaseController
         $userid = $session->userid;
         $user = DB::table('users')->where('id', $userid)->first();
         $usertype = $user->usertype;
-        $images = DB::table('images')->where('userid', $userid)->orderBy('uploadts', 'DESC')->get();
+        $start = 0;
+        $chunksize = 20;
+        if(array_key_exists('start', $_GET)){
+            $start = $_GET['start'];
+        }
+        $images = DB::table('images')->where('userid', $userid)->orderBy('uploadts', 'DESC')->skip($start)->take($chunksize)->get();
+        $max = DB::table('images')->where('userid', $userid)->count();
+        $start = $start + $chunksize;
         $categories = DB::table('categories')->get();
-        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype ));
+        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize ));
     }
 
 
