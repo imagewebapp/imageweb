@@ -172,6 +172,33 @@ http://www.templatemo.com/tm-500-fluid-gallery
 	    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	    xmlhttp.send(postdata);
 	}
+
+
+	function showtagscontainer(){
+	    selectedmode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
+	    containerdiv = document.getElementById('tagscontainer');
+	    if(selectedmode == 'tags'){
+		containerdiv.innerHTML = "<input type='text' name='tagslist' size='30'> Multiple tags should be separated by commas";
+	    }
+	    else{
+		containerdiv.innerHTML = "";
+	    }
+	}
+
+
+	function searchgallery(){
+	    mode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
+	    tags = "";
+	    if(mode == "tags"){
+		tags = document.frmsearch.tagslist.value;
+	    }
+	    document.frmsearch.action = "/gallery?mode=" + mode;
+	    if(tags != ""){
+		document.frmsearch.action += "&tags=" + tags;
+	    }
+	    document.frmsearch.method='GET';
+	    document.frmsearch.submit();
+	}
 	</script>
 
 
@@ -215,8 +242,12 @@ http://www.templatemo.com/tm-500-fluid-gallery
                 </li>
 
                 <li class="nav-item">
-
-                    <a href="/logout" data-no="5">Logout</a>
+		    <?php
+                        if($username != ""){
+                            echo "You are logged in as ".$username;
+			    echo "<a href='/logout' data-no='5'>Logout</a>";
+                        }
+                    ?> 
 
                 </li>
 
@@ -231,9 +262,19 @@ http://www.templatemo.com/tm-500-fluid-gallery
         <!-- Content -->
 
         <div class="cd-hero">
+        <!--
+	<form name='frmsearch' method='GET'>
 
-
-
+	<div align='center'>
+	    Search Images <select name='selmode' onchange='javascript:showtagscontainer();'>
+	    <option value='all'>Show All</option>
+	    <option value='popularity'>By Popularity</option>
+	    <option value='tags'>By Keywords</option>
+	</select>
+	<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
+	<div id='tagscontainer'></div></div>
+	</form>
+	-->
             <ul class="cd-hero-slider">
 
 
@@ -291,12 +332,21 @@ http://www.templatemo.com/tm-500-fluid-gallery
 
             </ul> <!-- .cd-hero-slider -->
 	    <!--
-	    <?php
-		$startpoint = $startpoint + $chunksize;
-	    ?>
 	    <br /><br />
-	    <div class="cd-full-width" align='center'><a href='/gallery?startpoint={{ $startpoint }}'>More</a></div>
-	    -->
+	    <?php
+
+                 if($startpoint < $totalcount){
+                      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
+                 }
+                 if($startpoint > $chunksize){
+                      $prev = $startpoint - 2*$chunksize;
+                      if($prev < 0){
+                          $prev = 0;
+                      }
+                     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
+                 }
+            ?>
+	    --> 
 
             <br /><br />
 

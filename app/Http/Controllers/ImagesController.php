@@ -46,6 +46,22 @@ function checksession(){
         return(1);
 }
 
+function getuser(){
+    $sessionid = Session::getId();
+    $sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
+    if(!$sessobj){
+        return("");
+    }
+    $sessionstatus = $sessobj->sessionstatus;
+    if(!$sessionstatus){
+        return("");
+    }
+    $userid = $sessobj->userid;
+    $userobj = DB::table('users')->where('id', $userid)->first();
+    $username = $userobj->username;
+    return($username);
+}
+
 function imagecreatefromany($imagefilepath){
     $imtype = exif_imagetype($imagefilepath);
     $allowedtypes = array(1, 2, 3, 6);
@@ -236,9 +252,38 @@ class ImagesController extends BaseController
         //}
         $startpoint = $req->input('startpoint') || 0;
         $chunksize = 20;
-        $images = DB::table('images')->where('verified', '1')->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
-        $totalcount = count($images);
-	return view('gallery')->with(array('images' => $images, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint));
+	$mode = $req->input('mode') || 'all';
+	$tags = $req->input('tags') || '';
+	if($mode == 'all' || $mode == ''){
+            //$images = DB::table('images')->where('verified', '1')->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
+            $images = DB::table('images')->where('verified', '1')->orderBy('uploadts', 'DESC')->get();
+            $totalcount = DB::table('images')->where('verified', '1')->count();
+	}
+	/*
+	elseif($mode == 'popularity'){
+	    $hits = DB::table('imagehits')->groupBy('imageid')->select('imageid', DB::raw('count(*) as hitcount))->get();
+	    $images = [];
+	    for($i=0; $i < count($hits); $i++){
+		$hit = $hits[$i];
+		$imgid = $hit->imageid;
+		$img = DB::table('images')->where('id', $imgid)->first();
+		array_push($images, $img);
+	    }
+	    $totalcount = count($hits);
+	}
+	elseif($mode == 'tags'){
+	    $alltags = explode(",", $tags);
+	    for($i=0; $i < count($alltags); $i++){ 
+		$tag = $alltags[$i];
+	        $imgs = DB::table('images')->where('imagetags', 'like', '%'.$tag.'%')->get();
+		array_push($images, $imgs);
+	    }
+	    $totalcount = count($images);
+	}
+	*/
+        $startpoint = $startpoint + $chunksize;
+        $username = getuser();
+	return view('gallery')->with(array('images' => $images, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username));
     }
 
     
@@ -455,7 +500,8 @@ class ImagesController extends BaseController
         $max = DB::table('images')->where('userid', $userid)->count();
         $start = $start + $chunksize;
         $categories = DB::table('categories')->get();
-        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize ));
+        $username = getuser();
+        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username ));
     }
 
 
@@ -486,7 +532,8 @@ class ImagesController extends BaseController
             $imgwebpath = "/image/".$ownername.$imagepathparts[1];
             $imagesdict[$imgwebpath] = $imgid;
         } 
-        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict));
+        $username = getuser();
+        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict, 'username' => $username));
     }
 
 

@@ -146,7 +146,11 @@ function submitverification(){
                 </li>
 
                 <li class="nav-item">
-
+		    <?php
+                        if($username != ""){
+                            echo "You are logged in as ".$username;
+                        }
+                    ?>
                     <a href="/logout" data-no="5">Logout</a>
 
                 </li>

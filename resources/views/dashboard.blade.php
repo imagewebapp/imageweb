@@ -190,8 +190,12 @@ function removeimage(imagefilename, userid){
 		@endif
 
                 <li class="nav-item">
-
-                    <a href="/logout" data-no="5">Logout</a>
+		    <?php
+			if($username != ""){
+			    echo "You are logged in as ".$username;
+			}
+		    ?>
+                    <a href="/logout" data-no="5">Logout</a> 
 
                 </li>
 
