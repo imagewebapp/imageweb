@@ -202,7 +202,6 @@ http://www.templatemo.com/tm-500-fluid-gallery
 
 
 	function showprofileimagescreen(){
-	    //alert("Change Profile Image");
 	    profileimguploaddiv = document.getElementById('profileimagediv');
 	    profileimguploaddiv.style.display = "";
 	}
@@ -308,7 +307,7 @@ http://www.templatemo.com/tm-500-fluid-gallery
         <!-- Content -->
 
         <div class="cd-hero">
-        <!--
+        
 	<form name='frmsearch' method='GET'>
 
 	<div align='center'>
@@ -320,7 +319,7 @@ http://www.templatemo.com/tm-500-fluid-gallery
 	<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
 	<div id='tagscontainer'></div></div>
 	</form>
-	-->
+
             <ul class="cd-hero-slider">
 
 
