@@ -63,5 +63,10 @@ Route::post('verifyimages', array(
     'uses' => 'ImagesController@verifyimages'
 ));
 
+Route::post('changeprofileimage', array(
+    'uses' => 'ImagesController@changeprofileimage'
+));
+
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
+Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

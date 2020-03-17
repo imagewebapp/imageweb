@@ -62,6 +62,19 @@ function getuser(){
     return($username);
 }
 
+// This function should be called after a call to getuser so that the username is available during its call.
+function getprofileimage($username){
+    $user = DB::table('users')->where('username', $username)->first();
+    $profileimage = $user->profileimage;
+    if($profileimage == ""){
+	$profileimagepath = "/images/user.png";
+        return($profileimagepath);
+    }
+    $profileimagepath = "/image/".$username."/profileimage/".$profileimage;
+    return($profileimagepath);
+}
+
+
 function imagecreatefromany($imagefilepath){
     $imtype = exif_imagetype($imagefilepath);
     $allowedtypes = array(1, 2, 3, 6);
@@ -283,7 +296,11 @@ class ImagesController extends BaseController
 	*/
         $startpoint = $startpoint + $chunksize;
         $username = getuser();
-	return view('gallery')->with(array('images' => $images, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username));
+        $profileimagepath = "";
+        if($username != ""){
+	    $profileimagepath = getprofileimage($username);
+        }
+	return view('gallery')->with(array('images' => $images, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username, 'profileimage' => $profileimagepath));
     }
 
     
@@ -297,7 +314,20 @@ class ImagesController extends BaseController
         $response = Response::make($file, 200);
         $response->header("Content-Type", $type);
         return $response;
-    }    
+    }
+
+
+    public function displayprofileimage($username, $filename){
+        $path = storage_path('users/'.$username."/profileimage/".$filename);
+        if (!File::exists($path)) {
+            return "file doesn't exist";
+        }
+        $file = File::get($path);
+        $type = File::mimeType($path);
+        $response = Response::make($file, 200);
+        $response->header("Content-Type", $type);
+        return $response;
+    } 
 
 
     /*
@@ -458,6 +488,7 @@ class ImagesController extends BaseController
         // Create directory for user now...
         $userpath = "/var/www/html/imageweb/storage/users/".$username;
         mkdir($userpath);
+        mkdir($userpath."/profileimage");
         // Send email now.
         $maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
         Mail::send('verify', $maildata, function ($mailcontent) use($emailid, $firstname, $lastname, $subject){
@@ -501,7 +532,8 @@ class ImagesController extends BaseController
         $start = $start + $chunksize;
         $categories = DB::table('categories')->get();
         $username = getuser();
-        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username ));
+        $profileimagepath = getprofileimage($username);
+        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username, 'profileimage' => $profileimagepath ));
     }
 
 
@@ -533,7 +565,8 @@ class ImagesController extends BaseController
             $imagesdict[$imgwebpath] = $imgid;
         } 
         $username = getuser();
-        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict, 'username' => $username));
+        $profileimagepath = getprofileimage($username);
+        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict, 'username' => $username, 'profileimage' => $profileimagepath));
     }
 
 
@@ -555,6 +588,40 @@ class ImagesController extends BaseController
             DB::table('images')->where('id', $imgverifylist[$i])->update(array('verified' => 1)); 
         }
         return "All checked images has been verified successfully. You should now be able to view them in the 'Gallery' page.";
+    }
+
+
+    public function changeprofileimage(Request $req){
+        $s = checksession();
+        if(!$s){
+            return "User is not logged in to upload images. Please login and try again.";
+        }
+        $imagedumppath = "/var/www/html/imageweb/storage/users/";
+        //$imagedumppath = Config::get('app.imagedumppath');
+        $file = $_FILES['uploadfile']['name'];
+        $filetype = $_FILES['uploadfile']['type'];
+        if($filetype != 'image/png' && $filetype != 'image/jpg' && $filetype != 'image/gif' && $filetype != 'image/jpeg'){
+            return "The file was not an image file";
+        }
+        $filecontents = file_get_contents($_FILES['uploadfile']['tmp_name']);
+        $sessionid = Session::getId();
+        $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        $user = DB::table('users')->where('id', $session->userid)->first();
+        $username = $user->username;
+        $userid = $session->userid;
+        if($file != ""){
+            $targetdir = $imagedumppath.$username."/profileimage/";
+            $path = pathinfo($file);
+            $filename = $path['filename'];
+            $ext = $path['extension'];
+            $tempfilename = $_FILES['uploadfile']['tmp_name'];
+            $newfilepath = $targetdir.$filename.".".$ext;
+            move_uploaded_file($tempfilename, $newfilepath);
+	    $profilefilename = $filename.".".$ext;
+	    DB::table('users')->where('id', $userid)->update(array('profileimage' => $profilefilename));
+	    return "Please refresh the screen to see your uploaded profile image";
+        }
+	return "Your image could not be uploaded. Please try again or contact the administrator";
     }
 
 }

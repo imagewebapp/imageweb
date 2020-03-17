@@ -94,6 +94,41 @@ function submitverification(){
     }
 }
 
+
+function showprofileimagescreen(){
+    //alert("Change Profile Image");
+    profileimguploaddiv = document.getElementById('profileimagediv');
+    profileimguploaddiv.style.display = "";
+}
+
+function closeuploadform(){
+    profileimguploaddiv = document.getElementById('profileimagediv');
+    profileimguploaddiv.style.display = "none";
+}
+
+function uploadprofileimage(){
+    var xmlhttp;
+    statusdiv = document.getElementById('profstatus');
+    if (window.XMLHttpRequest){
+        xmlhttp=new XMLHttpRequest();
+    }
+    else{
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function(){
+        if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+            window.location.reload(true);
+        }
+    }
+    var file = document.getElementById('uploadfile').files[0];
+    formdata = new FormData();
+    formdata.append("uploadfile", file);
+    csrftoken = document.frmprofimg._token.value;
+    formdata.append("_token", csrftoken);
+    xmlhttp.open('POST', "/changeprofileimage", true);
+    xmlhttp.send(formdata);
+    statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
+}
 </script>
 
 </head>
@@ -148,9 +183,16 @@ function submitverification(){
                 <li class="nav-item">
 		    <?php
                         if($username != ""){
-                            echo "You are logged in as ".$username;
+                            echo "<img src='".$profileimage."' height='50px' width='50px'>You are logged in as ".$username;
+			    echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
+			    echo "<br/><div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
+		    ?>
+		     <input type='hidden' name='_token' value='{{ csrf_token() }}'>
+                    <?php
+                            echo "</form></div>";
                         }
                     ?>
+
                     <a href="/logout" data-no="5">Logout</a>
 
                 </li>
