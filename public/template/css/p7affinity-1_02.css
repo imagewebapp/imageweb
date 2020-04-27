@@ -1,0 +1,345 @@
+
+
+/* use in menus and in some special cases for headings*/
+
+/* Use h1 for main titles, h2 for authors name and chapter or main section names, use h3 for sub headings in chapters and h4 for sub-sub headings. Use h3 if no chapters, and h4 for sub headings 
+
+page numbers and page use h5
+copyright use h5 light headline
+
+
+*/
+
+/*
+
+Put the following below all BBT Images
+
+<br><br>
+          <span class="bbt">Image copyright Bhaktivedanta Booktrust, Krishna.com</span>
+		  
+		 <span class="bbt"> Artwork [or photos, or text from such-and-such work] courtesy of The Bhaktivedanta Book Trust International, Inc. www.krishna.com Used with permission.</span>
+
+
+
+*/
+
+/*
+
+I have made some modifications of the original P7 styles mostly for adjusting colors but other things as well. 
+If I want to change the background I will have to adjust colors accordingly.
+
+At the bottom I have added my additional styles mostly for controlling fonts.
+
+*/
+
+
+/* 
+  ------------------------------------------------
+  PVII Affinity
+  Copyright (c) 2013 Project Seven Development
+  www.projectseven.com
+  02: 2 Col Flex Sidebar Right
+  ------------------------------------------------
+*/
+
+/* If I change backgrounds this must be adusted */
+body {
+	/*"Segoe UI", Optima, Helvetica, Arial, sans-serif*/
+	color: #000;
+	background-color: #2B3B5B;
+	margin: 0px;
+	padding: 0px;
+	font-size: 1.2em;
+	padding-bottom: 4em;
+	background-attachment: fixed;
+	/**for Safari,Chrome**/ 
+	-webkit-background-size: cover;
+	/**for Firefox,Seamonkey**/
+	-moz-background-size: cover;
+	/**for Opera**/
+	-o-background-size: cover;
+	background-size: cover;
+	background-image: url(../../images/backgrounds/gold_and_blue_fractal.jpg);
+	font-family: "LatinModernRoman10Regular", Garamond, Cambria, "Lucida Bright", Palatino, "Palatino Linotype", "Bitstream Charter", Georgia,   serif;
+	line-height: normal;
+}
+img {
+	vertical-align: bottom;
+}
+
+/*adjusted to take into account image and text added  original text color 6C5F55*/
+
+.masthead {
+	text-align: left;
+	background-color: #252e49;
+	position: relative;
+	z-index: 10;
+	box-shadow: 0px 0px 30px #000;
+	color: #928175;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	overflow: hidden;
+	font-family: "SanS Medium", Futura, Candara, Calibri, Segoe, "Segoe UI", Optima, Verdana, Arial, sans-serif;
+}
+
+/*next item helps in eliminating need of scroll bar in smartphone view for masthead */
+
+.masthead img {float:left; margin-right:10px}
+
+
+
+
+.content-wrapper {
+	margin: 4em 1.25em 0em 1.25em;
+	overflow: hidden;
+}
+.columns-wrapper {
+	overflow: hidden;
+	/*background-color: #FFF;*/
+	position: relative;
+	
+}
+
+
+
+
+
+
+
+
+/*This is important for positioning the whole page and making it take up more or less area on the screen */
+
+.columns-wrapper, .menu-top-wrapper {
+	max-width:2880px; /*1260px*/
+	margin: auto;
+}
+
+/*The following dertimes the width and position of the main column containg the body text.*/
+.main-content {
+	float: left;
+	width: 40%;/* was 55%*/
+	margin-right: 10%; /*was 1%*/
+	margin-left: 7%;
+}
+
+/*This controls dimensions of the sidebar.*/
+.sidebar {
+	width: 41%; /*was 35%*/
+	float: left;
+	}
+
+/* If I change backgrounds this must be adusted */
+
+
+.main-content .content{
+	font-size: 1.1em;
+	line-height: 1.5em;
+	border: 1px solid;
+	border-radius: 20px;
+	border-color: #666;
+	background-image: url(../../images/tilak_background.jpg);
+	background-repeat: repeat;
+	-moz-box-shadow: 6px 6px 15px -4px #35454c; /* Firefox */
+	-webkit-box-shadow: 6px 6px 15px -4px #35454c; /* Safari/Chrome */
+	box-shadow: 6px 6px 15px -4px #35454c; /* Opera and other CSS3 supporting browsers */
+	margin-bottom: 2em;
+	padding-top: 20px;
+	padding-right: 30px;
+	padding-bottom: 20px;
+	padding-left: 30px;
+	}
+	
+
+/*Heading styles I changed the fonts, size and color*/
+h1, h2, h3, h4, h5 {
+	margin: 0px 0px 0px 0px;
+	font-family: "SanS Medium", Futura, Candara, Calibri, Segoe, "Segoe UI", Optima, Verdana, Arial, sans-serif;
+	font-weight: normal;
+	text-transform: none;
+	color: #1D2B80;
+	text-align: center;
+	text-shadow: 6px 6px 8px #CCC;
+	line-height: 1.5em;
+	
+}
+
+
+h1 { font-size: 2.2em;}
+h2 { font-size: 1.7em; }
+h3 { font-size: 1.55em; }
+h4 { font-size: 1.2em; }
+h5 { font-size: 0.9em; }
+
+/*A utility rule assigned to the first heading to remove top margins.*/
+.content h1:first-child,
+.content h2:first-child,
+.content h3:first-child,
+.content h4:first-child
+.content h5:first-child {
+	margin-top: 0px;
+}
+
+/*Make Image Scalable - Assign this class to any image to make it scale with the browser window size*/
+img.scalable {
+	height: auto !important;
+	width: auto !important;
+	max-width: 100%;
+	border-radius: 5px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;	
+
+}
+
+
+.sidebar ul, .sidebar ol, .sidebar2 ul, .sidebar2 ol {
+	margin: 0 0 0 .5em;
+	padding: 0 0 0 .5em;
+	line-height: normal;
+}
+.sidebar li, .sidebar2 li { 
+	margin-bottom: 4px; 
+}
+
+/*Ordinary Link Styles 05427f   2e78c1*/
+
+.content a { color: #2e78c1; text-decoration: none; border-bottom-width: 1px; border-bottom-style: dotted;}
+.content a:visited {color: 2e78c1;} /*was purple*/
+.content a:hover, .content a:focus {
+	color: #c00;
+	border-bottom-style: solid;
+}
+
+
+
+/* --------Link styles in footer------------*/
+.footer a {
+	color: #8C8C8C;
+}
+.footer a:hover, .footer a:focus { color: #FFF; }
+
+
+
+
+
+
+/*The DIVs that contains the horizontal menu bar at the top of your page. Original color #7BA4C1  it controls the color of the navigation buttons
+*/
+.top-navigation {
+	background-color: rgba(90,121,178,1);
+	background-image: linear-gradient(rgba(90,121,178,1),rgba(199,138,96,.75));
+	background-image: -webkit-linear-gradient(rgba(90,121,178,1),rgba(199,138,96,.75));
+	border-bottom: 1px solid #ffb54d;
+	box-shadow: 0px 0px 30px #999;
+	position: relative;
+	z-index: 9;
+}
+.top-navigation:after {
+	content: "\0020";
+	font-size: 0px;
+	display: inline;
+	overflow: hidden;
+	line-height: 0;
+	clear: both;
+}
+.menu-top-wrapper .p7DMM01 {
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+}
+
+/*The Footer*/
+.footer {
+	background-color: #252e49;
+	box-shadow: inset 0px 16px 2px rgba(255,255,255,.025);
+	border-top: 1px solid #000;
+	padding: 15px 15px;
+	font-size: 0.6em;
+	color: #6c5f55;
+	text-align: center;
+	clear: both;
+	position: fixed;
+	z-index: 999;
+	top: auto;
+	bottom: 0px;
+	width: 100%;
+	font-family: "SanS Medium", Futura, Candara, Calibri, Segoe, "Segoe UI", Optima, Verdana, Arial, sans-serif;
+}
+.footer p.copyright {
+	text-transform: uppercase;
+	margin: 0px;
+}
+
+
+/*1 Column for Narrow Browser Windows and Smartphones in both orientations*/
+@media only screen and (min-width: 0px) and (max-width: 700px) {
+body {
+	padding-bottom: 0px;
+}
+
+/*for dealing with large spaces between images in sidebar when there are two or more images  */
+
+#graphix2, #graphix3, #graphix4, #graphix5, #graphix6, #graphix7, #graphix8, #graphix9, #graphix10, #graphix11 #graphix12, #graphix13, #graphix14, #graphix15, #graphix16, #graphix17, #graphix18, #graphix19, #graphix20, #graphix21, #graphix22, #graphix23, #graphix24, #graphix25, #graphix26, #graphix27, #graphix28, #graphix29, #graphix30{
+margin-top: 20px !important;
+}
+
+/*------------------*/
+
+/* this necesssary fix if only ONE (1) image so that there is no large space or empty space after text area place it in the head area of affected page to overide the rule above 
+
+Put this in header of affected page
+
+*/
+
+/*1 Column for Narrow Browser Windows and Smartphones in both orientations*/
+
+/*
+@media only screen and (min-width: 0px) and (max-width: 700px) {
+#graphix2 {top: 0px;}
+}
+
+
+
+*/
+/*------------------*/
+
+
+.footer {
+	position: static;
+	width: auto;
+}
+.content-wrapper, .columns-wrapper {margin: 0px; border: none;}
+.sidebar, .main-content {
+	width: auto;
+	float: none;
+	position: static;
+}
+.main-content .content, .sidebar .content {
+	padding: 20px 10px;
+	border-radius: 0px ;
+	border: none;
+	height: auto !important;
+	max-height: 888678px;
+}
+
+/* Change of border color affects smart phone view */
+
+.p7DMM01 ul a, .p7DMM01 ul a:hover, .p7DMM01 ul a:focus, .p7DMM01 ul a.open {
+	border-bottom: 1px solid;
+	border-color: #89AEC9;
+}
+.p7DMM01 ul li:last-child a {
+	border-bottom: none;
+}
+}
+/*Medium windows - reduce padding content padding*/
+@media only screen and (min-width: 700px) and (max-width: 1280px) {
+.main-content .content, .sidebar .content {padding: 20px 15px;}
+.top-navigation {padding: 0px 10px;}
+.content-wrapper {margin-left: 10px; margin-right: 10px;}
+}
+
+
+

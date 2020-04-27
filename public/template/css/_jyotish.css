@@ -1,0 +1,687 @@
+@import url("/template/css/webfonts/AlbertaExtralight/stylesheet.css");
+@import url("/template/css/webfonts/Latin-Modern-Roman/stylesheet.css");
+@import url("/template/css/webfonts/SanS_Medium/stylesheet.css");
+/* 
+
+----------------------------------------------
+
+
+below starts my added styles 
+
+------------------------------------------------
+
+*/
+
+/*
+
+Put the following below all BBT Images
+
+<br><br>
+          <span class="bbt">Image copyright Bhaktivedanta Booktrust, Krishna.com</span>
+		  
+		 <span class="bbt"> Artwork [or photos, or text from such-and-such work] courtesy of The Bhaktivedanta Book Trust International, Inc. www.krishna.com Used with permission.</span>
+
+
+
+*/
+
+
+/* link style for ".name" in header */
+
+.name {font-size: 2em;}
+
+
+
+#social {
+	height: 20px;
+	width: 200px;
+}
+
+
+/*To remove border around images*/
+
+a img {
+	border: none;
+}
+
+/* style for the "Top of Page^" anchor link */
+
+
+
+a.to-top:link    {
+	color: white;
+	font-size: 1.2em;
+	font-family: "SanS Medium", Futura, Candara, Calibri, Segoe, "Segoe UI", Optima, Verdana, Arial, sans-serif;
+	text-decoration: none;
+	padding-right: 10px;
+}
+
+a.to-top:visited      {
+	color: white;
+	}
+	
+
+a.to-top:hover     {
+	color: #6082BF;
+	}
+	
+	
+a.to-top:active    {
+	color: red;
+}
+
+/* applies style to the containers holding the "graphic-holder" graphics */
+
+.graphix-style {
+	
+	background-color: rgba(25,28,80,0.9);
+	background-image: -webkit-linear-gradient(rgba(25,28,80,1) 20%,rgba(199,138,96,0.5));
+	background-image: linear-gradient(rgba(25,28,80,1) 20%,rgba(199,138,96,0.5));
+	border: 1px solid;
+	border-color: #333;
+	border-radius: 20px;}
+
+/* For the Main Title of an Article 
+
+previous red color: #c00
+
+ */
+
+.maintitle {
+	
+	color: #1D2B80;
+	text-align: center;
+	text-shadow: 6px 6px 8px #CCC;
+}
+
+/*Various styles for quoting text*/
+
+/*style for quoting a sloka*/
+.quote-sloka {
+	font-size: 1.1em;
+	font-style: italic;
+	line-height: normal;
+	text-align: center;
+}
+
+
+/* The first two are for general body text quotes*/
+.quote-text {
+	color: #000;
+	font-size: 1.05em;
+	letter-spacing: 0.02em;
+	margin-left: 50px;
+	margin-right: 50px;
+	text-align: left;
+}
+
+/* quote text colored */
+
+.quote-text-colored {
+	color: #c00;
+	font-size: 1.05em;
+	letter-spacing: 0.02em;
+	margin-left: 50px;
+	margin-right: 50px;
+	
+}
+
+/*For creaing drop shadows on images or any box*/
+
+/* For images in sidebar it has different background color*/
+
+.fancy {
+	border: 1px solid rgba(255,255,255,.2);
+	box-shadow: 0px 0px 30px rgba(0,0,0,.65);
+	
+}
+
+/*for images on white backgrounds in text area*/
+
+.fancy2 {
+	border: 1px solid rgba(225,199,56,.2);
+	/*box-shadow: 0px 0px 30px rgba(0,0,0,.65); too noticable not subtle*/
+	box-shadow: 0px 0px 30px #999;
+	
+}
+
+/* for images where borders are a problem */
+
+
+.fancy3 {
+ box-shadow: 0px 0px 30px #999;
+ 
+} 
+
+
+
+/* Fancy quotes that are used when I really want to highlight something--use sparingly*/
+
+.fancy-quote, .fancy-quote-dark, .fancy-quote-med, .fancy-quote-black, .whats-new-box, .fancy-quote-side, .fancy-quote-side2 {
+	letter-spacing: 0.1em;
+	margin-bottom: 15px;
+	color: #08316f;
+	font-size: 1.1em;
+	background-color: #A47634;
+	padding: 20px;
+	border-radius: 7px;
+	border: 2px solid #EEE;
+	box-shadow: 0px 0px 30px #999;
+	margin-top: 15px;
+}
+
+
+.fancy-quote-dark {
+	background-color: #191C50;
+	color: #A47634;
+	/*padding: 5px 20px;*/
+}
+.fancy-quote-med {
+	background-color: #89aec9;
+	color: #000;
+	/*padding: 5px 20px;*/
+}
+
+.fancy-quote-black {
+	font-family: "LatinModernRoman10Regular";
+	color: #6FA4A8; /* Teal*/ /*#c27375; Rose*/
+	background-color: #000;
+	/*font-size: .9em;*/
+}
+
+.whats-new-box {
+	font-family: "LatinModernRoman10Regular";
+	color: #6FA4A8; /* Teal*/ /*#c27375; Rose*/
+	background-color: #000;
+	text-align: center;
+	margin-right: 20%;
+	margin-left: 20%;
+}		
+
+/* fancy quote for side bar to contrast background*/
+.fancy-quote-side {
+	background-color: #191C50;
+	color: #A47634;
+	font-size: .9em;
+	text-align: left;
+	font-family: "LatinModernRoman10Regular";
+	width: auto;
+	padding: 15px;
+	margin-right: 15%;
+	margin-left: 15%;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+}
+/* fancy quote 2 for side bar to contrast background when I want bigger fonts
+This just same as one above with red text looks ugly, looks like I never really used it. For bigger fonts just apply .larger to the text inside */
+
+.fancy-quote-side2 {
+	background-color: #252E49;
+	color: #ec1a14;
+	font-size: .8em;
+	padding: 5px 20px;
+	text-align: left;
+}
+/* Descendent selectors for fancy-quote-dark */
+
+.fancy-quote-dark a:link {
+	color: #c49552;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+}
+.fancy-quote-dark a:visited {
+	color: #c49552; #f5c887;
+	border-bottom-style: none;
+}
+.fancy-quote-dark a:hover {
+	color: #FFAD36;
+	border-bottom-style: solid;
+}
+.fancy-quote-dark a:active {
+	color: #118164;
+	border-bottom-style: solid;
+}
+
+/* Descendent selectors for #f5c887 fancy-quote-med */
+
+.fancy-quote-med a:link {
+	color: #000000;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+}
+.fancy-quote-med a:visited {
+	color: #522B37;
+	border-bottom-style: none;
+}
+.fancy-quote-med a:hover {
+	color: #FFAD36;
+	border-bottom-style: solid;
+}
+.fancy-quote-med a:active {
+	color: #118164;
+	border-bottom-style: solid;
+}
+
+/* Descendent selectors for fancy-quote-black */
+
+.fancy-quote-black a:link {
+	color: #6FA4A8;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+}
+.fancy-quote-black a:visited {
+	color: #f5c887;
+	border-bottom-style: none;
+}
+.fancy-quote-black a:hover {
+	color: #118164;
+	border-bottom-style: solid;
+}
+.fancy-quote-black a:active {
+	color: #FF0000;
+	border-bottom-style: solid;
+}
+
+/* Descendent selectors for whats-new-box */
+
+.whats-new-box a:link {
+	color: #6FA4A8;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+}
+.whats-new-box a:visited {
+	color: #f5c887;
+	border-bottom-style: none;
+}
+.whats-new-box a:hover {
+	color: #118164;
+	border-bottom-style: solid;
+}
+.whats-new-box a:active {
+	color: #FF0000;
+	border-bottom-style: solid;
+}
+
+/* Descendent selectors for fancy-quout-side */
+
+.fancy-quote-side a:link {
+	color: #A47634;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+}
+.fancy-quote-side a:visited {
+	color: #A47634;
+	border-bottom-style: none;
+}
+.fancy-quote-side a:hover {
+	color: #FFAD36;
+	border-bottom-style: solid;
+}
+.fancy-quote-side a:active {
+	color: #118164;
+	border-bottom-style: solid;
+}
+
+/* Descendent selectors for fancy-quout-side2 */
+
+.fancy-quote-side2 a:link {
+	color: #A47634;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+}
+/*.fancy-quote-side2 a:visited {
+	color: #A47634;
+	border-bottom-style: none;
+}*/
+.fancy-quote-side2 a:hover {
+	color: #FFAD36;
+	border-bottom-style: solid;
+}
+.fancy-quote-side2 a:active {
+	color: #118164;
+	border-bottom-style: solid;
+}
+
+
+
+
+/* styles for bold & bold-italic attributes (used as inline styles) */
+
+	/* bold attribute */
+
+.b { font-weight: bold; 
+}
+
+	/* italic attribute */
+	
+.i { font-style: italic;
+}
+
+	/* bold-italic attribute */
+	
+.bi { font-weight: bold;
+      font-style: italic;
+}
+
+
+/* style for scrollbar in MS Internet Explorer - M$ extensions :-(  Not sure why it has the name "body"
+probably has to be put in the head of the index.html 
+
+If I use would have to change color scheme
+
+*/			
+			
+	
+body { scrollbar-arrow-color: white; scrollbar-3dlight-color: #9DB6C4; scrollbar-highlight-color: #B4C5CD;
+scrollbar-face-color: #5B8196; scrollbar-shadow-color: #808080; scrollbar-darkshadow-color: #405B6A;
+scrollbar-track-color: white;
+}
+
+/* to justify text in document*/
+
+.justify {
+	text-align: justify;
+}
+
+/* font-style used for headlines where I don't want to use h tag */
+		
+.light-headline  {
+	font-family: AlbertaExtralight;
+	text-shadow: 6px 6px 8px #CCC;
+	line-height: 1.5em;
+	text-align: left;	
+}
+
+/* when I want h1, h2, etc. to be alligned left*/
+
+.left-headline  {
+	font-family: "SanS Medium";
+	text-shadow: 6px 6px 8px #CCC;
+	line-height: 1.5em;
+	text-align: left;
+}
+
+/* smaller font style */
+	
+.smaller {
+	font-size: .8em;
+}
+
+	/* style for colored emphasis */
+	
+.colored_emphasis {color:#c00;
+}
+
+/* style for colored emphasis alternate color */
+
+		
+.colored_emphasis_alt {
+	color: teal;
+}
+
+.centered { text-align: center;
+}
+
+
+
+/* large font style */
+		
+.larger { font-size: 1.3em; 
+}
+
+/*headlines for side columns where I can't use H between <p></p>*/
+
+.headline {
+	font-size: 1.5em;
+}
+
+	/* larger & bold font style */
+/*	
+.largerbold { font-size: 1.3em; 
+	font-weight:bold;
+}
+*/
+
+/* smaller & centered style */
+
+/*I doubt that I have used these next 2 should delete they are ridiculous*/
+/*	
+.smallercentered { font-size:smaller;
+	text-align:center;
+}
+*/	
+	/* smaller, bold & centered style */
+	
+/*	
+.smallerboldcentered { font-size:smaller;
+	font-weight:bold;
+	text-align:center;
+}
+*/
+
+/* hanging indent*/
+
+.indent {
+	margin-left: 60px;
+	
+}
+
+/* for BBT copyright notice */
+
+.bbt {font-size: .55em;}
+	
+
+
+/* For book titles and citations */
+
+.citation {
+	font-style: italic;
+	font-family: "LatinModernRoman10Regular";
+	font-size: 1.05em;
+	font-weight: normal;
+	color: inherit;
+}
+
+/* Style for inline quotes */
+
+.q {
+    display: inline;
+}
+ 
+.q:before {
+    content: open-quote;
+}
+ 
+.q:after {
+    content: close-quote;
+}
+
+
+
+/* style for super script*/
+.super {
+	vertical-align: super;
+	font-size: 1em;
+	line-height: 0.3em;
+	font-weight: bold;
+}
+
+/*Style for Mail Chimp*/
+
+.mchimptitle{
+	color: #999;
+	text-align: left;
+	text-shadow: none;
+}
+
+#mailchimp {
+	color: #999999;
+	padding: 20px 15px;
+	background-color: #000000;
+}
+	#mailchimp input {
+	color: gray;
+	font-family: AlbertaExtralight;
+	font-size: 1em;
+	font-style: italic;
+	margin-bottom: 10px;
+	width: 100%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding-top: 20px;
+	padding-right: 0px;
+	padding-bottom: 20px;
+	padding-left: 0px;
+	background-color: #000;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	}
+		#mailchimp input.email {
+	width: 100%;
+	padding-top: 20px;
+	padding-right: 0px;
+	padding-bottom: 20px;
+	padding-left: 0px;
+	background-color: #000;
+}
+		#mailchimp input.name { 
+		background: #fff
+		
+		}
+		
+		#mailchimp input[type="submit"] {
+	color: #CCC;
+	cursor: pointer;
+	font-size: 1.2em;
+	width: 100%;
+	padding-top: 20px;
+	padding-right: 0px;
+	padding-bottom: 20px;
+	font-family: AlbertaExtralight;
+	background-color: #000000;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+		}
+			#mailchimp input[type="submit"]:hover {
+	color: #FFFFFF;
+	background-color: /*#457296*/ #115b87; /*blue original*/
+}
+ 		#mailchimp input[type="submit"]:active {
+	color: #FFF;
+	background-color: #9a4d55; /*lavander*/
+	/*background-color: #AF002A;*/ /*lAlabama crimson*/
+	/*background-color: #856088;*/ /*chinese violet*/
+		}
+		
+		#mailchimp input[type="text"]:focus  {
+	color: #333333;
+	background-color: #FFFFFF; 
+}
+ 		
+		
+		#mailchimp input[type="email"]:focus {
+	color: #333333;
+	background-color: #FFFFFF; 
+}
+
+/*shadow under mail chimp button*/
+
+.fancy-mc {
+	/*border: 1px solid rgba(255,255,255,.2);*/
+	box-shadow: 0px 0px 10px rgba(0,0,0,.65);
+	
+}
+
+/*Added for Panache to work*/
+
+
+.p7PCH * {z-index:12;}
+.content-wrapper,
+.columns-wrapper {
+overflow: visible !important;
+}
+.columns-wrapper:after {
+content: "";
+display: table;
+clear: both;
+}
+.page-wrapper {
+overflow: hidden;
+}
+
+/*To deal with large amount o ftext in Peekaboo
+*/
+.pkb-content .pkb-boo.pkb-white {
+overflow: auto;
+}
+
+.pkb-content .pkb-boo.pkb-black {
+overflow: auto;
+}
+.pkb-content .pkb-boo.pkb-gray {
+overflow: auto;
+}
+
+/*For dealing with viewport issues in P7 Panache*/
+/*
+.content-wrapper {
+margin: 4em 1.25em 0em 1.25em;
+}
+.columns-wrapper {
+background-color: #FFF;
+position: relative;
+}
+.columns-wrapper:after {
+content: "";
+display: table;
+clear: both;
+}
+*/
+
+ 
+/* CSS snippets Edit for later use	
+		
+.button {
+   background: red            !important;
+   color: white               !important;
+   padding: 3px               !important;
+   border-radius: 5px         !important;
+   border: 1px solid black    !important;
+
+   /* For good measure */     
+  /* text-decoration: none      !important;
+}*/
+
+/*Block quote style edit ofr later use. https://css-tricks.com/snippets/css/simple-and-nice-blockquote-styling/
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}*/
+
+
