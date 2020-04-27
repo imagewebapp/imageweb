@@ -1,54 +1,36 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
-    <title>ImageWeb Gallery</title>
+<!DOCTYPE HTML>
 
 <!--
 
-Fluid Gallery Template
+	Radius by TEMPLATED
 
-http://www.templatemo.com/tm-500-fluid-gallery
+	templated.co @templatedco
+
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 
 -->
 
-    <!-- load stylesheets -->
+<html>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">  
+	<head>
 
-    <!-- Google web font "Open Sans" -->
+		<title>Gallery</title>
 
-    <link rel="stylesheet" href="/template/Font-Awesome-4.7/css/font-awesome.min.css">                
+		<meta charset="utf-8" />
 
-    <!-- Font Awesome -->
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="/template/css/bootstrap.min.css">                                      
+		<link rel="stylesheet" href="template/css/main.css" />
 
-    <!-- Bootstrap style -->
+		<!-- Top Panel CSS -->
+		<link href="/template/css/p7DMM01.css" rel="stylesheet" media="all">
+		<link href="/template/css/p7affinity-1_02.css" rel="stylesheet">
+		<link href="/template/css/p7affinity_print.css" rel="stylesheet" media="print">
+		<link href="/template/css/_jyotish.css" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" href="/template/css/hero-slider-style.css">                              
+		<!-- Top Panel CSS ends -->
 
-    <!-- Hero slider style (https://codyhouse.co/gem/hero-slider/) -->
-
-    <link rel="stylesheet" href="/template/css/magnific-popup.css">                                 
-
-    <!-- Magnific popup style (http://dimsemenov.com/plugins/magnific-popup/) -->
-
-    <link rel="stylesheet" href="/template/css/templatemo-style.css">                                   
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 
@@ -74,11 +56,10 @@ http://www.templatemo.com/tm-500-fluid-gallery
 
         <script>
 
-		
+        
 
             var tm_gray_site = false;
-
-            
+	       
 
             if(tm_gray_site) {
 
@@ -93,35 +74,35 @@ http://www.templatemo.com/tm-500-fluid-gallery
             }
 
         </script>
-	<script>
+        <script>
 
-	  $("body").on('contextmenu', function(e) {
-	      e.preventDefault();
-	  })
+          $("body").on('contextmenu', function(e) {
+              e.preventDefault();
+          })
 
-	</script>
-	<script>
+        </script>
+        <script>
         function savefile(file, filename) {
-	    var a = document.createElement('a');
-	    a.href = window.URL.createObjectURL(file);
-	    a.download = filename;
-	    a.dispatchEvent(new MouseEvent('click'));
-	}
+            var a = document.createElement('a');
+            a.href = window.URL.createObjectURL(file);
+            a.download = filename;
+            a.dispatchEvent(new MouseEvent('click'));
+        }
 
 
-	function downloadimage(imgpath){
-	    imgpathparts = imgpath.split("_lowres");
-    	    origimgpath = imgpathparts[0] + imgpathparts[1];
-	    origimgpathparts = origimgpath.split("/");
-	    filename = origimgpathparts[origimgpathparts.length - 1];
-	    var anchor = document.querySelector('a');
-	    var a = document.createElement('a');
+        function downloadimage(imgpath){
+            imgpathparts = imgpath.split("_lowres");
+            origimgpath = imgpathparts[0] + imgpathparts[1];
+            origimgpathparts = origimgpath.split("/");
+            filename = origimgpathparts[origimgpathparts.length - 1];
+            var anchor = document.querySelector('a');
+            var a = document.createElement('a');
 	    a.href = origimgpath;
-	    a.download = filename;
-	    a.style = 'display: none';
-	    anchor.parentNode.appendChild(a);
-	    a.click();
-	    a.remove();
+            a.download = filename;
+            a.style = 'display: none';
+            anchor.parentNode.appendChild(a);
+            a.click();
+            a.remove();
             // Now send a request to server so that imagehits table is updated.
             var xmlhttp;
             if (window.XMLHttpRequest){
@@ -132,7 +113,7 @@ http://www.templatemo.com/tm-500-fluid-gallery
             }
             xmlhttp.onreadystatechange = function(){
                 if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-		    alert("Thanks for downloading.");
+                    alert("Thanks for downloading.");
                 }
             }
             targeturl = "/download";
@@ -143,76 +124,76 @@ http://www.templatemo.com/tm-500-fluid-gallery
             xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
             xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xmlhttp.send();
-	}
+        }
 
 
-	function downloadimage_post(imgpath){
-	    //alert(imgpath);
-	    var xmlhttp;
-	    if (window.XMLHttpRequest){
-		xmlhttp=new XMLHttpRequest();
-	    }
-	    else{
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	    }
-	    xmlhttp.onreadystatechange = function(){
-	    	if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-		    var contentdisposition = xmlhttp.getResponseHeader('Content-Disposition');
-		    var filename = contentdisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1];
-		    var type = xmlhttp.getResponseHeader('Content-Type');
-		    var blob = new Blob([xmlhttp.response], {type : type});
+        function downloadimage_post(imgpath){
+            //alert(imgpath);
+            var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+                    var contentdisposition = xmlhttp.getResponseHeader('Content-Disposition');
+                    var filename = contentdisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1];
+                    var type = xmlhttp.getResponseHeader('Content-Type');
+                    var blob = new Blob([xmlhttp.response], {type : type});
                     savefile(blob, filename);
-		}
-	    }
-	    targeturl = "/download";
-	    postdata = "imagepath=" + imgpath;
-	    postdata += "&_token=" + document.frmdummy._token.value;
-	    xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
+                }
+            }
+            targeturl = "/download";
+            postdata = "imagepath=" + imgpath;
+            postdata += "&_token=" + document.frmdummy._token.value;
+            xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
             xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
-	    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	    xmlhttp.send(postdata);
-	}
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send(postdata);
+        }
 
 
-	function showtagscontainer(){
-	    selectedmode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
-	    containerdiv = document.getElementById('tagscontainer');
-	    if(selectedmode == 'tags'){
-		containerdiv.innerHTML = "<input type='text' name='tagslist' size='30'> Multiple tags should be separated by commas";
-	    }
-	    else{
-		containerdiv.innerHTML = "";
-	    }
-	}
+        function showtagscontainer(){
+            selectedmode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
+            containerdiv = document.getElementById('tagscontainer');
+            if(selectedmode == 'tags'){
+                containerdiv.innerHTML = "<input type='text' name='tagslist' size='30'> Multiple tags should be separated by commas";
+            }
+            else{
+                containerdiv.innerHTML = "";
+            }
+        }
 
 
-	function searchgallery(){
-	    mode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
-	    tags = "";
-	    if(mode == "tags"){
-		tags = document.frmsearch.tagslist.value;
-	    }
-	    document.frmsearch.action = "/gallery?mode=" + mode;
-	    if(tags != ""){
-		document.frmsearch.action += "&tags=" + tags;
-	    }
-	    document.frmsearch.method='GET';
-	    document.frmsearch.submit();
-	}
+        function searchgallery(){
+            mode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
+            tags = "";
+            if(mode == "tags"){
+                tags = document.frmsearch.tagslist.value;
+            }
+            document.frmsearch.action = "/gallery?mode=" + mode;
+            if(tags != ""){
+                document.frmsearch.action += "&tags=" + tags;
+            }
+            document.frmsearch.method='GET';
+            document.frmsearch.submit();
+        }
 
 
-	function showprofileimagescreen(){
-	    profileimguploaddiv = document.getElementById('profileimagediv');
-	    profileimguploaddiv.style.display = "";
-	}
+        function showprofileimagescreen(){
+            profileimguploaddiv = document.getElementById('profileimagediv');
+            profileimguploaddiv.style.display = "";
+        }
 
-	function closeuploadform(){
-	    profileimguploaddiv = document.getElementById('profileimagediv');
-	    profileimguploaddiv.style.display = "none";
-	}
+        function closeuploadform(){
+            profileimguploaddiv = document.getElementById('profileimagediv');
+            profileimguploaddiv.style.display = "none";
+        }
 
-	function uploadprofileimage(){
-	    var xmlhttp;
+        function uploadprofileimage(){
+            var xmlhttp;
             statusdiv = document.getElementById('profstatus');
             if (window.XMLHttpRequest){
                 xmlhttp=new XMLHttpRequest();
@@ -233,395 +214,203 @@ http://www.templatemo.com/tm-500-fluid-gallery
             xmlhttp.open('POST', "/changeprofileimage", true);
             xmlhttp.send(formdata);
             statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
-	}
+        }
 
-	</script>
-
-
-</head>
+        </script>
 
 
+	</head>
 
-    <body>
-	 <!-- Navigation -->        
+	<body>
 
-            
 
-        <div class="navbar-brand text-uppercase" href="#"><i class="fa fa-picture-o tm-brand-icon"></i>ImageWeb Gallery</div>
 
-	<div class="tm-navbar-bg">
+		<!-- Header -->
 
-            <ul class="nav navbar-nav">
+		<!--	<header id="header">
 
-                <li class="nav-item active selected">
+				<div class="inner">
 
-                    <a href="/gallery">Gallery <span class="sr-only">(current)</span></a>
+					<div class="content">
 
-                </li>                                
+						<h1>Radius</h1>
 
-                <li class="nav-item">
+						<h2>A fully responsive masonry-style<br />
 
-                    <a href="/dashboard">Dashboard</a>
+						portfolio template.</h2>
 
-                </li>
+						<a href="#" class="button big alt"><span>Let's Go</span></a>
 
-                <li class="nav-item">
+					</div>
 
-                    <a href="#0" data-no="3">3rd fluid</a>
+					<a href="#" class="button hidden"><span>Let's Go</span></a>
 
-                </li>
+				</div>
 
-                <li class="nav-item">
+			</header>
+		-->
+	<!-- HTML from the template download page -->
 
-                    <a href="#0" data-no="4">Columns</a>
+<!-- Top Panel -->
+<div class="masthead"> <span class="name">Site Title Here</span><br>
+  Put some text here... </div>
 
-                </li>
-
-                <li class="nav-item">
-		    <?php
+<div class="top-navigation">
+  <div class="menu-top-wrapper">
+    <div id="p7DMM_1" class="p7DMM01 p7DMM p7dmm-left responsive">
+      <div id="p7DMMtb_1" class="p7DMM-toolbar closed"></div>
+      <ul id="p7DMMu_1" class="p7DMM01-menu closed">
+        <li><a href="/gallery">Gallery <span class="sr-only">(current)</span></a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="#0" data-no="3">3rd fluid</a></li>
+        <li><a href="#0" data-no="4">Columns</a></li>
+        <li>
+          <?php
                         if($username != ""){
                             echo "<img src='".$profileimage."' height='50px' width='50px'>You are logged in as ".$username;
-			    echo "<a href='/logout' data-no='5'>Logout</a>";
-			    echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
-			    echo "<br/><div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
-		    ?>
+                            echo "<a href='/logout' data-no='5'>Logout</a>";
+                            echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
+                            echo "<br/><div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
+                    ?>
                      <input type='hidden' name='_token' value='{{ csrf_token() }}'>
                     <?php
-                            echo "</form></div>";
+		     echo "</form></div>";
                         }
-			else{
-			    echo "<a href='/login'>Login</a> or <a href='/register'>Register</a>";
-			}
-                    ?> 
+                        else{
+                            echo "<span><a href='/login'>Login</a> or <a href='/register'>Register</a></span>";
+                        }
+                    ?>
+        </li>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Top panel ends here -->
 
-                </li>
+	<!-- HTML from template download page ends here... -->
 
-            </ul>
+			
+	    <!-- old css start -->
+            <div class="tm-navbar-bg">
+			<div class="cd-hero">
 
+			<form name='frmsearch' method='GET'>
 
+			<div align='center'>
+			    Search Images <select name='selmode' onchange='javascript:showtagscontainer();'>
+			    <option value='all'>Show All</option>
+			    <option value='popularity'>By Popularity</option>
+			    <option value='tags'>By Keywords</option>
+			</select>
+			<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
+			<div id='tagscontainer'></div></div>
+			</form>
+			</div>
+		</div>
+		<!-- old css ends -->
 
-    	</div>
+		<!-- Main -->
 
-        
+			<div id="main">
 
-        <!-- Content -->
+				<div class="inner">
 
-        <div class="cd-hero">
-        
-	<form name='frmsearch' method='GET'>
+					<div class="columns">
 
-	<div align='center'>
-	    Search Images <select name='selmode' onchange='javascript:showtagscontainer();'>
-	    <option value='all'>Show All</option>
-	    <option value='popularity'>By Popularity</option>
-	    <option value='tags'>By Keywords</option>
-	</select>
-	<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
-	<div id='tagscontainer'></div></div>
-	</form>
+						@foreach ($images as $img)
+				                        <?php
+				                        $imagepathparts = explode("users", $img->imagepath);
+				                        $imagepath = "/image".$imagepathparts[1];
+				                        $lowrespathparts = explode("users", $img->lowrespath);
+				                        $lowrespath = "/image".$lowrespathparts[1];
+				                        $iconpathparts = explode("users", $img->iconpath);
+				                        $iconpath = "/image".$iconpathparts[1];
+				                        ?>
 
-            <ul class="cd-hero-slider">
 
+							<div class="image fit">
 
+								<img src="<?php echo $lowrespath; ?>" alt="" />
 
-                <li class="selected">                    
+							</div>
 
-                    <div class="cd-full-width">
+						@endforeach
 
-                        <div class="container-fluid js-tm-page-content" data-page-no="1" data-page-type="gallery">
+						<form name='frmdummy'>
+                                        		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                		</form>
 
-                            <div class="tm-img-gallery-container">
+					</div>
 
-                                <div class="tm-img-gallery gallery-one">
+				</div>
 
-                                <!-- Gallery One pop up connected with JS code below -->
-                                @foreach ($images as $img)
-                                        <?php
-                                        $imagepathparts = explode("users", $img->imagepath);
-                                        $imagepath = "/image".$imagepathparts[1];
-                                        $lowrespathparts = explode("users", $img->lowrespath);
-                                        $lowrespath = "/image".$lowrespathparts[1];
-                                        $iconpathparts = explode("users", $img->iconpath);
-                                        $iconpath = "/image".$iconpathparts[1];
-                                        ?>
+			</div>
 
-                                    <div class="grid-item">
+		<br /><br />
 
-                                        <figure class="effect-sadie">
+		<!-- Footer -->
 
-                                            <img src="<?php echo $lowrespath; ?>" alt="Image" class="img-fluid tm-img">
+			<div id="footer">
 
-                                            <figcaption>
+				<br /><br />
+				<div>
+				    <?php
 
-                                                <a href="<?php echo $imagepath; ?>">View Image</a>
+					 if($startpoint < $totalcount){
+					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
+					 }
+					 if($startpoint > $chunksize){
+					      $prev = $startpoint - 2*$chunksize;
+					      if($prev < 0){
+						  $prev = 0;
+					      }
+					     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
+					 }
+				    ?>
 
-                                            </figcaption>           
+				    <br /><br />
+					<!-- 
 
-                                        </figure>
+					<div class="copyright">
 
-                                    </div>
-				@endforeach
-				<form name='frmdummy'>
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				</form>
-				
-				</div>                                 
+						<h3>Follow me</h3>
 
-                            </div>
+						<ul class="icons">
 
-                        </div> 
+							<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
 
-                    </div>
+							<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
 
-                </li>
+							<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
 
-            </ul> <!-- .cd-hero-slider -->
-	    <!--
-	    <br /><br />
-	    <?php
+							<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
 
-                 if($startpoint < $totalcount){
-                      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
-                 }
-                 if($startpoint > $chunksize){
-                      $prev = $startpoint - 2*$chunksize;
-                      if($prev < 0){
-                          $prev = 0;
-                      }
-                     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
-                 }
-            ?>
-	    --> 
+						</ul>
 
-            <br /><br />
+						&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com/">Unsplash</a>.
 
-            <footer class="tm-footer">
+					</div>
+					-->
 
-            
+				</div>
 
-                <div class="tm-social-icons-container text-xs-center">
+			</div>
 
-                    <a href="#" class="tm-social-link"><i class="fa fa-facebook"></i></a>
 
-                    <a href="#" class="tm-social-link"><i class="fa fa-google-plus"></i></a>
 
-                    <a href="#" class="tm-social-link"><i class="fa fa-twitter"></i></a>
+		<!-- Scripts -->
 
-                    <a href="#" class="tm-social-link"><i class="fa fa-behance"></i></a>
+			<script src="template/js/jquery.min.js"></script>
 
-                    <a href="#" class="tm-social-link"><i class="fa fa-linkedin"></i></a>
+			<script src="template/js/skel.min.js"></script>
 
-              </div>
+			<script src="template/js/util.js"></script>
 
-                
+			<script src="template/js/main.js"></script>
 
-                <p class="tm-copyright-text">Copyright &copy; <span class="tm-copyright-year">2020</span> Image Web 
 
-                
 
-                 | Design: <a href="www.templatemo.com" target="_parent">Template Mo</a></p>
-
-
-
-            </footer>
-
-                    
-
-        </div> <!-- .cd-hero -->
-
-        
-
-
-
-        <!-- Preloader, https://ihatetomatoes.net/create-custom-preloading-screen/ -->
-
-        <div id="loader-wrapper">
-
-            
-
-            <div id="loader"></div>
-
-            <div class="loader-section section-left"></div>
-
-            <div class="loader-section section-right"></div>
-
-
-
-        </div>
-
-        
-
-        <!-- load JS files -->
-
-        
-
-        <script src="/template/js/tether.min.js"></script> <!-- Tether (http://tether.io/)  --> 
-
-        <script src="/template/js/bootstrap.min.js"></script>             <!-- Bootstrap js (v4-alpha.getbootstrap.com/) -->
-
-        <script src="/template/js/hero-slider-main.js"></script>          <!-- Hero slider (https://codyhouse.co/gem/hero-slider/) -->
-
-        <script src="/template/js/jquery.magnific-popup.min.js"></script> <!-- Magnific popup (http://dimsemenov.com/plugins/magnific-popup/) -->
-
-        
-
-        <script>
-
-
-
-            function adjustHeightOfPage(pageNo) {
-
-
-
-                var pageContentHeight = 0;
-
-
-
-                var pageType = $('div[data-page-no="' + pageNo + '"]').data("page-type");
-
-
-
-                if( pageType != undefined && pageType == "gallery") {
-
-                    pageContentHeight = $(".cd-hero-slider li:nth-of-type(" + pageNo + ") .tm-img-gallery-container").height();
-
-                }
-
-                else {
-
-                    pageContentHeight = $(".cd-hero-slider li:nth-of-type(" + pageNo + ") .js-tm-page-content").height() + 20;
-
-                }
-
-               
-
-                // Get the page height
-
-                var totalPageHeight = $('.cd-slider-nav').height()
-
-                                        + pageContentHeight
-
-                                        + $('.tm-footer').outerHeight();
-
-
-
-                // Adjust layout based on page height and window height
-
-                if(totalPageHeight > $(window).height()) 
-
-                {
-
-                    $('.cd-hero-slider').addClass('small-screen');
-
-                    $('.cd-hero-slider li:nth-of-type(' + pageNo + ')').css("min-height", totalPageHeight + "px");
-
-                }
-
-                else 
-
-                {
-
-                    $('.cd-hero-slider').removeClass('small-screen');
-
-                    $('.cd-hero-slider li:nth-of-type(' + pageNo + ')').css("min-height", "100%");
-
-                }
-
-            }
-
-
-
-            /*
-
-                Everything is loaded including images.
-
-            */
-
-            $(window).load(function(){
-
-
-
-                adjustHeightOfPage(1); // Adjust page height
-
-
-
-                /* Gallery One pop up
-
-                -----------------------------------------*/
-
-                $('.gallery-one').magnificPopup({
-
-                    delegate: 'a', // child items selector, by clicking on it popup will open
-
-                    type: 'image',
-
-                    gallery:{enabled:true}                
-
-                });
-
-				
-
-                /* Collapse menu after click 
-
-                -----------------------------------------*/
-
-                $('#tmNavbar a').click(function(){
-
-                    $('#tmNavbar').collapse('hide');
-
-
-
-                    adjustHeightOfPage($(this).data("no")); // Adjust page height       
-
-                });
-
-
-
-                /* Browser resized 
-
-                -----------------------------------------*/
-
-                $( window ).resize(function() {
-
-                    var currentPageNo = $(".cd-hero-slider li.selected .js-tm-page-content").data("page-no");
-
-                    
-
-                    // wait 3 seconds
-
-                    setTimeout(function() {
-
-                        adjustHeightOfPage( currentPageNo );
-
-                    }, 1000);
-
-                    
-
-                });
-
-        
-
-                // Remove preloader (https://ihatetomatoes.net/create-custom-preloading-screen/)
-
-                $('body').addClass('loaded');
-
-
-
-                // Write current year in copyright text.
-
-                $(".tm-copyright-year").text(new Date().getFullYear());
-
-                           
-
-            });
-
-
-
-        </script>            
-
-
-
-</body>
+	</body>
 
 </html>
 
