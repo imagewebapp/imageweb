@@ -131,14 +131,15 @@ xmlhttp.send(formdata);
 statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";    
 }
 
-function removeimage(imagefilename, userid){
+function removeimage(imagefilename, userid, ctr){
   removeimgurl = "/removeimage";
   yn = confirm("This action will delete the image permanently. Do you want to continue?");
   if(!yn){
     return(0);
   }
   var xmlhttp;
-  statusdiv = document.getElementById('rmdiv');
+  rmdivelem = 'rmdiv' + ctr;
+  statusdiv = document.getElementById(rmdivelem);
   if (window.XMLHttpRequest){
     xmlhttp=new XMLHttpRequest();
   }
@@ -148,7 +149,9 @@ function removeimage(imagefilename, userid){
   xmlhttp.onreadystatechange = function(){
     if(xmlhttp.readyState == 4 && xmlhttp.status==200){
         statusdiv.style.display = "";
-        statusdiv.innerHTML = "<p style='color:#0000AA;'>" + xmlhttp.responseText + ".</p>";
+        //statusdiv.innerHTML = "<p style='color:#0000AA;'>" + xmlhttp.responseText + ".</p>";
+	alert( xmlhttp.responseText);
+	location.reload();
     }
   }
   formdata = new FormData();
@@ -158,6 +161,7 @@ function removeimage(imagefilename, userid){
   formdata.append("userid", userid);
   xmlhttp.open('POST', removeimgurl, true);
   xmlhttp.send(formdata);
+  statusdiv.style.display = "";
   statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
 }
 
@@ -303,6 +307,7 @@ function uploadprofileimage(){
 								</thead>
 
 								<tbody>
+								<?php $ctr = 1; ?>
                                                                 @foreach ($images as $img)
 									<?php
 
@@ -338,11 +343,12 @@ function uploadprofileimage(){
 										<td class="cell100 column6">Yes</td>
 										@endif
 
-										<td class="cell100 column7"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}');">Remove Image</a><div id='rmdiv' style="display:none;"></div></td>
+										<td class="cell100 column7"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}', '<?php echo $ctr; ?>');">Remove Image</a><div id='rmdiv<?php echo $ctr; ?>' style="display:none;"></div></td>
 
 										<td class="cell100 column8"></td>
 									<!-- Add pagination here -->
 									</tr>
+									<?php $ctr++; ?>
                                                                   @endforeach
 
 
