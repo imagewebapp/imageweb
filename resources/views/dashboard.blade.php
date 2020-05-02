@@ -14,6 +14,14 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<!-- Top Panel CSS -->
+		<link href="/template/css/p7DMM01.css" rel="stylesheet" media="all">
+		<link href="/template/css/p7affinity-1_02.css" rel="stylesheet">
+		<link href="/template/css/p7affinity_print.css" rel="stylesheet" media="print">
+		<link href="/template/css/_jyotish.css" rel="stylesheet" type="text/css">
+
+		<!-- Top Panel CSS ends -->
+
     <!-- load stylesheets -->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">  
@@ -123,9 +131,34 @@ xmlhttp.send(formdata);
 statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";    
 }
 
-
 function removeimage(imagefilename, userid){
-
+  removeimgurl = "/removeimage";
+  yn = confirm("This action will delete the image permanently. Do you want to continue?");
+  if(!yn){
+    return(0);
+  }
+  var xmlhttp;
+  statusdiv = document.getElementById('rmdiv');
+  if (window.XMLHttpRequest){
+    xmlhttp=new XMLHttpRequest();
+  }
+  else{
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function(){
+    if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+        statusdiv.style.display = "";
+        statusdiv.innerHTML = "<p style='color:#0000AA;'>" + xmlhttp.responseText + ".</p>";
+    }
+  }
+  formdata = new FormData();
+  csrftoken = document.frmprofimg._token.value;
+  formdata.append("_token", csrftoken);
+  formdata.append("imagefilename", imagefilename);
+  formdata.append("userid", userid);
+  xmlhttp.open('POST', removeimgurl, true);
+  xmlhttp.send(formdata);
+  statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
 }
 
 
@@ -170,80 +203,48 @@ function uploadprofileimage(){
 
 	
 
-	<div class="limiter">
+	<!-- Top Panel -->
+<div class="masthead"> <span class="name">Site Title Here</span><br>
+  Put some text here... </div>
 
-		<div class="container-table100">
-
-			<div class="wrap-table100">
-
-				<div class="table100 ver1">
-
-					<div class="table100-firstcol">
-					 <!-- Navigation -->        
-
-            
-
-        <div class="navbar-brand text-uppercase" href="#"><i class="fa fa-picture-o tm-brand-icon"></i>ImageWeb Dashboard</div>
-
-	<div class="tm-navbar-bg">
-
-            <ul class="nav navbar-nav">
-
-                <li class="nav-item active selected">
-
-                    <a href="/gallery">Gallery</a>
-
-                </li>                                
-
-                <li class="nav-item">
-
-                    <a href="/dashboard">Dashboard<span class="sr-only">(current)</span></a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a href="#0" data-no="3">3rd fluid</a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a href="#0" data-no="4">Columns</a>
-
-                </li>
-
-		@if($usertype == 'admin')
-		
-                <li class="nav-item">
-
-                    <a href="/verifyimagesiface" data-no="4">Verify Images</a>
-
-                </li>
- 
-		@endif
-
-                <li class="nav-item">
-		    <?php
-			if($username != ""){
-			    echo "<img src='".$profileimage."' height='50px' width='50px'>You are logged in as ".$username;
-			    echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
+<div class="top-navigation">
+  <div class="menu-top-wrapper">
+    <div id="p7DMM_1" class="p7DMM01 p7DMM p7dmm-left responsive">
+      <div id="p7DMMtb_1" class="p7DMM-toolbar closed"></div>
+      <ul id="p7DMMu_1" class="p7DMM01-menu closed">
+        <li><a href="/gallery">Gallery <span class="sr-only">(current)</span></a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+	<?php
+	  if($usertype == "admin"){
+	?>
+        <li><a href="/verifyimagesiface">Verify Images</a></li>
+	<?php
+	  }
+	?>
+        <li><a href="#0" data-no="3">3rd fluid</a></li>
+        <li><a href="#0" data-no="4">Columns</a></li>
+        <li>
+          <?php
+                        if($username != ""){
+                            echo "<img src='".$profileimage."' height='50px' width='50px'>You are logged in as ".$username;
+                            echo "<a href='/logout' data-no='5'>Logout</a>";
+                            echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
                             echo "<br/><div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
-		    ?>
-			<input type='hidden' name='_token' value='{{ csrf_token() }}'>
-		    <?php
-			    echo "</form></div>";
-			}
-		    ?>
-                    <a href="/logout" data-no="5">Logout</a> 
-
-                </li>
-
-            </ul>
-
-
-
-    	</div>
+                    ?>
+                     <input type='hidden' name='_token' value='{{ csrf_token() }}'>
+                    <?php
+		     echo "</form></div>";
+                        }
+                        else{
+                            echo "<span><a href='/login'>Login</a> or <a href='/register'>Register</a></span>";
+                        }
+                    ?>
+        </li>
+    </div>
+  </div>
+</div>
+</div>
+<!-- Top panel ends here -->
 
 						<table>
 
@@ -337,7 +338,7 @@ function uploadprofileimage(){
 										<td class="cell100 column6">Yes</td>
 										@endif
 
-										<td class="cell100 column7"><a href='#/' onclick='javascript:removeimage({{$img->imagefilename}}, {{$img->userid}});'>Remove Image</a></td>
+										<td class="cell100 column7"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}');">Remove Image</a><div id='rmdiv' style="display:none;"></div></td>
 
 										<td class="cell100 column8"></td>
 									<!-- Add pagination here -->

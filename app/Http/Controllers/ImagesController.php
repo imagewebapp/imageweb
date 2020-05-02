@@ -277,7 +277,8 @@ class ImagesController extends BaseController
             $totalcount = DB::table('images')->where('verified', '1')->count();
 	}
 	elseif($mode == 'popularity'){
-	    $hits = DB::table('imagehits')->groupBy('imageid')->select('imageid', DB::raw('count(*) as hitcount'))->get();
+	    //$hits = DB::table('imagehits')->groupBy('imageid')->select('imageid', DB::raw('count(*) as hitcount'))->get();
+	    $hits = DB::table('imagehits')->select('imageid', DB::raw('count(*) as hitcount'))->groupBy('imageid')->orderBy('hitcount', 'desc')->get();
 	    for($i=0; $i < count($hits); $i++){
 		$hit = $hits[$i];
 		$imgid = $hit->imageid;
@@ -382,12 +383,36 @@ class ImagesController extends BaseController
 
 
     /*
-        Allow owner user to destroy the image
+        Allow owner user to delete the image
     */
-    public function destroy(Request $req){
-
+    public function removeimage(Request $req){
+	$s = checksession();
+        if(!$s){
+            return view('login');
+        }
+        $sessionid = Session::getId();
+        $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        $userid = $session->userid;
+	$inputuserid = $req->input("userid");
+	if($userid != $inputuserid){
+	  $response = Response::make("The session seems to be corrupt. The image could not be removed due to this issue.", 200);
+          $response->header("Content-Type", "Text/Plain");
+          return $response;
+	}
+	$imagefilename = $req->input("imagefilename");
+	$user = DB::table('users')->where('id', $userid)->first();
+	$username = $user->username;
+        $imagepath = "/var/www/html/imageweb/storage/users/".$username."/".$imagefilename;
+	# Delete records from DB tables first.
+	$imgobj =  DB::table('images')->where([ ['imagepath', '=', $imagepath] ])->first();
+	$imgid = $imgobj->id;
+	DB::delete('delete from imagehits where imageid=?', [$imgid]);
+	DB::delete('delete from images where id=?',[$imgid]);
+	unlink($imagepath);
+	$response = Response::make("Deleted the selected image successfully", 200);
+	$response->header("Content-Type", "Text/Plain");
+        return $response;
     }
-
 
     /*
         SHow login form page

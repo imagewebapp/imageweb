@@ -30,6 +30,36 @@
 
 		<!-- Top Panel CSS ends -->
 
+<link rel="stylesheet" 
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+	<style>
+
+.semitrans {
+	  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	  filter: alpha(opacity=100);
+	  opacity: 1.0;
+	  -moz-opacity: 1.0; 
+	  -khtml-opacity: 1.0;
+	  background-color:#FFFFFF;
+	  color:#0000AA;
+	  position:fixed; top:0; left:0; width:auto; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center; overflow-y:scroll;
+	}
+
+	</style>
+
+<style>
+select {
+  width: 250px;
+}
+
+option {
+  width: 250px;
+}
+</style>
+
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,7 +82,7 @@
 
         <!-- jQuery (https://jquery.com/download/) -->
 
-
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
         <script>
 
@@ -216,9 +246,25 @@
             statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
         }
 
+	function closeimg(){
+  	  screendiv = document.getElementById('transscreens');
+  	  screendiv.innerHTML = "";
+  	  screendiv.style.display = "none";
+	}
+
+	function showoverlay(imgpath){
+	  //alert(imgpath);
+  	  screendiv = document.getElementById('transscreens');
+  	  screendiv.innerHTML = "<img src='" + imgpath + "' style='width:100%;height:100%;'>";
+	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();'>Close</a>";
+  	  screendiv.style.display = "";
+	}
         </script>
-
-
+	<style>
+	img {
+	    pointer-events: none;
+	}
+	</style>
 	</head>
 
 	<body>
@@ -262,6 +308,13 @@
       <ul id="p7DMMu_1" class="p7DMM01-menu closed">
         <li><a href="/gallery">Gallery <span class="sr-only">(current)</span></a></li>
         <li><a href="/dashboard">Dashboard</a></li>
+	<?php
+          if(isset($usertype) && $usertype == "admin"){
+        ?>
+        <li><a href="/verifyimagesiface">Verify Images</a></li>
+        <?php
+          }
+        ?>
         <li><a href="#0" data-no="3">3rd fluid</a></li>
         <li><a href="#0" data-no="4">Columns</a></li>
         <li>
@@ -291,22 +344,16 @@
 
 			
 	    <!-- old css start -->
-            <div class="tm-navbar-bg">
-			<div class="cd-hero">
-
-			<form name='frmsearch' method='GET'>
-
-			<div align='center'>
-			    Search Images <select name='selmode' onchange='javascript:showtagscontainer();'>
-			    <option value='all'>Show All</option>
-			    <option value='popularity'>By Popularity</option>
-			    <option value='tags'>By Keywords</option>
-			</select>
-			<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
-			<div id='tagscontainer'></div></div>
-			</form>
-			</div>
-		</div>
+<form name='frmsearch' method='GET' class="form-horizontal">
+<div align='center' class="row">
+Search Images <select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
+  <option value='all'>Show All</option>
+  <option value='popularity'>By Popularity</option>
+  <option value='tags'>By Keywords</option>
+</select>
+<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
+<div id='tagscontainer'></div></div>
+</form>
 		<!-- old css ends -->
 
 		<!-- Main -->
@@ -316,7 +363,9 @@
 				<div class="inner">
 
 					<div class="columns">
-
+						<?php 
+						    $ctr = 1;
+						?>
 						@foreach ($images as $img)
 				                        <?php
 				                        $imagepathparts = explode("users", $img->imagepath);
@@ -329,12 +378,16 @@
 
 
 							<div class="image fit">
-
-								<img src="<?php echo $lowrespath; ?>" alt="" />
-
+								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
+								<img src="<?php echo $lowrespath; ?>">
+								</a>
 							</div>
+							<?php
+							    $ctr++;
+							?>
 
 						@endforeach
+						<div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"></div>
 
 						<form name='frmdummy'>
                                         		<input type="hidden" name="_token" value="{{ csrf_token() }}">
