@@ -225,22 +225,21 @@ function uploadprofileimage(){
 	<?php
 	  }
 	?>
-        <li><a href="#0" data-no="3">3rd fluid</a></li>
-        <li><a href="#0" data-no="4">Columns</a></li>
-        <li>
+        <li><a href="#0" data-no="3">About us</a></li>
+        <li><a href="#0" data-no="4">Terms and Conditions</a></li>
           <?php
                         if($username != ""){
-                            echo "<img src='".$profileimage."' height='50px' width='50px'>You are logged in as ".$username;
-                            echo "<a href='/logout' data-no='5'>Logout</a>";
-                            echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
-                            echo "<br/><div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
+                            echo "<li>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'></li>";
+                            echo "<li><a href='/logout' data-no='5'>Logout</a></li>";
+                            echo "<li><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a></li>";
+                            echo "<div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
                     ?>
                      <input type='hidden' name='_token' value='{{ csrf_token() }}'>
                     <?php
 		     echo "</form></div>";
                         }
                         else{
-                            echo "<span><a href='/login'>Login</a> or <a href='/register'>Register</a></span>";
+                            echo "<li><a href='/login'>Login</a> or <a href='/register'>Register</a></li>";
                         }
                     ?>
         </li>
