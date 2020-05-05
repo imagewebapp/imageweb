@@ -373,6 +373,13 @@ class ImagesController extends BaseController
         return $response;
     }
 
+    /*
+       Show download popup window to user
+    */
+    public function showdownloadwin(Request $req){
+        return view('downloadpopup');
+    }
+
 
     /*
         Allow the legitimate owner to update the image.

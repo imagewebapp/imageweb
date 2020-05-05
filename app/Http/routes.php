@@ -51,6 +51,10 @@ Route::get('download', array(
     'uses' => 'ImagesController@download'
 ));
 
+Route::get('downloadpopup', array(
+    'uses' => 'ImagesController@showdownloadwin'
+));
+
 Route::get('gallery', array(
     'uses' => 'ImagesController@showgallery'
 ));

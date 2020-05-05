@@ -128,7 +128,7 @@
 	  -khtml-opacity: 1.0;
 	  background-color:#FFFFFF;
 	  color:#0000AA;
-	  position:fixed; top:0; left:0; width:auto; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center; overflow-y:scroll;
+	  position:fixed; top:10px; left:10px; width:auto; height:auto; max-width:50%; max-height:50%; text-align:center; cursor: default;outline: none;align-items: center; overflow-y:scroll;
 	}
 
 	</style>
@@ -335,11 +335,18 @@ option {
   	  screendiv.style.display = "none";
 	}
 
+	function downloadimage(imgpath){
+	  //alert("Download Image");
+	  winnew = window.open("/downloadpopup", "downloadwindow", "width=640,height=640");
+	  closeimg();
+	}
+
 	function showoverlay(imgpath){
 	  //alert(imgpath);
   	  screendiv = document.getElementById('transscreens');
-  	  screendiv.innerHTML = "<img src='" + imgpath + "' style='width:100%;height:100%;'>";
-	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();'>Close</a>";
+	  screendiv.innerHTML = "<a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:downloadimage(\"" + imgpath + "\");'>Download</a>";
+  	  screendiv.innerHTML += "<br><img src='" + imgpath + "' style='width:100%;height:100%;'>";
+	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:downloadimage(\"" + imgpath + "\");'>Download</a>";
   	  screendiv.style.display = "";
 	}
         </script>
@@ -454,7 +461,7 @@ option {
 					 }
 				    ?>
 
-				    <br /><br />
+				    <br />
 			</div>
 			<div id="main">
 
