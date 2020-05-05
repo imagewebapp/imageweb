@@ -14,14 +14,102 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<!-- Top Panel CSS -->
-		<link href="/template/css/p7DMM01.css" rel="stylesheet" media="all">
-		<link href="/template/css/p7affinity-1_02.css" rel="stylesheet">
-		<link href="/template/css/p7affinity_print.css" rel="stylesheet" media="print">
-		<link href="/template/css/_jyotish.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap minified JS CDN link -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap minified theme CDN link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <!-- Bootstrap minified CSS CDN link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
 
-		<!-- Top Panel CSS ends -->
+    <!-- top panel CSS -->
 
+    <style>
+    .container {
+	  max-width: 960px;
+	}
+	.navbar-survival101 {
+	  background-color:#2B6DAD;
+	}
+	/* .navbar-survival101 .navbar-brand {
+	  margin-right: 2.15rem;
+	  padding: 3px 0 0 0;
+	  line-height: 36px;
+	} */
+
+	.navbar-survival101 .navbar-brand img {
+	  vertical-align: baseline;
+	}
+
+	.navbar-expand-lg .navbar-nav .nav-link {
+	  color: #fff;
+	}
+
+	.search-box {
+	  position: relative;
+	  height: 34px;
+	}
+	.search-box input {
+	  border: 0;
+	  border-radius: 3px !important;
+	  padding-right: 28px;
+	  font-size: 15px;
+	}
+
+	.search-box .input-group-btn {
+	  position: absolute;
+	  right: 0;
+	  top: 0;
+	  z-index: 999;
+	}
+
+	.search-box .input-group-btn button {
+	  background-color: transparent;
+	  border: 0;
+	  padding: 4px 8px;
+	  color: rgba(0,0,0,.4);
+	  font-size: 20px;
+	}
+
+	.search-box .input-group-btn button:hover,
+	.search-box .input-group-btn button:active,
+	.search-box .input-group-btn button:focus {
+	  color: rgba(0,0,0,.4);
+	}
+
+	@media (min-width: 992px) {
+	  .navbar-expand-lg .navbar-nav .nav-link {
+	    padding-right: .7rem;
+	    padding-left: .7rem;
+	  }
+	  
+	  .search-box {
+	    width: 300px !important;
+	  }
+	}
+
+	.caroulsel {
+	  width: 100%;
+	  overflow: hidden;
+	  padding: 5px 0 5px 5px;
+	}
+
+	.caroulsel-wrap {
+	  white-space: nowrap;
+	  font-size: 0;
+	}
+
+	.caroulsel-wrap a {
+	  display: inline-block;
+	  width: 134px;
+	  height: 92px;
+	  background-color: silver;
+	  border: #ccc 1px solid;
+	  margin-right: 5px;
+	}
+    </style>
+
+    <!-- top panel CSS ends -->
+    
     <!-- load stylesheets -->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">  
@@ -31,10 +119,6 @@
     <link rel="stylesheet" href="/template/Font-Awesome-4.7/css/font-awesome.min.css">                
 
     <!-- Font Awesome -->
-
-    <link rel="stylesheet" href="/template/css/bootstrap.min.css">                                      
-
-    <!-- Bootstrap style -->
 
     <link rel="stylesheet" href="/template/css/hero-slider-style.css">                              
 
@@ -46,7 +130,9 @@
 
     <link rel="stylesheet" href="/template/css/templatemo-style.css">                                   
 
+    <link rel="stylesheet" href="/template/css/bootstrap.min.css">                                      
 
+    <!-- Bootstrap style -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 
@@ -205,48 +291,53 @@ function uploadprofileimage(){
 
 <body>
 
-	
-
 	<!-- Top Panel -->
-<div class="masthead"> <span class="name">Site Title Here</span><br>
-  Put some text here... </div>
+	<nav class="navbar navbar-expand-lg navbar-dark navbar-survival101">
+  	<div class="container">
+	    <a class="navbar-brand" href="#">
+	      <img src="https://lh3.googleusercontent.com/-ZAS0BBE8Sm0/WaFOdATxW9I/AAAAAAAAAf4/8FfuKoWw6n0cvynAv7Fv2sdYESliQEm4wCL0BGAYYCw/h18/2017-08-26.png" alt="L A N T E R N">
+	    </a>
 
-<div class="top-navigation">
-  <div class="menu-top-wrapper">
-    <div id="p7DMM_1" class="p7DMM01 p7DMM p7dmm-left responsive">
-      <div id="p7DMMtb_1" class="p7DMM-toolbar closed"></div>
-      <ul id="p7DMMu_1" class="p7DMM01-menu closed">
-        <li><a href="/gallery">Gallery <span class="sr-only">(current)</span></a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
-	<?php
-	  if($usertype == "admin"){
-	?>
-        <li><a href="/verifyimagesiface">Verify Images</a></li>
-	<?php
-	  }
-	?>
-        <li><a href="#0" data-no="3">About us</a></li>
-        <li><a href="#0" data-no="4">Terms and Conditions</a></li>
-          <?php
-                        if($username != ""){
-                            echo "<li>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'></li>";
-                            echo "<li><a href='/logout' data-no='5'>Logout</a></li>";
-                            echo "<li><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a></li>";
-                            echo "<div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
-                    ?>
-                     <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-                    <?php
-		     echo "</form></div>";
-                        }
-                        else{
-                            echo "<li><a href='/login'>Login</a> or <a href='/register'>Register</a></li>";
-                        }
-                    ?>
-        </li>
-    </div>
-  </div>
-</div>
-</div>
+	    <div class="collapse navbar-collapse" id="navbarColor02">
+	      <ul class="navbar-nav mr-auto">
+		<li class="nav-item active">
+		  <a class="nav-link" href="/dashboard">Dashboard<span class="sr-only">(current)</span></a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="/gallery">Gallery</a>
+		</li>
+		<?php
+		        if($usertype == "admin"){
+		    ?>
+		        <li class="nav-item"><a class="nav-link" href="/verifyimagesiface">Verify Images</a></li>
+		    <?php
+		        }
+	        ?>
+		<li class="nav-item">
+		  <a class="nav-link" href="/aboutus">About us</a>
+		</li>
+		<?php
+		if($username != ""){
+		    echo "<li class='nav-item'>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'>";
+		    echo "<a class='nav-link' href='/logout'>Logout</a></li>";
+		    echo "<li class='nav-item'><a class='nav-link' href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a></li>";
+		    echo "<div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
+	        ?>
+	         <input type='hidden' name='_token' value='{{ csrf_token() }}'>
+	        <?php
+	            echo "</form></div>";
+		}
+		else{
+		    echo "<li class='nav-item'><a class='nav-link' href='/login'>Login</a> or <a href='/register'>Register</a></li>";
+		}
+	        ?>
+	      </ul>
+	      
+	    </div>
+	  </div>
+	    
+    </nav>
+
 <!-- Top panel ends here -->
 
 						<table>
@@ -254,7 +345,7 @@ function uploadprofileimage(){
 							<tr width='100%'>
 
 								<td colspan='8'>
-									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata'>Upload Image: <input type='file' name='imgupload' id='imgupload' accept='image/*'> Enter Tags:<input type='text' name='imagetags' id='imagetags' value=''> Select Categories: <select name='categories' size='3' multiple>
+									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline">Upload Image: <input type='file' name='imgupload' id='imgupload' accept='image/*'> Enter Tags:<input type='text' name='imagetags' id='imagetags' value=''> Select Categories: <select name='categories' size='3' multiple>
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
