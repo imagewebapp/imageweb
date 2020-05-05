@@ -440,7 +440,22 @@ option {
 		<!-- old css ends -->
 
 		<!-- Main -->
+			<div>
+				    <?php
+					 if($startpoint < $totalcount){
+					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
+					 }
+					 if($startpoint > $chunksize){
+					      $prev = $startpoint - 2*$chunksize;
+					      if($prev < 0){
+						  $prev = 0;
+					      }
+					     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
+					 }
+				    ?>
 
+				    <br /><br />
+			</div>
 			<div id="main">
 
 				<div class="inner">

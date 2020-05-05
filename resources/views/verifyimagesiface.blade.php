@@ -14,6 +14,101 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Bootstrap minified JS CDN link -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap minified theme CDN link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" crossorigin="anonymous">
+    <!-- Bootstrap minified CSS CDN link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <!-- top panel CSS -->
+
+    <style>
+    .container {
+	  max-width: 960px;
+	}
+	.navbar-survival101 {
+	  background-color:#2B6DAD;
+	}
+	/* .navbar-survival101 .navbar-brand {
+	  margin-right: 2.15rem;
+	  padding: 3px 0 0 0;
+	  line-height: 36px;
+	} */
+
+	.navbar-survival101 .navbar-brand img {
+	  vertical-align: baseline;
+	}
+
+	.navbar-expand-lg .navbar-nav .nav-link {
+	  color: #fff;
+	}
+
+	.search-box {
+	  position: relative;
+	  height: 34px;
+	}
+	.search-box input {
+	  border: 0;
+	  border-radius: 3px !important;
+	  padding-right: 28px;
+	  font-size: 15px;
+	}
+
+	.search-box .input-group-btn {
+	  position: absolute;
+	  right: 0;
+	  top: 0;
+	  z-index: 999;
+	}
+
+	.search-box .input-group-btn button {
+	  background-color: transparent;
+	  border: 0;
+	  padding: 4px 8px;
+	  color: rgba(0,0,0,.4);
+	  font-size: 20px;
+	}
+
+	.search-box .input-group-btn button:hover,
+	.search-box .input-group-btn button:active,
+	.search-box .input-group-btn button:focus {
+	  color: rgba(0,0,0,.4);
+	}
+
+	@media (min-width: 992px) {
+	  .navbar-expand-lg .navbar-nav .nav-link {
+	    padding-right: .7rem;
+	    padding-left: .7rem;
+	  }
+	  
+	  .search-box {
+	    width: 300px !important;
+	  }
+	}
+
+	.caroulsel {
+	  width: 100%;
+	  overflow: hidden;
+	  padding: 5px 0 5px 5px;
+	}
+
+	.caroulsel-wrap {
+	  white-space: nowrap;
+	  font-size: 0;
+	}
+
+	.caroulsel-wrap a {
+	  display: inline-block;
+	  width: 134px;
+	  height: 92px;
+	  background-color: silver;
+	  border: #ccc 1px solid;
+	  margin-right: 5px;
+	}
+    </style>
+    <!-- top panel CSS ends -->
+
     <!-- load stylesheets -->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">  
@@ -94,117 +189,53 @@ function submitverification(){
     }
 }
 
-
-function showprofileimagescreen(){
-    //alert("Change Profile Image");
-    profileimguploaddiv = document.getElementById('profileimagediv');
-    profileimguploaddiv.style.display = "";
-}
-
-function closeuploadform(){
-    profileimguploaddiv = document.getElementById('profileimagediv');
-    profileimguploaddiv.style.display = "none";
-}
-
-function uploadprofileimage(){
-    var xmlhttp;
-    statusdiv = document.getElementById('profstatus');
-    if (window.XMLHttpRequest){
-        xmlhttp=new XMLHttpRequest();
-    }
-    else{
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttp.onreadystatechange = function(){
-        if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-            window.location.reload(true);
-        }
-    }
-    var file = document.getElementById('uploadfile').files[0];
-    formdata = new FormData();
-    formdata.append("uploadfile", file);
-    csrftoken = document.frmprofimg._token.value;
-    formdata.append("_token", csrftoken);
-    xmlhttp.open('POST', "/changeprofileimage", true);
-    xmlhttp.send(formdata);
-    statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
-}
 </script>
 
 </head>
 
 <body>
 
-	
+	<!-- Top panel -->
 
-	<div class="limiter">
+	<nav class="navbar navbar-expand-lg navbar-dark navbar-survival101">
+  	<div class="container">
+	    <a class="navbar-brand" href="#">
+	      <img src="https://lh3.googleusercontent.com/-ZAS0BBE8Sm0/WaFOdATxW9I/AAAAAAAAAf4/8FfuKoWw6n0cvynAv7Fv2sdYESliQEm4wCL0BGAYYCw/h18/2017-08-26.png" alt="L A N T E R N">
+	    </a>
 
-		<div class="container-table100">
-
-			<div class="wrap-table100">
-
-				<div class="table100 ver1">
-
-					<div class="table100-firstcol">
-					 <!-- Navigation -->        
-
-            
-
-        <div class="navbar-brand text-uppercase" href="#"><i class="fa fa-picture-o tm-brand-icon"></i>ImageWeb Dashboard</div>
-
-	<div class="tm-navbar-bg">
-
-            <ul class="nav navbar-nav">
-
-                <li class="nav-item active selected">
-
-                    <a href="/gallery">Gallery</a>
-
-                </li>                                
-
-                <li class="nav-item">
-
-                    <a href="/dashboard">Dashboard<span class="sr-only">(current)</span></a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a href="#0" data-no="3">3rd fluid</a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a href="#0" data-no="4">Columns</a>
-
-                </li>
-
-                <li class="nav-item">
-		    <?php
-                        if($username != ""){
-                            echo "<img src='".$profileimage."' height='50px' width='50px'>You are logged in as ".$username;
-			    echo "<br/><a href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a>";
-			    echo "<br/><div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
-		    ?>
-		     <input type='hidden' name='_token' value='{{ csrf_token() }}'>
-                    <?php
-                            echo "</form></div>";
-                        }
-                    ?>
-
-                    <a href="/logout" data-no="5">Logout</a>
-
-                </li>
-
-            </ul>
-
-
-
-    	</div>
-
-
-					</div>
+	    <div class="collapse navbar-collapse" id="navbarColor02">
+	      <ul class="navbar-nav mr-auto">
+		<li class="nav-item active">
+		  <a class="nav-link" href="/dashboard">Dashboard</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="/gallery">Gallery</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="/aboutus">About us</a>
+		</li>
+		<?php
+		if($username != ""){
+		    echo "<li class='nav-item'>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'>";
+		    echo "<a class='nav-link' href='/logout'>Logout</a></li>";
+		    echo "<li class='nav-item'><a class='nav-link' href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a></li>";
+		    echo "<div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
+	        ?>
+	         <input type='hidden' name='_token' value='{{ csrf_token() }}'>
+	        <?php
+	            echo "</form></div>";
+		}
+		else{
+		    echo "<li class='nav-item'><a class='nav-link' href='/login'>Login</a> or <a href='/register'>Register</a></li>";
+		}
+	        ?>
+	      </ul>
+	      
+	    </div>
+	  </div>
+	    
+    </nav>
+	<!-- Top panel ends here -->
 
 					<div class="wrap-table100-nextcols js-pscroll"><h3>Verify Images</h3></div>
 					<form name='frmimageverification' id='frmimageverification' action='/verifyimages' method='POST'>
@@ -261,62 +292,7 @@ function uploadprofileimage(){
 	</div>
 
 
-
-
-
-<!--===============================================================================================-->	
-
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-
-<!--===============================================================================================-->
-
-	<script src="vendor/bootstrap/js/popper.js"></script>
-
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<!--===============================================================================================-->
-
-	<script src="vendor/select2/select2.min.js"></script>
-
-<!--===============================================================================================-->
-
-	<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-
-	<script>
-
-		$('.js-pscroll').each(function(){
-
-			var ps = new PerfectScrollbar(this);
-
-
-
-			$(window).on('resize', function(){
-
-				ps.update();
-
-			})
-
-
-
-			$(this).on('ps-x-reach-start', function(){
-
-				$(this).parent().find('.table100-firstcol').removeClass('shadow-table100-firstcol');
-
-			});
-
-
-
-			$(this).on('ps-scroll-x', function(){
-
-				$(this).parent().find('.table100-firstcol').addClass('shadow-table100-firstcol');
-
-			});
-
-
-
-		});
-
-
+        
 
 		
 
