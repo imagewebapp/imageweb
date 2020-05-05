@@ -4,3 +4,12 @@
 Homestead.yaml
 Homestead.json
 .env
+public/template/fonts/
+public/template/js/jquery.min.js
+public/template/js/jquery.poptrox.min.js
+public/template/js/main.js
+public/template/js/skel.min.js
+public/template/js/util.js
+resources/views/gallery_old.blade.php
+storage/users/*
+config/database.php
