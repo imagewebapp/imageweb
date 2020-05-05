@@ -259,31 +259,31 @@ class ImagesController extends BaseController
 	Display gallery of images. Note: Session is not required for this page.
     */
     public function showgallery(Request $req){
-        //$s = checksession();
-        //if(!$s){
-        //    return view('login');
-        //}
-        $startpoint = $req->input('startpoint') || 0;
+        $startpoint = 0;
+        if(array_key_exists('startpoint', $_GET)){
+            $startpoint = $_GET['startpoint'];
+        }
         $chunksize = 20;
+        $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
         if($mode == ""){
 	    $mode = "all";
 	}
 	$tags = $req->input('tagslist');
-	$images = [];
+	$imagesrecs = [];
 	if($mode == 'all' || $mode == ''){
-            //$images = DB::table('images')->where('verified', '1')->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
-            $images = DB::table('images')->where('verified', '1')->orderBy('uploadts', 'DESC')->get();
-            $totalcount = DB::table('images')->where('verified', '1')->count();
+            $imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
+            //$imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->get();
+            $totalcount = DB::table('images')->where('verified', 1)->count();
 	}
 	elseif($mode == 'popularity'){
 	    //$hits = DB::table('imagehits')->groupBy('imageid')->select('imageid', DB::raw('count(*) as hitcount'))->get();
-	    $hits = DB::table('imagehits')->select('imageid', DB::raw('count(*) as hitcount'))->groupBy('imageid')->orderBy('hitcount', 'desc')->get();
+	    $hits = DB::table('imagehits')->select('imageid', DB::raw('count(*) as hitcount'))->groupBy('imageid')->orderBy('hitcount', 'desc')->skip($startpoint)->take($chunksize)->get();
 	    for($i=0; $i < count($hits); $i++){
 		$hit = $hits[$i];
 		$imgid = $hit->imageid;
 		$img = DB::table('images')->where('id', $imgid)->first();
-		array_push($images, $img);
+		array_push($imagesrecs, $img);
 	    }
 	    $totalcount = count($hits);
 	}
@@ -291,13 +291,13 @@ class ImagesController extends BaseController
 	    $alltags = explode(",", $tags);
 	    for($i=0; $i < count($alltags); $i++){ 
 		$tag = $alltags[$i];
-	        $imgs = DB::table('images')->where('imagetags', 'like', '%'.$tag.'%')->get();
+	        $imgs = DB::table('images')->where('imagetags', 'like', '%'.$tag.'%')->skip($startpoint)->take($chunksize)->get();
 		for($c=0; $c < count($imgs); $c++){
 		    $img = $imgs[$c];
-		    array_push($images, $img);
+		    array_push($imagesrecs, $img);
 		}
 	    }
-	    $totalcount = count($images);
+	    $totalcount = count($imagesrecs);
 	}
 	
         $startpoint = $startpoint + $chunksize;
@@ -306,7 +306,7 @@ class ImagesController extends BaseController
         if($username != ""){
 	    $profileimagepath = getprofileimage($username);
         }
-	return view('gallery')->with(array('images' => $images, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username, 'profileimage' => $profileimagepath));
+	return view('gallery')->with(array('images' => $imagesrecs, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username, 'profileimage' => $profileimagepath));
     }
 
     

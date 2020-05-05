@@ -486,12 +486,10 @@ option {
 
 		<!-- Footer -->
 
-			<div id="footer">
 
 				<br /><br />
 				<div>
 				    <?php
-
 					 if($startpoint < $totalcount){
 					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
 					 }
@@ -529,9 +527,6 @@ option {
 					-->
 
 				</div>
-
-			</div>
-
 
 
 		<!-- Scripts -->
