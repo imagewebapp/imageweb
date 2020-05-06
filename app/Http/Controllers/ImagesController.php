@@ -240,7 +240,11 @@ class ImagesController extends BaseController
 		    $categories = $_POST['categories'];
                     $categories = rtrim($categories, ",");
                 }
-                $imagedata = array('imagepath' => $newfilepath, 'userid' => $userid, 'imagefilename' => $imagefilename, 'resolution' => $imres, 'verified' => 0, 'lowrespath' => $lowresimgpath, 'lowresfilename' => $lowresfilename, 'iconpath' => $iconpath, 'iconfilename' => $iconfilename, 'imagetags' => $imagetags, 'premium' => 0, 'categories' => $categories);
+		$price = 0.00;
+		if(array_key_exists('price', $_POST)){
+		    $price = $_POST['price'];
+		}
+                $imagedata = array('imagepath' => $newfilepath, 'userid' => $userid, 'imagefilename' => $imagefilename, 'resolution' => $imres, 'verified' => 0, 'lowrespath' => $lowresimgpath, 'lowresfilename' => $lowresfilename, 'iconpath' => $iconpath, 'iconfilename' => $iconfilename, 'imagetags' => $imagetags, 'premium' => 0, 'categories' => $categories, 'price' => $price);
                 DB::table('images')->insert($imagedata);
                 return "File has been uploaded successfully";
             }

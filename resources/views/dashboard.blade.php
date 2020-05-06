@@ -204,6 +204,8 @@ csrftoken = document.frmimageupload._token.value;
 formdata.append("_token", csrftoken);
 imgtags = document.getElementById('imagetags').value;
 formdata.append('imagetags', imgtags);
+price = document.frmimageupload.price.value;
+formdata.append('price', price);
 sel = document.frmimageupload.categories;
 selectedcats = "";
 for(i=0; i < sel.options.length; i++){
@@ -349,7 +351,7 @@ function uploadprofileimage(){
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
-									</select><input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
+									</select> Price: USD($)<input type='text' name='price' value='0.00' id='price'><input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
 
 								</td>
 
@@ -384,7 +386,7 @@ function uploadprofileimage(){
 										
 										<th class="cell100 column5">Image Tags</th>
 
-										<th class="cell100 column6">Premium</th>
+										<th class="cell100 column6">Price(USD)</th>
 										
 										<th class="cell100 column6">Verified</th>
 
@@ -422,10 +424,10 @@ function uploadprofileimage(){
 										<td class="cell100 column5">{{$img->resolution}}</td>
 										
 										<td class="cell100 column5">{{$img->imagetags}}</td>
-										@if($img->premium == 0)
-										<td class="cell100 column6">No</td>
+										@if($img->price == 0.00)
+										<td class="cell100 column6">Free</td>
 										@else
-										<td class="cell100 column6">Yes</td>
+										<td class="cell100 column6">USD {{$img->price}}</td>
 										@endif
 										@if($img->verified == 0)										
 										<td class="cell100 column6">No</td>
