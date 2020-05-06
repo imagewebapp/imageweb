@@ -377,7 +377,11 @@ class ImagesController extends BaseController
        Show download popup window to user
     */
     public function showdownloadwin(Request $req){
-        return view('downloadpopup');
+        $imagepath = "";
+        if(array_key_exists('imagepath', $_GET)){
+            $imagepath = $_GET['imagepath'];
+        }
+        return view('downloadpopup')->with(array('imagepath' => $imagepath));
     }
 
 

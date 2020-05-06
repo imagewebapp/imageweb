@@ -335,18 +335,18 @@ option {
   	  screendiv.style.display = "none";
 	}
 
-	function downloadimage(imgpath){
+	function showdownloadimage(imgpath){
 	  //alert("Download Image");
-	  winnew = window.open("/downloadpopup", "downloadwindow", "width=640,height=640");
+	  winnew = window.open("/downloadpopup?imagepath=" + imgpath, "downloadwindow", "width=640,height=640");
 	  closeimg();
 	}
 
 	function showoverlay(imgpath){
 	  //alert(imgpath);
   	  screendiv = document.getElementById('transscreens');
-	  screendiv.innerHTML = "<a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:downloadimage(\"" + imgpath + "\");'>Download</a>";
+	  screendiv.innerHTML = "<a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");'>Download</a>";
   	  screendiv.innerHTML += "<br><img src='" + imgpath + "' style='width:100%;height:100%;'>";
-	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:downloadimage(\"" + imgpath + "\");'>Download</a>";
+	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");'>Download</a>";
   	  screendiv.style.display = "";
 	}
         </script>
