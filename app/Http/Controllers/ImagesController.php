@@ -385,7 +385,12 @@ class ImagesController extends BaseController
         if(array_key_exists('imagepath', $_GET)){
             $imagepath = $_GET['imagepath'];
         }
-        return view('downloadpopup')->with(array('imagepath' => $imagepath));
+	$imagecategory = "";
+	$imagehits = 0;
+	$imagetags = "";
+	$imageprice = "Free";
+	$imageowner = "";
+        return view('downloadpopup')->with(array('imagepath' => $imagepath, 'imagecategory' => $imagecategory, 'imagehits' => $imagehits, 'imagetags' => $imagetags, 'imageprice' => $imageprice, 'imageowner' => $imageowner));
     }
 
 
