@@ -337,7 +337,7 @@ option {
 
 	function showdownloadimage(imgpath){
 	  //alert("Download Image");
-	  winnew = window.open("/downloadpopup?imagepath=" + imgpath, "downloadwindow", "width=640,height=640");
+	  winnew = window.open("/downloadpopup?imagepath=" + imgpath, "downloadwindow", "width=1080,height=640");
 	  closeimg();
 	}
 
