@@ -407,15 +407,16 @@ class ImagesController extends BaseController
 	$imageowner = $userrecord->username;
 	$imghitsrecs = DB::table('imagehits')->where('imageid', $imageid)->get();
 	$imagehits = count($imghitsrecs);
-	$tagslist = explode(",", $imagetags);
+	$catslist = explode(",", $imagecategory);
 	$unique_images = array();
-	for($c=0;$c < count($tagslist);$c++){
-	    $imagerecs = DB::table('images')->where('imagetags', 'like', '%'.$tagslist[$c].'%')->get();
+	for($c=0;$c < count($catslist);$c++){
+	    $imagerecs = DB::table('images')->where('categories', 'like', '%'.$catslist[$c].'%')->get();
 	    for($i=0; $i < count($imagerecs); $i++){
 		$imgrec = $imagerecs[$i];
-		if(!array_key_exists($imgrec->lowrespath, $unique_images)){
+		$imgfilename = $imgrec->imagefilename;
+		if(!array_key_exists($imgfilename, $unique_images)){
 		    array_push($images, $imgrec);
-		    $unique_images[$imgrec->lowrespath] = 1;
+		    $unique_images[$imgfilename] = 1;
 		}
 	    }
 	}
