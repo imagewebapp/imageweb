@@ -179,14 +179,76 @@
 	/*# sourceMappingURL=style.css.map */
     </style>
     <script>
-	function downloadimage(){
-	}
-
 	function showimage(lowrespath){
 	    imagetag = document.getElementById('mainimage');
 	    imagetag.src = lowrespath;
+	    window.scrollTo(0, 0); 
 	    imagetag.focus();
 	}
+
+	function downloadimage(imgpath){
+            imgpathparts = imgpath.split("_lowres");
+            origimgpath = imgpathparts[0] + imgpathparts[1];
+            origimgpathparts = origimgpath.split("/");
+            filename = origimgpathparts[origimgpathparts.length - 1];
+            var anchor = document.querySelector('a');
+            var a = document.createElement('a');
+	    a.href = origimgpath;
+            a.download = filename;
+            a.style = 'display: none';
+            anchor.parentNode.appendChild(a);
+            a.click();
+            a.remove();
+            // Now send a request to server so that imagehits table is updated.
+            var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+                    alert("Thanks for downloading.");
+                }
+            }
+            targeturl = "/download";
+            getdata = "imagepath=" + imgpath;
+            getdata += "&_token=" + document.frmdummy._token.value;
+            //alert(getdata);
+            xmlhttp.open("GET",targeturl + "?" + getdata,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send();
+        }
+
+
+        function downloadimage_post(imgpath){
+            //alert(imgpath);
+            var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+                    var contentdisposition = xmlhttp.getResponseHeader('Content-Disposition');
+                    var filename = contentdisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1];
+                    var type = xmlhttp.getResponseHeader('Content-Type');
+                    var blob = new Blob([xmlhttp.response], {type : type});
+                    savefile(blob, filename);
+                }
+            }
+            targeturl = "/download";
+            postdata = "imagepath=" + imgpath;
+            postdata += "&_token=" + document.frmdummy._token.value;
+            xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send(postdata);
+        }
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
   </head>
@@ -219,9 +281,9 @@
 						-->
 					</div>
 					<div class="details col-md-6">
-						<h3 class="product-title"><?php echo $imagetags; ?></h3>
+						<h3 class="product-title" id="imagetags"><?php echo $imagetags; ?></h3>
 						<div class="rating">
-							<div class="stars">
+							<div class="stars" id="stars">
 								<?php
 								if($imagehits == 0 || !$imagehits){
 								?>
@@ -279,11 +341,11 @@
 								}
 								?>
 							</div>
-							<span class="review-no"><?php echo $imagehits; ?> hits</span>
+							<span class="review-no" id="imagehits"><?php echo $imagehits; ?> downloads</span>
 						</div>
-						<p class="product-description"><?php echo $imagecategory; ?>.</p>
-						<h4 class="price">current price: <span><?php echo $imageprice; ?></span></h4>
-						<p class="vote">This image is owned by <strong><?php echo $imageowner; ?></strong></p>
+						<p class="product-description" id="imagecategory"><?php echo $imagecategory; ?>.</p>
+						<h4 class="price" id="price">current price: <span><?php echo $imageprice; ?></span></h4>
+						<p class="vote" id="owner">This image is owned by <strong><?php echo $imageowner; ?></strong></p>
 						<!--
 						<h5 class="sizes">sizes:
 							<span class="size" data-toggle="tooltip" title="small">s</span>
@@ -298,7 +360,7 @@
 						</h5>
 						-->
 						<div class="action">
-							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:downloadimage();">Download</button>
+							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:downloadimage('<?php echo $imagepath; ?>');">Download</button>
 							<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
