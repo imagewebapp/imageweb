@@ -390,7 +390,36 @@ class ImagesController extends BaseController
 	$imagetags = "";
 	$imageprice = "Free";
 	$imageowner = "";
-        return view('downloadpopup')->with(array('imagepath' => $imagepath, 'imagecategory' => $imagecategory, 'imagehits' => $imagehits, 'imagetags' => $imagetags, 'imageprice' => $imageprice, 'imageowner' => $imageowner));
+	$images = array();
+        $imagepathparts = explode("/", $imagepath);
+	$pathpartslength = count($imagepathparts);
+	$imgfilename = $imagepathparts[$pathpartslength-1];
+	$imagerecord = DB::table('images')->where('lowresfilename', $imgfilename)->first();
+	$imagecategory = $imagerecord->categories;
+	$imagetags = $imagerecord->imagetags;
+	$imageprice = $imagerecord->price;
+	if(!$imageprice){
+	    $imageprice = "Free";
+	}
+	$imageownerid = $imagerecord->userid;
+	$imageid = $imagerecord->id;
+	$userrecord = DB::table('users')->where('id', $imageownerid)->first();
+	$imageowner = $userrecord->username;
+	$imghitsrecs = DB::table('imagehits')->where('imageid', $imageid)->get();
+	$imagehits = count($imghitsrecs);
+	$tagslist = explode(",", $imagetags);
+	$unique_images = array();
+	for($c=0;$c < count($tagslist);$c++){
+	    $imagerecs = DB::table('images')->where('imagetags', 'like', '%'.$tagslist[$c].'%')->get();
+	    for($i=0; $i < count($imagerecs); $i++){
+		$imgrec = $imagerecs[$i];
+		if(!array_key_exists($imgrec->lowrespath, $unique_images)){
+		    array_push($images, $imgrec);
+		    $unique_images[$imgrec->lowrespath] = 1;
+		}
+	    }
+	}
+        return view('downloadpopup')->with(array('imagepath' => $imagepath, 'imagecategory' => $imagecategory, 'imagehits' => $imagehits, 'imagetags' => $imagetags, 'imageprice' => $imageprice, 'imageowner' => $imageowner, 'images' => $images));
     }
 
 

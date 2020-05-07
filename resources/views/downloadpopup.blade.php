@@ -182,6 +182,7 @@
 	function downloadimage(){
 	}
     </script>
+    <link rel="stylesheet" href="template/css/main.css" />
   </head>
 
   <body>
@@ -212,7 +213,7 @@
 						-->
 					</div>
 					<div class="details col-md-6">
-						<h3 class="product-title"><?php echo $imagecategory; ?></h3>
+						<h3 class="product-title"><?php echo $imagetags; ?></h3>
 						<div class="rating">
 							<div class="stars">
 								<?php
@@ -274,7 +275,7 @@
 							</div>
 							<span class="review-no"><?php echo $imagehits; ?> hits</span>
 						</div>
-						<p class="product-description"><?php echo $imagetags; ?>.</p>
+						<p class="product-description"><?php echo $imagecategory; ?>.</p>
 						<h4 class="price">current price: <span><?php echo $imageprice; ?></span></h4>
 						<p class="vote">This image is owned by <strong><?php echo $imageowner; ?></strong></p>
 						<!--
@@ -300,6 +301,45 @@
 			</div>
 		</div>
 	</div>
+	<div id="main">
+
+				<div class="inner">
+
+					<div class="columns">
+
+						<?php 
+						    $ctr = 1;
+						?>
+						@foreach ($images as $img)
+				                        <?php
+				                        $imagepathparts = explode("users", $img->imagepath);
+				                        $imagepath = "/image".$imagepathparts[1];
+				                        $lowrespathparts = explode("users", $img->lowrespath);
+				                        $lowrespath = "/image".$lowrespathparts[1];
+				                        $iconpathparts = explode("users", $img->iconpath);
+				                        $iconpath = "/image".$iconpathparts[1];
+				                        ?>
+
+
+							<div class="image fit">
+								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
+								<img src="<?php echo $lowrespath; ?>">
+								</a>
+							</div>
+							<?php
+							    $ctr++;
+							?>
+
+						@endforeach
+
+						<form name='frmdummy'>
+                                        		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                		</form>
+					</div>
+
+				</div>
+
+			</div>
   </body>
 </html>
 
