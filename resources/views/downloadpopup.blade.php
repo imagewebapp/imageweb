@@ -181,6 +181,12 @@
     <script>
 	function downloadimage(){
 	}
+
+	function showimage(lowrespath){
+	    imagetag = document.getElementById('mainimage');
+	    imagetag.src = lowrespath;
+	    imagetag.focus();
+	}
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
   </head>
@@ -194,7 +200,7 @@
 					<div class="preview col-md-6">
 						
 						<div class="preview-pic tab-content">
-						  <div class="tab-pane active" id="pic-1"><img src="<?php echo $imagepath; ?>" /></div>
+						  <div class="tab-pane active" id="pic-1"><img src="<?php echo $imagepath; ?>" id="mainimage" /></div>
 						  <!--
 						  <div class="tab-pane" id="pic-2"><img src="http://placekitten.com/400/252" /></div>
 						  <div class="tab-pane" id="pic-3"><img src="http://placekitten.com/400/252" /></div>
@@ -322,7 +328,7 @@
 
 
 							<div class="image fit">
-								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
+								<a href="#_" onclick="javascript:showimage('<?php echo $lowrespath; ?>');">
 								<img src="<?php echo $lowrespath; ?>">
 								</a>
 							</div>
