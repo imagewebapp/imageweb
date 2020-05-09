@@ -179,6 +179,25 @@ function createimageicon($file, $w, $h) {
 }
 
 
+function get_client_ip() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = '';
+    return $ipaddress;
+}
+
 class ImagesController extends BaseController
 {
 
@@ -242,7 +261,7 @@ class ImagesController extends BaseController
                 }
 		$price = 0.00;
 		if(array_key_exists('price', $_POST)){
-		    $price = $_POST['price'];
+		    $price = floatval($_POST['price']);
 		}
                 $imagedata = array('imagepath' => $newfilepath, 'userid' => $userid, 'imagefilename' => $imagefilename, 'resolution' => $imres, 'verified' => 0, 'lowrespath' => $lowresimgpath, 'lowresfilename' => $lowresfilename, 'iconpath' => $iconpath, 'iconfilename' => $iconfilename, 'imagetags' => $imagetags, 'premium' => 0, 'categories' => $categories, 'price' => $price);
                 DB::table('images')->insert($imagedata);
@@ -348,6 +367,17 @@ class ImagesController extends BaseController
         //if(!$s){
         //    return "User is not logged in to download images. Please login and try again.";
         //} //Login is not required to download images.
+        $client_ip = "";
+        $client_ip = get_client_ip();
+	$details = json_decode(file_get_contents("http://ipinfo.io/{$client_ip}/json"), true);
+	$geoloc = "";
+	try{
+	    if(array_key_exists("city", $details)){
+	    	$geoloc = $details['city'];
+	    }
+	}
+	catch(Exception $e){
+	}
 	$imagepath = $_GET['imagepath'];
         $imagepathparts = explode("/", $imagepath);
         $imageownername = $imagepathparts[2];
@@ -369,9 +399,14 @@ class ImagesController extends BaseController
             }
         }
         $imageid = $image->id;
-        $hittime = date("Y-m-d H:i:s");
-        $hitdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $visitor, 'hittime' => $hittime);
-        DB::table('imagehits')->insert($hitdata);
+	// Check to see if the same image has been downloaded from the same IP previously. If so, imagehit is not incremented.
+        $prevhit = DB::table('imagehits')->where([ ['ipaddress', '=', $client_ip], ['imageid', '=', $imageid] ])->first();
+	if(!$prevhit){
+            $hittime = date("Y-m-d H:i:s");
+	    $useragent = $_SERVER['HTTP_USER_AGENT'];
+            $hitdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $visitor, 'hittime' => $hittime, 'ipaddress' => $client_ip, 'geolocation' => $geoloc, 'user_agent' => $useragent);
+            DB::table('imagehits')->insert($hitdata);
+	}
         $response = Response::make("Thanks for downloading", 200);
         $response->header("Content-Type", "Text/Plain");
         return $response;
@@ -410,7 +445,7 @@ class ImagesController extends BaseController
 	$catslist = explode(",", $imagecategory);
 	$unique_images = array();
 	for($c=0;$c < count($catslist);$c++){
-	    $imagerecs = DB::table('images')->where('categories', 'like', '%'.$catslist[$c].'%')->get();
+	    $imagerecs = DB::table('images')->where([ ['categories', 'like', '%'.$catslist[$c].'%'], ['verified', '=', '1'] ])->take(20)->get();
 	    for($i=0; $i < count($imagerecs); $i++){
 		$imgrec = $imagerecs[$i];
 		$imgfilename = $imgrec->imagefilename;
