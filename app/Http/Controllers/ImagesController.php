@@ -198,6 +198,19 @@ function get_client_ip() {
     return $ipaddress;
 }
 
+
+function iscopyrighted($imagefile){
+    $exif = exif_read_data($imagefile, 0, true);
+    foreach ($exif as $key => $section) {
+    	foreach ($section as $name => $val) {
+            if(preg_match("/copyright/i", $name)){
+		return True;
+	    }
+    	}
+    }
+    return False;
+}
+
 class ImagesController extends BaseController
 {
 
@@ -241,6 +254,12 @@ class ImagesController extends BaseController
                 return "A file with the same name already exists. Please delete the existing file and try to upload again";
             }
             else{
+		// check if image is copyrighted
+		/*
+		if(iscopyrighted($tempfilename)){
+		    return "The file is copyrighted. You may not upload files that are restricted using copyright";
+		}
+		*/
                 move_uploaded_file($tempfilename, $newfilepath);
                 $imresraw = getimageresolution($newfilepath);
                 $imres = implode("x", $imresraw);
