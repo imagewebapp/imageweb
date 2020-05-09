@@ -203,7 +203,7 @@ function iscopyrighted($imagefile){
     $exif = exif_read_data($imagefile, 0, true);
     foreach ($exif as $key => $section) {
     	foreach ($section as $name => $val) {
-            if(preg_match("/copyright/i", $name)){
+            if(preg_match("/copyright/i", $name) && $val != ""){
 		return True;
 	    }
     	}
