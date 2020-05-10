@@ -9,6 +9,11 @@
 	<meta charset="UTF-8">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="template/css/navbar.css">
+	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+	<script src="template/js/navbar.js"></script>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -205,15 +210,6 @@ function submitverification(){
 
 	    <div class="collapse navbar-collapse" id="navbarColor02">
 	      <ul class="navbar-nav mr-auto">
-		<li class="nav-item active">
-		  <a class="nav-link" href="/dashboard">Dashboard</a>
-		</li>
-		<li class="nav-item">
-		  <a class="nav-link" href="/gallery">Gallery</a>
-		</li>
-		<li class="nav-item">
-		  <a class="nav-link" href="/aboutus">About us</a>
-		</li>
 		<?php
 		if($username != ""){
 		    echo "<li class='nav-item'>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'>";
@@ -235,6 +231,14 @@ function submitverification(){
 	  </div>
 	    
     </nav>
+    <div id='cssmenu'>
+	<ul>
+	   <li class='active'><a href='/dashboard'><span>Dashboard</span></a></li>
+	   <li><a href='/gallery'><span>Gallery</span></a></li>
+	   <li><a href='/aboutus'><span>About Us</span></a></li>
+	   <li class='last'><a href='/termsandconditions'><span>Terms and Conditions</span></a></li>
+	</ul>
+    </div>
 	<!-- Top panel ends here -->
 
 					<div class="wrap-table100-nextcols js-pscroll"><h3>Verify Images</h3></div>
@@ -282,12 +286,6 @@ function submitverification(){
 					</div>
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					</form>
-
-				</div>
-
-			</div>
-
-		</div>
 
 	</div>
 
