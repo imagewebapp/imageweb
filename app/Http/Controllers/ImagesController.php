@@ -785,6 +785,16 @@ class ImagesController extends BaseController
 	return "Your image could not be uploaded. Please try again or contact the administrator";
     }
 
+
+    public function showaboutus(Request $req){
+	return view('aboutus');
+    }
+
+
+    public function showtermsandconditions(Request $req){
+	return view('termsandconditions');
+    }
+
 }
 
 

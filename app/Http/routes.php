@@ -74,6 +74,14 @@ Route::post('changeprofileimage', array(
 Route::post('removeimage', array(
     'uses' => 'ImagesController@removeimage'
 ));
+
+Route::get('aboutus', array(
+    'uses' => 'ImagesController@showaboutus'
+));
+
+Route::get('termsandconditions', array(
+    'uses' => 'ImagesController@showtermsandconditions'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 
