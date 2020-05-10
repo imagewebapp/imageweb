@@ -211,6 +211,29 @@ function iscopyrighted($imagefile){
     return False;
 }
 
+
+function isduplicateimage($username, $imagefilepath){
+    $dir = env("IMAGE_BASE_PATH", "");
+    if($dir == ""){
+	return True;
+    }
+    $dir = $dir."/".$username;
+    $imghash = hash_file('md5', $imagefilepath);
+    if ($h = opendir($dir)) {
+    	while (($file = readdir($h)) !== false) {
+            // skip directories
+            if(is_dir($_="{$dir}/{$file}")) continue;
+            $filehash = hash_file('md5', $_);
+            if ($imghash == $filehash) {
+            	return True;
+            }
+        }
+        closedir($h);
+    }
+    return False;
+}
+
+
 class ImagesController extends BaseController
 {
 
@@ -260,6 +283,10 @@ class ImagesController extends BaseController
 		    return "The file is copyrighted. You may not upload files that are restricted using copyright";
 		}
 		*/
+		$r = isduplicateimage($username, $tempfilename);
+		if($r){
+		    return "This is a duplicate image. This image cannot be uploaded.";
+		}
                 move_uploaded_file($tempfilename, $newfilepath);
                 $imresraw = getimageresolution($newfilepath);
                 $imres = implode("x", $imresraw);
