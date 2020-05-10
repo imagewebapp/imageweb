@@ -787,12 +787,24 @@ class ImagesController extends BaseController
 
 
     public function showaboutus(Request $req){
-	return view('aboutus');
+	$username = "";
+	$username = getuser();
+	$profileimagepath = "";
+        if($username != ""){
+            $profileimagepath = getprofileimage($username);
+        }
+	return view('aboutus')->with(array('username' => $username, 'profileimage' => $profileimagepath));
     }
 
 
     public function showtermsandconditions(Request $req){
-	return view('termsandconditions');
+	$username = "";
+	$username = getuser();
+	$profileimagepath = "";
+        if($username != ""){
+            $profileimagepath = getprofileimage($username);
+        }
+	return view('termsandconditions')->with(array('username' => $username, 'profileimage' => $profileimagepath));
     }
 
 }
