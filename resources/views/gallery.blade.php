@@ -440,13 +440,45 @@ option {
 <div align='center' class="row">
 <ul  class="p7DMM01-menu closed">
 <li>Search Images </li><li><select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'></li>
+<?php
+	if(!array_key_exists('selmode', $_GET) || $_GET['selmode'] == "all"){
+?>
   <option value='all'>Show All</option>
   <option value='popularity'>By Popularity</option>
   <option value='tags'>By Keywords</option>
+<?php
+	}
+	elseif(array_key_exists('selmode', $_GET) && $_GET['selmode'] == "popularity"){
+?>
+  <option value='all'>Show All</option>
+  <option value='popularity' selected>By Popularity</option>
+  <option value='tags'>By Keywords</option>
+<?php
+	}
+	elseif(array_key_exists('selmode', $_GET) && $_GET['selmode'] == "tags"){
+?>
+  <option value='all'>Show All</option>
+  <option value='popularity'>By Popularity</option>
+  <option value='tags' selected>By Keywords</option>
+<?php
+	}
+?>
 </select>
 <li><input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'></li>
 </ul>
-<div id='tagscontainer'></div></div>
+<?php
+	if(array_key_exists('selmode', $_GET) && $_GET['selmode'] == "tags"){
+?>
+<div id='tagscontainer'><input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>"> Multiple tags should be separated by commas</div>
+<?php
+}
+else{
+?>
+<div id='tagscontainer'></div>
+<?php
+}
+?>
+</div>
 </form>
 		<!-- old css ends -->
 
