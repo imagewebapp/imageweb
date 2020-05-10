@@ -9,7 +9,7 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>eCommerce Product Detail</title>
+    <title>Image Download</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
     <style>
@@ -180,9 +180,22 @@
     </style>
     <script>
 	function showimage(lowrespath){
+	    imagedetails = {};
 	    imagetag = document.getElementById('mainimage');
 	    imagetag.src = lowrespath;
-	    window.scrollTo(0, 0); 
+	    window.scrollTo(0, 0);
+	    if(imagedetails.hasOwnProperty(lowrespath)){
+		imghits = document.getElementById('imagehits');
+		imghits.innerHTML = imagedetails[lowrespath]['imagehits'] + " downloads";
+		imgtags = document.getElementById('imagetags');
+		imgtags.innerHTML = imagedetails[lowrespath]['imagetags'];
+		imgprice = document.getElementById('price');
+		imgprice.innerHTML = imagedetails[lowrespath]['price'];
+		imgcats = document.getElementById('imagecategory');
+		imgcats.innerHTML = imagedetails[lowrespath]['categories'];
+		imgowner = document.getElementById('owner');
+		imgowner.innerHTML = imagedetails[lowrespath]['owner'];
+	    }
 	    imagetag.focus();
 	}
 
@@ -361,7 +374,7 @@
 						-->
 						<div class="action">
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:downloadimage('<?php echo $imagepath; ?>');">Download</button>
-							<button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
 					</div>
