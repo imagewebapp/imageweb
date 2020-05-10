@@ -490,18 +490,32 @@ class ImagesController extends BaseController
 	$imagehits = count($imghitsrecs);
 	$catslist = explode(",", $imagecategory);
 	$unique_images = array();
+	$imagesinfo = array();
 	for($c=0;$c < count($catslist);$c++){
 	    $imagerecs = DB::table('images')->where([ ['categories', 'like', '%'.$catslist[$c].'%'], ['verified', '=', '1'] ])->take(20)->get();
 	    for($i=0; $i < count($imagerecs); $i++){
 		$imgrec = $imagerecs[$i];
 		$imgfilename = $imgrec->imagefilename;
+		$imglowrespath = $imgrec->lowrespath;
+		$lowrespathparts = explode("users", $imglowrespath);
+		$imglowrespathweb = "/image".$lowrespathparts[1];
+		$imgcategories = $imgrec->categories;
+		$imgprice = $imgrec->price;
+		$imgtags = $imgrec->imagetags;
+		$imguserid = $imgrec->userid;
+		$imgid = $imgrec->id;
+		$imguserrec = DB::table('users')->where('id', $imguserid)->first();
+		$imgownername = $imguserrec->username;
+		$imghitsrecs = DB::table('imagehits')->where('imageid', $imgid)->get();
+		$imghitscount = count($imghitsrecs);
+		$imagesinfo[$imglowrespathweb] = array('categories' => $imgcategories, 'imagehits' => $imghitscount, 'owner' => $imgownername, 'imagetags' => $imgtags, 'price' => $imgprice);
 		if(!array_key_exists($imgfilename, $unique_images)){
 		    array_push($images, $imgrec);
 		    $unique_images[$imgfilename] = 1;
 		}
 	    }
 	}
-        return view('downloadpopup')->with(array('imagepath' => $imagepath, 'imagecategory' => $imagecategory, 'imagehits' => $imagehits, 'imagetags' => $imagetags, 'imageprice' => $imageprice, 'imageowner' => $imageowner, 'images' => $images));
+        return view('downloadpopup')->with(array('imagepath' => $imagepath, 'imagecategory' => $imagecategory, 'imagehits' => $imagehits, 'imagetags' => $imagetags, 'imageprice' => $imageprice, 'imageowner' => $imageowner, 'images' => $images, 'imagesinfo' => $imagesinfo));
     }
 
 

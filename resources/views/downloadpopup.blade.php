@@ -180,7 +180,7 @@
     </style>
     <script>
 	function showimage(lowrespath){
-	    imagedetails = {};
+	    imagedetails = <?php echo json_encode($imagesinfo); ?>;
 	    imagetag = document.getElementById('mainimage');
 	    imagetag.src = lowrespath;
 	    window.scrollTo(0, 0);
@@ -190,6 +190,12 @@
 		imgtags = document.getElementById('imagetags');
 		imgtags.innerHTML = imagedetails[lowrespath]['imagetags'];
 		imgprice = document.getElementById('price');
+		if(imagedetails[lowrespath]['price'] == 0 || imagedetails[lowrespath]['price'] == ""){
+		    imagedetails[lowrespath]['price'] = "CURRENT PRICE: FREE";
+		}
+		else{
+		    imagedetails[lowrespath]['price'] = "CURRENT PRICE: " + imagedetails[lowrespath]['price'];
+		}
 		imgprice.innerHTML = imagedetails[lowrespath]['price'];
 		imgcats = document.getElementById('imagecategory');
 		imgcats.innerHTML = imagedetails[lowrespath]['categories'];
@@ -198,6 +204,7 @@
 	    }
 	    imagetag.focus();
 	}
+
 
 	function downloadimage(imgpath){
             imgpathparts = imgpath.split("_lowres");
