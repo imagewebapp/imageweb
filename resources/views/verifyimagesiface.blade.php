@@ -240,7 +240,9 @@ function submitverification(){
 	</ul>
     </div>
 	<!-- Top panel ends here -->
-
+				<?php
+				echo "<span style='color:#0000AA'>".$verifymessage."</span>";
+				?>
 					<div class="wrap-table100-nextcols js-pscroll"><h3>Verify Images</h3></div>
 					<form name='frmimageverification' id='frmimageverification' action='/verifyimages' method='POST'>
 
@@ -288,15 +290,6 @@ function submitverification(){
 					</form>
 
 	</div>
-
-
-        
-
-		
-
-		
-
-		
 
 	</script>
 

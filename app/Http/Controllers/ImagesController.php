@@ -727,7 +727,7 @@ class ImagesController extends BaseController
         } 
         $username = getuser();
         $profileimagepath = getprofileimage($username);
-        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict, 'username' => $username, 'profileimage' => $profileimagepath));
+        return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict, 'username' => $username, 'profileimage' => $profileimagepath, 'verifymessage' => ""));
     }
 
 
@@ -748,7 +748,22 @@ class ImagesController extends BaseController
         for($i=0; $i < count($imgverifylist); $i++){
             DB::table('images')->where('id', $imgverifylist[$i])->update(array('verified' => 1)); 
         }
-        return "All checked images has been verified successfully. You should now be able to view them in the 'Gallery' page.";
+	$images = DB::table('images')->where('verified', 0)->get();
+        $imagesdict = array();
+        $numimages = count($images);
+        for($i=0; $i < $numimages; $i++){
+            $imgid = $images[$i]->id;
+            $imgpath = $images[$i]->imagepath;
+            $ownerid = $images[$i]->userid;
+            $ownerobj = DB::table('users')->where('id', $ownerid)->first();
+            $ownername = $ownerobj->username;
+            $imagepathparts = explode($ownername, $imgpath);
+            $imgwebpath = "/image/".$ownername.$imagepathparts[1];
+            $imagesdict[$imgwebpath] = $imgid;
+        }
+        $username = getuser();
+        $profileimagepath = getprofileimage($username);
+	return view('verifyimagesiface')->with(array('imagesdict' => $imagesdict, 'username' => $username, 'profileimage' => $profileimagepath, 'verifymessage' => "All checked images has been verified successfully. You should now be able to view them in the 'Gallery' page." ));
     }
 
 
