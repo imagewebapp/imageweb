@@ -496,6 +496,9 @@ class ImagesController extends BaseController
 	    for($i=0; $i < count($imagerecs); $i++){
 		$imgrec = $imagerecs[$i];
 		$imgfilename = $imgrec->imagefilename;
+		$imgorigpath = $imgrec->imagepath;
+		$origpathparts = explode("users", $imgorigpath);
+		$imgorigwebpath = "/image".$origpathparts[1];
 		$imglowrespath = $imgrec->lowrespath;
 		$lowrespathparts = explode("users", $imglowrespath);
 		$imglowrespathweb = "/image".$lowrespathparts[1];
@@ -508,7 +511,7 @@ class ImagesController extends BaseController
 		$imgownername = $imguserrec->username;
 		$imghitsrecs = DB::table('imagehits')->where('imageid', $imgid)->get();
 		$imghitscount = count($imghitsrecs);
-		$imagesinfo[$imglowrespathweb] = array('categories' => $imgcategories, 'imagehits' => $imghitscount, 'owner' => $imgownername, 'imagetags' => $imgtags, 'price' => $imgprice);
+		$imagesinfo[$imglowrespathweb] = array('categories' => $imgcategories, 'imagehits' => $imghitscount, 'owner' => $imgownername, 'imagetags' => $imgtags, 'price' => $imgprice, 'origpath' => $imgorigwebpath);
 		if(!array_key_exists($imgfilename, $unique_images)){
 		    array_push($images, $imgrec);
 		    $unique_images[$imgfilename] = 1;
