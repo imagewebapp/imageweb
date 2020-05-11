@@ -179,6 +179,7 @@
 	/*# sourceMappingURL=style.css.map */
     </style>
     <script>
+	imgpath = '<?php echo $imagepath; ?>';
 	function showimage(lowrespath){
 	    imagedetails = <?php echo json_encode($imagesinfo); ?>;
 	    imagetag = document.getElementById('mainimage');
@@ -201,12 +202,15 @@
 		imgcats.innerHTML = imagedetails[lowrespath]['categories'];
 		imgowner = document.getElementById('owner');
 		imgowner.innerHTML = imagedetails[lowrespath]['owner'];
+		downloadbutton = document.getElementById('btndownload');
+		imgpath = lowrespath;
+		downloadbutton.onclick = downloadimage;
 	    }
 	    imagetag.focus();
 	}
 
 
-	function downloadimage(imgpath){
+	function downloadimage(){
             imgpathparts = imgpath.split("_lowres");
             origimgpath = imgpathparts[0] + imgpathparts[1];
             origimgpathparts = origimgpath.split("/");
@@ -242,33 +246,6 @@
             xmlhttp.send();
         }
 
-
-        function downloadimage_post(imgpath){
-            //alert(imgpath);
-            var xmlhttp;
-            if (window.XMLHttpRequest){
-                xmlhttp=new XMLHttpRequest();
-            }
-            else{
-	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function(){
-                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-                    var contentdisposition = xmlhttp.getResponseHeader('Content-Disposition');
-                    var filename = contentdisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1];
-                    var type = xmlhttp.getResponseHeader('Content-Type');
-                    var blob = new Blob([xmlhttp.response], {type : type});
-                    savefile(blob, filename);
-                }
-            }
-            targeturl = "/download";
-            postdata = "imagepath=" + imgpath;
-            postdata += "&_token=" + document.frmdummy._token.value;
-            xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
-            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
-            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xmlhttp.send(postdata);
-        }
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
   </head>
@@ -380,7 +357,7 @@
 						</h5>
 						-->
 						<div class="action">
-							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:downloadimage('<?php echo $imagepath; ?>');">Download</button>
+							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Download</button>
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
