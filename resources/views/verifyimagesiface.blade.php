@@ -271,12 +271,15 @@ function submitverification(){
 
 										<td class="cell100 column2"><img src='{{$imgpath}}' width='300' height='300'></td>
 
-										<td class="cell100 column3"><input type='checkbox' name='imgverify[]' value='{{$imgid}}'></td>
+										<td class="cell100 column3">
+										Accept:<input type='radio' name='imgverify{{$imgid}}' value="accept">&nbsp;&nbsp;Reject:<input type='radio' name='imgverify{{$imgid}}' value="reject">
+										<input type='hidden' name='imgverify[]' value='{{$imgid}}'>
+										<!-- <input type='checkbox' name='imgverify[]' value='{{$imgid}}'></td> -->
 									<!-- Add pagination here -->
 									</tr>
                                                                   @endforeach
 								  <tr class="row100 body">
-									<td colspan='2'><input type='button' name='btnverify' value='Verify' onClick='javascript:submitverification();'></td>
+									<td colspan='2' align='center'><input type='button' name='btnverify' value='Verify' onClick='javascript:submitverification();'></td>
 								  </tr>
 								
 								</tbody>

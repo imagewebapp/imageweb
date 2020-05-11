@@ -759,8 +759,24 @@ class ImagesController extends BaseController
             return view('login');
         }
         $imgverifylist = $_POST['imgverify'];
+	$accepted = array();
+	$rejected = array();
         for($i=0; $i < count($imgverifylist); $i++){
-            DB::table('images')->where('id', $imgverifylist[$i])->update(array('verified' => 1)); 
+	    $verifyfieldname = 'imgverify'.$imgverifylist[$i];
+	    $verifystatus = "";
+	    if(array_key_exists($verifyfieldname, $_POST)){
+	    	$verifystatus = $_POST[$verifyfieldname];
+	    }
+	    if($verifystatus == "accept"){
+            	DB::table('images')->where('id', $imgverifylist[$i])->update(array('verified' => 1)); 
+		array_push($accepted, $imgverifylist[$i]);
+	    }
+	    elseif($verifystatus == "reject"){
+            	DB::table('images')->where('id', $imgverifylist[$i])->update(array('verified' => -1)); 
+		array_push($rejected, $imgverifylist[$i]);
+	    }
+	    else{
+	    }
         }
 	$images = DB::table('images')->where('verified', 0)->get();
         $imagesdict = array();
