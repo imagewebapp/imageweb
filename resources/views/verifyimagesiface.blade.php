@@ -111,6 +111,10 @@
 	  border: #ccc 1px solid;
 	  margin-right: 5px;
 	}
+
+	input[type="radio"]{
+  	  margin: 0 30px 0 10px;
+	}
     </style>
     <!-- top panel CSS ends -->
 
