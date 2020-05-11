@@ -413,6 +413,18 @@ class ImagesController extends BaseController
         //if(!$s){
         //    return "User is not logged in to download images. Please login and try again.";
         //} //Login is not required to download images.
+	// Check captcha:
+	$arr = [
+    	    'g-recaptcha-response' => 'required'
+	];
+	$validator = Validator::make(Input::all() , $arr);
+	
+        if ($validator->fails()){
+	    $response = Response::make("Captcha validation failed", 400);
+            $response->header("Content-Type", "Text/Plain");
+            return $response;
+        }
+	
         $client_ip = "";
         $client_ip = get_client_ip();
 	$details = json_decode(file_get_contents("http://ipinfo.io/{$client_ip}/json"), true);

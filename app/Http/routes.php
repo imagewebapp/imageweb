@@ -82,6 +82,14 @@ Route::get('aboutus', array(
 Route::get('termsandconditions', array(
     'uses' => 'ImagesController@showtermsandconditions'
 ));
+
+Route::get('showcaptcha', array(
+    'uses' => 'ImagesController@showcaptcha'
+));
+
+Route::post('handlecaptcha', array(
+    'uses' => 'ImagesController@handlecaptcha'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

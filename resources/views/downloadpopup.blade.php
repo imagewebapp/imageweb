@@ -177,7 +177,9 @@
 		    transform: scale(1); } }
 
 	/*# sourceMappingURL=style.css.map */
+
     </style>
+    <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
     <script>
 	imgpath = '<?php echo $imagepath; ?>';
 	function showimage(lowrespath){
@@ -202,6 +204,8 @@
 		imgcats.innerHTML = imagedetails[lowrespath]['categories'];
 		imgowner = document.getElementById('owner');
 		imgowner.innerHTML = imagedetails[lowrespath]['owner'];
+		//captchadiv = document.getElementById('captchacontent');
+		//captchadiv.innerHTML = "<div class='g-recaptcha' data-sitekey='6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s'></div>";
 		downloadbutton = document.getElementById('btndownload');
 		imgpath = lowrespath;
 		downloadbutton.onclick = downloadimage;
@@ -221,8 +225,6 @@
             a.download = filename;
             a.style = 'display: none';
             anchor.parentNode.appendChild(a);
-            a.click();
-            a.remove();
             // Now send a request to server so that imagehits table is updated.
             var xmlhttp;
             if (window.XMLHttpRequest){
@@ -233,12 +235,18 @@
             }
             xmlhttp.onreadystatechange = function(){
                 if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    a.click();
+            	    a.remove();
                     alert("Thanks for downloading.");
                 }
+		else if(xmlhttp.readyState == 4 && xmlhttp.status==400){
+		    alert(xmlhttp.responseText);
+		}
             }
             targeturl = "/download";
             getdata = "imagepath=" + imgpath;
             getdata += "&_token=" + document.frmdummy._token.value;
+	    getdata += "&g-recaptcha-response=" + grecaptcha.getResponse();
             //alert(getdata);
             xmlhttp.open("GET",targeturl + "?" + getdata,true); // Make it an ajax call.
             xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
@@ -356,7 +364,11 @@
 							<span class="color blue"></span>
 						</h5>
 						-->
+						<div id="captchacontent">
+						<div class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></div>
+						</div>
 						<div class="action">
+
 							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Download</button>
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
