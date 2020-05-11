@@ -225,6 +225,7 @@
             a.download = filename;
             a.style = 'display: none';
             anchor.parentNode.appendChild(a);
+	    waiter = document.getElementById('waitdiv');
             // Now send a request to server so that imagehits table is updated.
             var xmlhttp;
             if (window.XMLHttpRequest){
@@ -235,11 +236,13 @@
             }
             xmlhttp.onreadystatechange = function(){
                 if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    waiter.innerHTML = "";
 		    a.click();
             	    a.remove();
                     alert("Thanks for downloading.");
                 }
 		else if(xmlhttp.readyState == 4 && xmlhttp.status==400){
+		    waiter.innerHTML = "";
 		    alert(xmlhttp.responseText);
 		}
             }
@@ -252,6 +255,7 @@
             xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
             xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xmlhttp.send();
+	    waiter.innerHTML = "<img src='/images/loading_small.gif'>";
         }
 
     </script>
@@ -369,7 +373,7 @@
 						</div>
 						<div class="action">
 
-							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Download</button>
+							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Download</button><span id='waitdiv'></span>
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
