@@ -781,6 +781,23 @@ class ImagesController extends BaseController
 	    else{
 	    }
         }
+	// Send email with status
+	$emailid = "imagewebapp@gmail.com";
+	$mailcontent = "Hi,
+	    Images with the following IDs have been accepted.\n";
+	$mailcontent .= implode("\n", $accepted);
+	$mailcontent .= "\n\nThe following images (IDs) have been rejected.\n";
+	$mailcontent .= implode("\n", $rejected);
+	$mailcontent .= "\n\nThanks and Regards,
+		Admin";
+	$subject = "Image Verification";
+	$firstname = $user->firstname;
+	$lastname = $user->lastname;
+	$maildata = array('name' => "imagewebapp admin", 'mailcontent' => $mailcontent);
+	Mail::send('verify', $maildata, function ($mailcontent) use($emailid, $firstname, $lastname, $subject){
+  	  $mailcontent->to($emailid, $firstname." ".$lastname)->subject($subject);
+  	  $mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
+	});
 	$images = DB::table('images')->where('verified', 0)->get();
         $imagesdict = array();
         $numimages = count($images);
