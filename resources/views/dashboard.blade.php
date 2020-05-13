@@ -185,6 +185,7 @@
             }
 
         </script> 
+<script src='https://www.google.com/recaptcha/api.js' async defer ></script>
 <script type='text/javascript'>
 
 function uploadfile(){
@@ -212,6 +213,8 @@ imgtags = document.getElementById('imagetags').value;
 formdata.append('imagetags', imgtags);
 price = document.frmimageupload.price.value;
 formdata.append('price', price);
+captcharesponse = grecaptcha.getResponse();
+formdata.append('g-recaptcha-response', captcharesponse);
 sel = document.frmimageupload.categories;
 selectedcats = "";
 for(i=0; i < sel.options.length; i++){
@@ -355,7 +358,8 @@ function uploadprofileimage(){
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
-									</select> Price: USD($)<input type='text' name='price' value='0.00' id='price'><input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
+									</select> Price: USD($)<input type='text' name='price' value='0.00' id='price'><span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
+						<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
 
 								</td>
 

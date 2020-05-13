@@ -253,6 +253,17 @@ class ImagesController extends BaseController
         if(!$s){
             return "User is not logged in to upload images. Please login and try again.";
         }
+	// Check captcha:
+        $arr = [
+            'g-recaptcha-response' => 'required'
+        ];
+        $validator = Validator::make(Input::all() , $arr);
+
+        if ($validator->fails()){
+            $response = Response::make("Captcha validation failed", 200);
+            $response->header("Content-Type", "Text/Plain");
+            return $response;
+        }
         $imagedumppath = "/var/www/html/imageweb/storage/users/";
         //$imagedumppath = Config::get('app.imagedumppath');
         $file = $_FILES['imgupload']['name'];
