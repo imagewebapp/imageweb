@@ -112,6 +112,8 @@
 	  border: #ccc 1px solid;
 	  margin-right: 5px;
 	}
+
+	
     </style>
 
     <!-- top panel CSS ends -->
@@ -353,14 +355,15 @@ function uploadprofileimage(){
 
 							<tr width='100%'>
 
-								<td colspan='8'>
+								<td colspan='8' width='100%'>
+								    <div class="oneline">
 									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline">Upload Image: <input type='file' name='imgupload' id='imgupload' accept='image/*'> Enter Tags:<input type='text' name='imagetags' id='imagetags' value=''> Select Categories: <select name='categories' size='3' multiple>
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
 									</select> Price: USD($)<input type='text' name='price' value='0.00' id='price'><span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
 						<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
-
+								    </div>
 								</td>
 
 							</tr>

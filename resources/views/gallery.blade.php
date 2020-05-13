@@ -118,6 +118,10 @@
 	  border: #ccc 1px solid;
 	  margin-right: 5px;
 	}
+
+	.row input{
+	  float:left;
+	}
     </style>
 
     <!-- top panel CSS ends -->
@@ -437,9 +441,9 @@ option {
 			
 	    <!-- old css start -->
 <form name='frmsearch' method='GET' class="form-inline">
-<div align='center' class="row">
+<div class="row">
 <ul  class="p7DMM01-menu closed">
-<li>Search Images </li><li><select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'></li>
+<li>Search Images </li><li><select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
 <?php
 	if(!array_key_exists('selmode', $_GET) || $_GET['selmode'] == "all"){
 ?>
@@ -463,7 +467,7 @@ option {
 <?php
 	}
 ?>
-</select>
+</select></li>
 <li><input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'></li>
 </ul>
 <?php
