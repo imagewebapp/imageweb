@@ -489,7 +489,7 @@ class ImagesController extends BaseController
 	}
 	$currtimestr = date("Y-m-d H:i:s");
 	$currtime = strtotime($currtimestr);
-	$delta = $currtime - $changepassrec->codegenerationts;
+	$delta = $currtime - strtotime($changepassrec->codegenerationts);
 	if($delta > 900){ // code was generated more than 30 mins back.
 	    return("Your passcode has become stale. Please generate a new passcode by clicking on 'forgot password' link and try again".$delta);
 	}
