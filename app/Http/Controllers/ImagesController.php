@@ -474,7 +474,29 @@ class ImagesController extends BaseController
 
 
     public function changepassword(Request $req){
-
+	if(!array_key_exists('passcode', $_POST) || !array_key_exists('password', $_POST) || !array_key_exists('confirmpassword', $_POST)){
+	    return("One or more parameters is missing. Please enter appropriate values in all fields and try again");
+	}
+	$passcode = $_POST['passcode'];
+	$password = $_POST['password'];
+	$confirmpassword = $_POST['confirmpassword'];
+	if($password != $confirmpassword){
+	    return("Password and Confirm Password values should be the same. Please fill up the fields with same value and try again.");
+	}
+	$changepassrec = DB::table('changepass')->where('passcode', $passcode)->orderBy('codegenerationts', 'desc')->first();
+	if(!$changepassrec){
+	    return("You entered a wrong passcode. Please enter your correct passcode and try again");
+	}
+	$currtimestr = date("Y-m-d H:i:s");
+	$currtime = strtotime($currtimestr);
+	$delta = $currtime - $changepassrec->codegenerationts;
+	if($delta > 900){ // code was generated more than 30 mins back.
+	    return("Your passcode has become stale. Please generate a new passcode by clicking on 'forgot password' link and try again".$delta);
+	}
+	$username = $changepassrec->username;
+	$passwordhash = Hash::make($password);
+	DB::table('users')->where('username', $username)->update(array('password' => $passwordhash));
+	return("");
     }
 
     /*

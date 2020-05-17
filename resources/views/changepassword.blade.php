@@ -189,7 +189,7 @@
         </script> 
 <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
 <script type='text/javascript'>
-	function generatepasscode(){
+	function savepassword(){
 	    var xmlhttp;
 	    waiter = document.getElementById('waitdiv');
             if (window.XMLHttpRequest){
@@ -206,18 +206,18 @@
 			return(false);
 		    }
 		    else{
-			document.frmpasscode.method = "GET";
-			document.frmpasscode.submit();
+			alert("Password has been successfully saved. Please try to login using your new password");
+			window.location = "/login";
 		    }
                 }
             }
-            postdata = "_token=" + document.frmpasscode._token.value;
-	    postdata += "&username=" + document.frmpasscode.username.value;
-	    postdata += "&emailid=" + document.frmpasscode.emailid.value;
-            //alert(getdata);
-	    targeturl = "/generatepasscode"
+            postdata = "_token=" + document.frmchangepassword._token.value;
+	    postdata += "&passcode=" + document.frmchangepassword.passcode.value;
+	    postdata += "&password=" + document.frmchangepassword.password.value;
+	    postdata += "&confirmpassword=" + document.frmchangepassword.confirmpassword.value;
+	    targeturl = "/changepassword"
             xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
-            xmlhttp.setRequestHeader('X-CSRFToken', document.frmpasscode._token.value);
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmchangepassword._token.value);
             xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xmlhttp.send(postdata);
 	    waiter.innerHTML = "<img src='/images/loading_small.gif'>";
