@@ -30,6 +30,8 @@ use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use App\Validators\ReCaptcha;
+
 $imagedumppath = "/var/www/html/imageweb/users/";
 
 
@@ -234,6 +236,100 @@ function isduplicateimage($username, $imagefilepath){
 }
 
 
+function isduplicateimage2($userid, $imagefilepath){
+    $imagefilepathparts = explode(".", $imagefilepath);
+    $imagepartscount = count($imagefilepathparts);
+    $ext = $imagefilepathparts[$imagepartscount - 1];
+    $imgresource = "";
+    if($ext == "jpg" || $ext == "jpeg"){
+	$imgresource = imagecreatefromjpg($imagefilepath);
+    }
+    elseif($ext == "gif"){
+	$imgresource = imagecreatefromgif($imagefilepath);
+    }
+    elseif($ext == "png"){
+	$imgresource = imagecreatefrompng($imagefilepath);
+    }
+    else{
+    }
+    if($imgresource == ""){
+	return True; // if we do not receive any image, then we take it as a duplicate.
+    }
+    $currfingerprint = fingerprint_image($imgresource);
+    $imgrecs = DB::table('images')->where('userid', $userid)->get();
+    for($ctr=0; $ctr < count($imgrecs); $ctr++){
+	$img = $imgrecs[$ctr];
+	if($img->fingerprint == $currfingerprint){
+	    return True;
+	}
+    }
+    return False;
+}
+
+
+function fingerprint_image($img, $resolution=8){
+    $palette_array = array(
+             '000000' => '0', '000b0a' => '1', '00240c' => '2', '005ab5' => '3', '006234' => '4',
+             '00a8a4' => '5', '02000c' => '6', '021357' => '7', '02be28' => '8', '03112a' => '9',
+             '03efa2' => 'A', '0411a4' => 'B', '04f62d' => 'C', '0becf3' => 'D', '0c12f1' => 'E',
+             '10000c' => 'F', '101d01' => 'G', '1a7508' => 'H', '281603' => 'I', '2b0040' => 'J',
+             '31a5fc' => 'K', '415aff' => 'L', '46d300' => 'M', '46fe37' => 'N', '48ffa1' => 'O',
+             '4c00a0' => 'P', '4deff7' => 'Q', '540ff5' => 'R', '581404' => 'S', '5d6900' => 'T',
+             '61023c' => 'U', '98f0fd' => 'V', '9aa3fe' => 'W', '9affc4' => 'X', 'a09400' => 'Y',
+             'a11b13' => 'Z', 'a8f712' => 'a', 'afff69' => 'b', 'b138fe' => 'c', 'b500d8' => 'd',
+             'c9eefd' => 'e', 'cf0f75' => 'f', 'd3ffc6' => 'g', 'dba8f3' => 'h', 'e49900' => 'i',
+             'e6fffb' => 'j', 'e82810' => 'k', 'ebe7fe' => 'l', 'f49486' => 'm', 'f4f413' => 'n',
+             'f8f1e2' => 'o', 'f90cde' => 'p', 'f9f468' => 'q', 'fa8f37' => 'r', 'fb49df' => 's',
+             'fbf3b7' => 't', 'fbfffb' => 'u', 'fd90d8' => 'v', 'fdc5d6' => 'w', 'fdf8f7' => 'x',
+             'ffe3f7' => 'y', 'ffffff' => 'z'
+        );
+    $max_w   = $resolution;
+    $max_h   = $resolution;
+    $palette = imagecreate($max_w, $max_h);
+    foreach($palette_array as $hex_color=>$val) {
+        $int_color = hexdec("0x".$hex_color);
+        $color = array("red"   => 0xFF & ($int_color >> 0x10), "green" => 0xFF & ($int_color >> 0x8), "blue"  => 0xFF &  $int_color);
+        imagecolorallocate($palette, $color['red'], $color['green'], $color['blue']);
+    }
+    $width  = imagesx($img);
+    $height = imagesy($img);
+    if ($height > $width)  {   
+        $ratio   = $max_h / $height;  
+        $thumb_h = $max_h;
+        $thumb_w = $width * $ratio;
+    } else {
+        $ratio   = $max_w / $width;
+        $thumb_w = $max_w;  
+        $thumb_h = $height * $ratio;
+    }
+    $thumb = imagecreate($thumb_w, $thumb_h); 
+    imagepalettecopy($thumb, $palette);
+    imagecopyresized($thumb, $img, 0, 0, 0, 0, $thumb_w, $thumb_h, $width, $height);
+    imagepalettecopy($thumb, $palette);
+    $fingerprint_array = array();
+    $w = imagesx($thumb);
+    $h = imagesy($thumb);
+    for($j=0; $j<$h; $j++) {
+        $string = "";
+        for($i=0; $i<$w; $i++) {
+            $color = ImageColorsForIndex($thumb, imagecolorat($thumb, $i, $j));
+            $red   = dechex($color['red'  ]);
+            while(strlen($red) < 2) $red = '0'.$red;
+            $green = dechex($color['green']);
+            while(strlen($green) < 2) $green = '0'.$green;
+            $blue  = dechex($color['blue' ]);
+            while(strlen($blue) < 2) $blue = '0'.$blue;
+            $s = $red.$green.$blue;
+            $c = $palette_array[$s];
+            $string .= $c;
+        }
+        $fingerprint_array[] = $string;
+    }
+    $fingerprint = implode('-', $fingerprint_array);
+    return($fingerprint);
+}
+
+
 class ImagesController extends BaseController
 {
 
@@ -255,7 +351,7 @@ class ImagesController extends BaseController
         }
 	// Check captcha:
         $arr = [
-            'g-recaptcha-response' => 'required'
+            'g-recaptcha-response' => ['required'],
         ];
         $validator = Validator::make(Input::all() , $arr);
 
@@ -295,6 +391,7 @@ class ImagesController extends BaseController
 		}
 		*/
 		$r = isduplicateimage($username, $tempfilename);
+		//$r = isduplicateimage2($userid, $tempfilename);
 		if($r){
 		    return "This is a duplicate image. This image cannot be uploaded.";
 		}
@@ -371,7 +468,7 @@ class ImagesController extends BaseController
 	    $alltags = explode(",", $tags);
 	    for($i=0; $i < count($alltags); $i++){ 
 		$tag = $alltags[$i];
-	        $imgs = DB::table('images')->where('imagetags', 'like', '%'.$tag.'%')->skip($startpoint)->take($chunksize)->get();
+	        $imgs = DB::table('images')->where([ ['verified', '=', '1'], ['imagetags', 'like', '%'.$tag.'%'] ])->skip($startpoint)->take($chunksize)->get();
 		for($c=0; $c < count($imgs); $c++){
 		    $img = $imgs[$c];
 		    array_push($imagesrecs, $img);
