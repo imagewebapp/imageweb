@@ -434,11 +434,46 @@ class ImagesController extends BaseController
 
 
     public function showforgotpassword(Request $req){
-
+	return view('forgotpassword');
     }
 
 
-    public function forgotpassword(Request $req){
+    public function generatepasscode(Request $req){
+	$username = $_POST['username'];
+	$emailid = $_POST['emailid'];
+	// First, check and verify that the username corresponds to the given email Id
+	$userrec = DB::table('users')->where('username', $username)->first();
+	$regemail = $userrec->email;
+	$firstname = $userrec->firstname;
+	$lastname = $userrec->lastname;
+	if($regemail != $emailid){
+	    return("The given email Id is not registered with the given username. Please enter your registered email Id and try again");
+	}
+	// Next, generate the random passcode
+	$digits = 6;
+	$passcode = rand(pow(10, $digits-1), pow(10, $digits)-1);
+	// Add this passcode, username and email Id into the changepass table
+	$changepassvals = array('passcode' => $passcode, 'username' => $username);
+	DB::table('changepass')->insert($changepassvals);
+	// Finally, send the passcode to the given email Id.
+	$mailcontent = "Please enter the following passcode in the 'change password' screen: ".$passcode.". You will also need to enter a new password for your account. \n\nThanks\nAdmin\n";
+	$hostname = $req->getHost();
+	$maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
+	$subject = "Change password on ".$hostname;
+	Mail::send('changepasswordmail', $maildata, function ($mailcontent) use($emailid, $firstname, $lastname, $subject){
+          $mailcontent->to($emailid, $firstname." ".$lastname)->subject($subject);
+          $mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
+        });
+	return "";
+    }
+
+
+    public function showchangepassword(Request $req){
+	return view('changepassword');
+    }
+
+
+    public function changepassword(Request $req){
 
     }
 

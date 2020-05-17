@@ -27,8 +27,16 @@ Route::get('forgotpassword', array(
     'uses' => 'ImagesController@showforgotpassword'
 ));
 
-Route::post('forgotpassword', array(
-    'uses' => 'ImagesController@forgotpassword'
+Route::post('generatepasscode', array(
+    'uses' => 'ImagesController@generatepasscode'
+));
+
+Route::get('changepassword', array(
+    'uses' => 'ImagesController@showchangepassword'
+));
+
+Route::post('changepassword', array(
+    'uses' => 'ImagesController@changepassword'
 ));
 
 Route::get('logout', array(
