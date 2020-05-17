@@ -23,6 +23,14 @@ Route::post('login', array(
     'uses' => 'ImagesController@dologin'
 ));
 
+Route::get('forgotpassword', array(
+    'uses' => 'ImagesController@showforgotpassword'
+));
+
+Route::post('forgotpassword', array(
+    'uses' => 'ImagesController@forgotpassword'
+));
+
 Route::get('logout', array(
     'uses' => 'ImagesController@dologout'
 ));

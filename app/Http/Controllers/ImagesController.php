@@ -430,7 +430,17 @@ class ImagesController extends BaseController
     */
     public function display(Request $req){
 
-    }    
+    } 
+
+
+    public function showforgotpassword(Request $req){
+
+    }
+
+
+    public function forgotpassword(Request $req){
+
+    }
 
     /*
 	Display gallery of images. Note: Session is not required for this page.

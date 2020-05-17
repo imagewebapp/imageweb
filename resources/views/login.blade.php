@@ -25,5 +25,6 @@
          {{ Form::password('password') }}
       </p>
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <p><a href="/forgotpassword">Forgot Password</a></p>
       <p>{{ Form::submit('Submit!') }}</p>
       {{ Form::close() }}
