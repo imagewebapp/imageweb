@@ -900,13 +900,19 @@ class ImagesController extends BaseController
         if(array_key_exists('start', $_GET)){
             $start = $_GET['start'];
         }
+	$lastpoint = 0;
+	if(array_key_exists('lastpoint', $_GET)){
+            $lastpoint = $_GET['lastpoint'];
+	    $start = $lastpoint;
+        }
         $images = DB::table('images')->where('userid', $userid)->orderBy('uploadts', 'DESC')->skip($start)->take($chunksize)->get();
         $max = DB::table('images')->where('userid', $userid)->count();
         $start = $start + $chunksize;
+	$lastpoint = $max - $chunksize;
         $categories = DB::table('categories')->get();
         $username = getuser();
         $profileimagepath = getprofileimage($username);
-        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username, 'profileimage' => $profileimagepath ));
+        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username, 'profileimage' => $profileimagepath, 'lastpoint' => $lastpoint ));
     }
 
 

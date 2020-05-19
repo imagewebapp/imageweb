@@ -416,6 +416,7 @@ function uploadprofileimage(){
 								echo "<td colspan='10' align='center'>";
 								if($start < $max){
 								    echo "<div align='center'><a href='/dashboard?start=".$start."'>Next</a></div>";
+								    echo "<div align='center'><a href='/dashboard?lastpoint=".$lastpoint."'>Last</a></div>";
 								}
 								if($start > $chunk){
 								    $prev = $start - 2*$chunk;
@@ -423,6 +424,7 @@ function uploadprofileimage(){
 									$prev = 0;
 								    }
 								    echo "<div align='center'><a href='/dashboard?start=".$prev."'>Prev</a></div>";
+								    echo "<div align='center'><a href='/dashboard?start=0'>First</a></div>";
 								}
 								echo "</td>";
 								?>
@@ -478,12 +480,14 @@ function uploadprofileimage(){
 
 							if($start < $max){
 							    echo "<div align='center'><a href='/dashboard?start=".$start."'>Next</a></div>";
+							    echo "<div align='center'><a href='/dashboard?lastpoint=".$lastpoint."'>Last</a></div>";
 							}
 							if($start > $chunk){
 							    $prev = $start - 2*$chunk;
 							    if($prev < 0){
 								$prev = 0;
 							    }
+							    echo "<div align='center'><a href='/dashboard?start=0'>First</a></div>";
 							    echo "<div align='center'><a href='/dashboard?start=".$prev."'>Prev</a></div>";
 							}
 							?>
