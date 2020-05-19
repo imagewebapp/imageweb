@@ -242,6 +242,34 @@ option {
 }
 </style>
 
+<!-- pagination styles -->
+<style>
+.paginate {
+    display: inline-block;
+    padding: 2px;
+    text-align: center;
+}
+
+.paginate a {
+    text-decoration: none;
+    color: blue;
+    float: left;
+    padding: 10px 15px;
+ border-radius: 10px;
+ transition: background-color .5s; 
+}
+
+.paginate a.active {
+    background-color: lightblue;
+    color: lightblue;
+ border-radius: 10px;
+}
+
+.paginate a:hover:not(.active) {
+    background-color: lightgray;
+}
+</style>
+
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -573,7 +601,7 @@ else{
 		<!-- old css ends -->
 
 		<!-- Main -->
-			<div align='center'>
+			<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
 					      echo "<a href='/gallery?startpoint=".$startpoint."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
@@ -638,7 +666,7 @@ else{
 
 
 				<br /><br />
-				<div align='center'>
+				<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
 					      echo "<a href='/gallery?startpoint=".$startpoint."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";

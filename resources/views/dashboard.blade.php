@@ -117,6 +117,138 @@
     </style>
 
     <!-- top panel CSS ends -->
+
+    <!-- upload form css -->
+<style>
+
+* {box-sizing: border-box;}
+
+/* Style Form Container */
+.form-container {
+    position: relative;
+    padding: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+/* Style Inline Form */
+.form-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Style Label */
+label {
+    display: inline-block;
+    margin-right: .5rem;
+    margin-left: .5rem;
+    margin-bottom: 0;
+    nowrap;
+}
+
+/* Style Input */
+.form-control {
+    display: block;
+    width: 50%;
+    padding: .375rem .75rem;
+    margin-right: .5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+/* Style Checkbox Container */
+.form-check {
+    display: flex;
+    flex: 0 0 130px;
+}
+
+/* Style Button */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    background-color: #007bff;
+}
+
+select, option {
+    width: 250px;
+}
+
+option {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Change Style when screen width is 768px or less*/
+@media (max-width: 768px) {
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    label {
+        margin-bottom: .5rem;
+        margin-right: 0;
+    }
+    .form-control {
+        margin-bottom: 1rem;
+    }
+    .form-check {
+        display: flex;
+        flex: 0 0 auto;
+        margin-bottom: 1rem;
+    }
+    .btn {
+        display: block;
+        width: 100%;
+    }
+}
+</style>
+<!-- pagination styles -->
+<style>
+.paginate {
+    display: inline-block;
+    padding: 2px;
+    margin: 2px;
+    text-align: center;
+}
+
+.paginate a {
+    text-decoration: none;
+    color: blue;
+    float: left;
+    padding: 10px 15px;
+ border-radius: 10px;
+ transition: background-color .5s; 
+    text-align: center;
+}
+
+.paginate a.active {
+    background-color: lightblue;
+    color: lightblue;
+ border-radius: 10px;
+}
+
+.paginate a:hover:not(.active) {
+    background-color: lightgray;
+}
+</style>
     
     <!-- load stylesheets -->
 
@@ -355,13 +487,13 @@ function uploadprofileimage(){
 
 							<tr width='100%'>
 
-								<td colspan='8' width='100%'>
-								    <div class="oneline">
-									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline">Upload Image: <input type='file' name='imgupload' id='imgupload' accept='image/*'> Enter Tags:<input type='text' name='imagetags' id='imagetags' value=''> Select Categories: <select name='categories' size='3' multiple>
+								<td colspan='8' width='80%'>
+								    <div class="form-container">
+									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/*'> <label>Enter Tags:</label><input type='text' name='imagetags' id='imagetags' value=''> <label>Select Categories:</label> <select name='categories' size='3' multiple>
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
-									</select> Price: USD($)<input type='text' name='price' value='0.00' id='price'><span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
+									</select> <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'><span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
 						<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
 								    </div>
 								</td>
@@ -413,18 +545,18 @@ function uploadprofileimage(){
 								<?php $ctr = 1; ?>
 								<tr class="row100 body">
 								<?php
-								echo "<td colspan='10' align='center'>";
+								echo "<td colspan='10' align='center' class='paginate'>";
 								if($start < $max){
-								    echo "<div align='center'><a href='/dashboard?start=".$start."'>Next</a></div>";
-								    echo "<div align='center'><a href='/dashboard?lastpoint=".$lastpoint."'>Last</a></div>";
+								    echo "<a href='/dashboard?start=".$start."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+								    echo "<a href='/dashboard?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 								}
 								if($start > $chunk){
 								    $prev = $start - 2*$chunk;
 								    if($prev < 0){
 									$prev = 0;
 								    }
-								    echo "<div align='center'><a href='/dashboard?start=".$prev."'>Prev</a></div>";
-								    echo "<div align='center'><a href='/dashboard?start=0'>First</a></div>";
+								    echo "<a href='/dashboard?start=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+								    echo "<a href='/dashboard?start=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 								}
 								echo "</td>";
 								?>
@@ -476,22 +608,23 @@ function uploadprofileimage(){
 								</tbody>
 
 							</table>
+							<div align='center' class='paginate'>
 							<?php
 
 							if($start < $max){
-							    echo "<div align='center'><a href='/dashboard?start=".$start."'>Next</a></div>";
-							    echo "<div align='center'><a href='/dashboard?lastpoint=".$lastpoint."'>Last</a></div>";
+							    echo "<a href='/dashboard?start=".$start."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+							    echo "<a href='/dashboard?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 							}
 							if($start > $chunk){
 							    $prev = $start - 2*$chunk;
 							    if($prev < 0){
 								$prev = 0;
 							    }
-							    echo "<div align='center'><a href='/dashboard?start=0'>First</a></div>";
-							    echo "<div align='center'><a href='/dashboard?start=".$prev."'>Prev</a></div>";
+							    echo "<a href='/dashboard?start=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+							    echo "<a href='/dashboard?start=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 							}
 							?>
-
+							</div>
 						</div>
 
 					</div>
