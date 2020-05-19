@@ -140,14 +140,105 @@
 	}
 
 	</style>
-
+<!-- search form css -->
 <style>
-select {
-  width: 250px;
+
+* {box-sizing: border-box;}
+
+/* Style Form Container */
+.form-container {
+    position: relative;
+    padding: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+/* Style Inline Form */
+.form-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Style Label */
+label {
+    display: inline-block;
+    margin-right: .5rem;
+    margin-bottom: 0;
+    nowrap;
+}
+
+/* Style Input */
+.form-control {
+    display: block;
+    width: 50%;
+    padding: .375rem .75rem;
+    margin-right: .5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+/* Style Checkbox Container */
+.form-check {
+    display: flex;
+    flex: 0 0 130px;
+}
+
+/* Style Button */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    background-color: #007bff;
+}
+
+select, option {
+    width: 250px;
 }
 
 option {
-  width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Change Style when screen width is 768px or less*/
+@media (max-width: 768px) {
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    label {
+        margin-bottom: .5rem;
+        margin-right: 0;
+    }
+    .form-control {
+        margin-bottom: 1rem;
+    }
+    .form-check {
+        display: flex;
+        flex: 0 0 auto;
+        margin-bottom: 1rem;
+    }
+    .btn {
+        display: block;
+        width: 100%;
+    }
 }
 </style>
 
@@ -280,7 +371,7 @@ option {
             selectedmode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
             containerdiv = document.getElementById('tagscontainer');
             if(selectedmode == 'tags'){
-                containerdiv.innerHTML = "<input type='text' name='tagslist' size='30'> Multiple tags should be separated by commas";
+                containerdiv.innerHTML = "Enter Keywords(separated by commas): <input type='text' name='tagslist' size='30'> ";
             }
             else{
                 containerdiv.innerHTML = "";
@@ -437,13 +528,9 @@ option {
 <!-- Top panel ends here -->
 
 	<!-- HTML from template download page ends here... -->
-
-			
-	    <!-- old css start -->
-<form name='frmsearch' method='GET' class="form-inline">
-<div class="row">
-<ul  class="p7DMM01-menu closed">
-<li>Search Images </li><li><select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
+<div class="form-container">
+<form name='frmsearch' method='GET' class="form-inline" style="color:blue;">
+<label style="color:blue;">Search Images </label><select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
 <?php
 	if(!array_key_exists('selmode', $_GET) || $_GET['selmode'] == "all"){
 ?>
@@ -467,39 +554,38 @@ option {
 <?php
 	}
 ?>
-</select></li>
-<li><input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'></li>
-</ul>
+</select>
 <?php
 	if(array_key_exists('selmode', $_GET) && $_GET['selmode'] == "tags"){
 ?>
-<div id='tagscontainer'><input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>"> Multiple tags should be separated by commas</div>
+<span id='tagscontainer'>Enter Tags:<input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>"> </span>
 <?php
 }
 else{
 ?>
-<div id='tagscontainer'></div>
+<span id='tagscontainer'></span>
 <?php
 }
 ?>
-</div>
+<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
 </form>
+</div>
 		<!-- old css ends -->
 
 		<!-- Main -->
-			<div>
+			<div align='center'>
 				    <?php
 					 if($startpoint < $totalcount){
-					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
-					      echo "<div align='center'><a href='/gallery?lastpoint=".$lastpoint."'>Last</a></div>";
+					      echo "<a href='/gallery?startpoint=".$startpoint."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					      echo "<a href='/gallery?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 					 if($startpoint > $chunksize){
 					      $prev = $startpoint - 2*$chunksize;
 					      if($prev < 0){
 						  $prev = 0;
 					      }
-					     echo "<div align='center'><a href='/gallery?startpoint=0'>First</a></div>";
-					     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
+					     echo "<a href='/gallery?startpoint=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					     echo "<a href='/gallery?startpoint=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 				    ?>
 
@@ -552,19 +638,19 @@ else{
 
 
 				<br /><br />
-				<div>
+				<div align='center'>
 				    <?php
 					 if($startpoint < $totalcount){
-					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
-					      echo "<div align='center'><a href='/gallery?lastpoint=".$lastpoint."'>Last</a></div>";
+					      echo "<a href='/gallery?startpoint=".$startpoint."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					      echo "<a href='/gallery?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 					 if($startpoint > $chunksize){
 					      $prev = $startpoint - 2*$chunksize;
 					      if($prev < 0){
 						  $prev = 0;
 					      }
-					     echo "<div align='center'><a href='/gallery?startpoint=0'>First</a></div>";
-					     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
+					     echo "<a href='/gallery?startpoint=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					     echo "<a href='/gallery?startpoint=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 				    ?>
 
