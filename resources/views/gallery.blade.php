@@ -491,12 +491,14 @@ else{
 				    <?php
 					 if($startpoint < $totalcount){
 					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
+					      echo "<div align='center'><a href='/gallery?lastpoint=".$lastpoint."'>Last</a></div>";
 					 }
 					 if($startpoint > $chunksize){
 					      $prev = $startpoint - 2*$chunksize;
 					      if($prev < 0){
 						  $prev = 0;
 					      }
+					     echo "<div align='center'><a href='/gallery?startpoint=0'>First</a></div>";
 					     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
 					 }
 				    ?>
@@ -554,12 +556,14 @@ else{
 				    <?php
 					 if($startpoint < $totalcount){
 					      echo "<div align='center'><a href='/gallery?startpoint=".$startpoint."'>Next</a></div>";
+					      echo "<div align='center'><a href='/gallery?lastpoint=".$lastpoint."'>Last</a></div>";
 					 }
 					 if($startpoint > $chunksize){
 					      $prev = $startpoint - 2*$chunksize;
 					      if($prev < 0){
 						  $prev = 0;
 					      }
+					     echo "<div align='center'><a href='/gallery?startpoint=0'>First</a></div>";
 					     echo "<div align='center'><a href='/gallery?startpoint=".$prev."'>Prev</a></div>";
 					 }
 				    ?>

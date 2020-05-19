@@ -507,6 +507,11 @@ class ImagesController extends BaseController
         if(array_key_exists('startpoint', $_GET)){
             $startpoint = $_GET['startpoint'];
         }
+	$lastpoint = 0;
+	if(array_key_exists('lastpoint', $_GET)){
+            $lastpoint = $_GET['lastpoint'];
+	    $startpoint = $lastpoint;
+        }
         $chunksize = 20;
         $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
@@ -519,6 +524,7 @@ class ImagesController extends BaseController
             $imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
             //$imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->get();
             $totalcount = DB::table('images')->where('verified', 1)->count();
+	    $lastpoint = $totalcount - $chunksize;
 	}
 	elseif($mode == 'popularity'){
 	    //$hits = DB::table('imagehits')->groupBy('imageid')->select('imageid', DB::raw('count(*) as hitcount'))->get();
@@ -530,6 +536,7 @@ class ImagesController extends BaseController
 		array_push($imagesrecs, $img);
 	    }
 	    $totalcount = count($hits);
+	    $lastpoint = $totalcount - $chunksize;
 	}
 	elseif($mode == 'tags'){
 	    $alltags = explode(",", $tags);
@@ -542,6 +549,7 @@ class ImagesController extends BaseController
 		}
 	    }
 	    $totalcount = count($imagesrecs);
+	    $lastpoint = $totalcount - $chunksize;
 	}
 	
         $startpoint = $startpoint + $chunksize;
@@ -550,7 +558,7 @@ class ImagesController extends BaseController
         if($username != ""){
 	    $profileimagepath = getprofileimage($username);
         }
-	return view('gallery')->with(array('images' => $imagesrecs, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username, 'profileimage' => $profileimagepath));
+	return view('gallery')->with(array('images' => $imagesrecs, 'totalcount' => $totalcount, 'chunksize' => $chunksize, 'startpoint' => $startpoint, 'username' => $username, 'profileimage' => $profileimagepath, 'lastpoint' => $lastpoint));
     }
 
     
