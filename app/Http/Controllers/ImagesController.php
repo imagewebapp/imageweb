@@ -521,7 +521,7 @@ class ImagesController extends BaseController
 	$tags = $req->input('tagslist');
 	$imagesrecs = [];
 	if($mode == 'all' || $mode == ''){
-            $imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
+            $imagesrecs = DB::table('images')->where([ ['verified', '=',1], ['removed', '=', 0]])->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
             //$imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->get();
             $totalcount = DB::table('images')->where('verified', 1)->count();
 	    $lastpoint = $totalcount - $chunksize;
@@ -532,7 +532,7 @@ class ImagesController extends BaseController
 	    for($i=0; $i < count($hits); $i++){
 		$hit = $hits[$i];
 		$imgid = $hit->imageid;
-		$img = DB::table('images')->where('id', $imgid)->first();
+		$img = DB::table('images')->where([['id','=', $imgid], ['removed', '=', 0]])->first();
 		array_push($imagesrecs, $img);
 	    }
 	    $totalcount = count($hits);
@@ -542,7 +542,7 @@ class ImagesController extends BaseController
 	    $alltags = explode(",", $tags);
 	    for($i=0; $i < count($alltags); $i++){ 
 		$tag = $alltags[$i];
-	        $imgs = DB::table('images')->where([ ['verified', '=', '1'], ['imagetags', 'like', '%'.$tag.'%'] ])->skip($startpoint)->take($chunksize)->get();
+	        $imgs = DB::table('images')->where([ ['verified', '=', '1'], ['imagetags', 'like', '%'.$tag.'%'], ['removed', '=',0] ])->skip($startpoint)->take($chunksize)->get();
 		for($c=0; $c < count($imgs); $c++){
 		    $img = $imgs[$c];
 		    array_push($imagesrecs, $img);
@@ -749,9 +749,25 @@ class ImagesController extends BaseController
 	# Delete records from DB tables first.
 	$imgobj =  DB::table('images')->where([ ['imagepath', '=', $imagepath] ])->first();
 	$imgid = $imgobj->id;
-	DB::delete('delete from imagehits where imageid=?', [$imgid]);
-	DB::delete('delete from images where id=?',[$imgid]);
-	unlink($imagepath);
+	DB::table('images')->where('id', $imgid)->update(array('removed' => 1));
+	$removedpath = "/var/www/html/imageweb/storage/removed/".$username;
+	if(!file_exists($removedpath)){
+            mkdir($removedpath, 0777, true);
+        }
+	// Find all files related to the selected image
+	$imagepathparts = explode(".", $imagepath);
+	$userpath = "/var/www/html/imageweb/storage/users/".$username;
+	$lowresimage = $imagepathparts[0]."_lowres.".$imagepathparts[1];
+	$iconimage = $imagepathparts[0]."_ico.".$imagepathparts[1];
+	$imagefilenameparts = explode(".", $imagefilename);
+	$newlowresfilename = $imagefilenameparts[0]."_lowres.".$imagefilenameparts[1];
+	$newiconfilename = $imagefilenameparts[0]."_ico.".$imagefilenameparts[1];
+	$newimagefilepath = $removedpath."/".$imagefilename;
+	$newlowresfilepath = $removedpath."/".$newlowresfilename;
+	$newiconfilepath = $removedpath."/".$newiconfilename;
+	rename($imagepath, $newimagefilepath);
+	rename($lowresimage, $newlowresfilepath);
+	rename($iconimage, $newiconfilepath);
 	$response = Response::make("Deleted the selected image successfully", 200);
 	$response->header("Content-Type", "Text/Plain");
         return $response;
@@ -905,7 +921,7 @@ class ImagesController extends BaseController
             $lastpoint = $_GET['lastpoint'];
 	    $start = $lastpoint;
         }
-        $images = DB::table('images')->where('userid', $userid)->orderBy('uploadts', 'DESC')->skip($start)->take($chunksize)->get();
+        $images = DB::table('images')->where([['userid', '=', $userid], ['removed', '=', 0]])->orderBy('uploadts', 'DESC')->skip($start)->take($chunksize)->get();
         $max = DB::table('images')->where('userid', $userid)->count();
         $start = $start + $chunksize;
 	$lastpoint = $max - $chunksize;
