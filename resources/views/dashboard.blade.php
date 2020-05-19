@@ -411,6 +411,22 @@ function uploadprofileimage(){
 
 								<tbody>
 								<?php $ctr = 1; ?>
+								<tr class="row100 body">
+								<?php
+								echo "<td colspan='10' align='center'>";
+								if($start < $max){
+								    echo "<div align='center'><a href='/dashboard?start=".$start."'>Next</a></div>";
+								}
+								if($start > $chunk){
+								    $prev = $start - 2*$chunk;
+								    if($prev < 0){
+									$prev = 0;
+								    }
+								    echo "<div align='center'><a href='/dashboard?start=".$prev."'>Prev</a></div>";
+								}
+								echo "</td>";
+								?>
+								</tr>
                                                                 @foreach ($images as $img)
 									<?php
 
