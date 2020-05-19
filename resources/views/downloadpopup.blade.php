@@ -197,7 +197,7 @@
 		    imagedetails[lowrespath]['price'] = "CURRENT PRICE: FREE";
 		}
 		else{
-		    imagedetails[lowrespath]['price'] = "CURRENT PRICE: " + imagedetails[lowrespath]['price'];
+		    imagedetails[lowrespath]['price'] = "CURRENT PRICE (US$): " + imagedetails[lowrespath]['price'];
 		}
 		imgprice.innerHTML = imagedetails[lowrespath]['price'];
 		imgcats = document.getElementById('imagecategory');
@@ -353,7 +353,7 @@
 							<span class="review-no" id="imagehits"><?php echo $imagehits; ?> downloads</span>
 						</div>
 						<p class="product-description" id="imagecategory"><?php echo $imagecategory; ?>.</p>
-						<h4 class="price" id="price">current price: <span><?php echo $imageprice; ?></span></h4>
+						<h4 class="price" id="price">current price (US$): <span><?php echo $imageprice; ?></span></h4>
 						<p class="vote" id="owner">This image is owned by <strong><?php echo $imageowner; ?></strong></p>
 						<!--
 						<h5 class="sizes">sizes:
