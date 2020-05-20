@@ -505,7 +505,24 @@ function uploadprofileimage(){
 
 					</div>
 
-					
+					<?php
+					echo "<div style='text-align:center'>";
+					echo "<div class='paginate'>";
+					if($start < $max){
+					    echo "<a href='/dashboard?start=".$start."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					    echo "<a href='/dashboard?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					}
+					if($start > $chunk){
+					    $prev = $start - 2*$chunk;
+					    if($prev < 0){
+						$prev = 0;
+					    }
+					    echo "<a href='/dashboard?start=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					    echo "<a href='/dashboard?start=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					}
+					echo "</div>";
+					echo "</div>";
+					?>
 
 					<div class="wrap-table100-nextcols js-pscroll">
 
@@ -543,24 +560,6 @@ function uploadprofileimage(){
 
 								<tbody>
 								<?php $ctr = 1; ?>
-								<tr class="row100 body">
-								<?php
-								echo "<td colspan='10' align='center' class='paginate'>";
-								if($start < $max){
-								    echo "<a href='/dashboard?start=".$start."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-								    echo "<a href='/dashboard?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-								}
-								if($start > $chunk){
-								    $prev = $start - 2*$chunk;
-								    if($prev < 0){
-									$prev = 0;
-								    }
-								    echo "<a href='/dashboard?start=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-								    echo "<a href='/dashboard?start=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-								}
-								echo "</td>";
-								?>
-								</tr>
                                                                 @foreach ($images as $img)
 									<?php
 
@@ -608,7 +607,8 @@ function uploadprofileimage(){
 								</tbody>
 
 							</table>
-							<div align='center' class='paginate'>
+							<div style='text-align:center'>
+							<div class='paginate'>
 							<?php
 
 							if($start < $max){
@@ -624,6 +624,7 @@ function uploadprofileimage(){
 							    echo "<a href='/dashboard?start=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 							}
 							?>
+							</div>
 							</div>
 						</div>
 

@@ -255,14 +255,15 @@ option {
     color: blue;
     float: left;
     padding: 10px 15px;
- border-radius: 10px;
- transition: background-color .5s; 
+    text-align: center;
+    border-radius: 10px;
+    transition: background-color .5s; 
 }
 
 .paginate a.active {
     background-color: lightblue;
     color: lightblue;
- border-radius: 10px;
+    border-radius: 10px;
 }
 
 .paginate a:hover:not(.active) {
@@ -601,6 +602,7 @@ else{
 		<!-- old css ends -->
 
 		<!-- Main -->
+			<div style='text-align:center;'>
 			<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
@@ -618,6 +620,7 @@ else{
 				    ?>
 
 				    <br />
+			</div>
 			</div>
 			<div id="main">
 
@@ -666,6 +669,7 @@ else{
 
 
 				<br /><br />
+				<div style='text-align:center;'>
 				<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
@@ -707,7 +711,7 @@ else{
 					-->
 
 				</div>
-
+				</div>
 
 		<!-- Scripts -->
 
