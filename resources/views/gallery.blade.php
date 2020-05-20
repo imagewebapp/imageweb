@@ -270,6 +270,7 @@ option {
     background-color: lightgray;
 }
 </style>
+<!-- Search button style -->
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 
@@ -400,7 +401,7 @@ option {
             selectedmode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
             containerdiv = document.getElementById('tagscontainer');
             if(selectedmode == 'tags'){
-                containerdiv.innerHTML = "Enter Keywords(separated by commas): <input type='text' name='tagslist' size='30'> ";
+                containerdiv.innerHTML = "<label style='color:blue;'>Enter Keywords(separated by commas):</label> <input type='text' name='tagslist' size='30'> ";
             }
             else{
                 containerdiv.innerHTML = "";
@@ -587,7 +588,7 @@ option {
 <?php
 	if(array_key_exists('selmode', $_GET) && $_GET['selmode'] == "tags"){
 ?>
-<span id='tagscontainer'>Enter Tags:<input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>"> </span>
+<span id='tagscontainer'><label style="color:blue;">Enter Tags:</label><input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>"> </span>
 <?php
 }
 else{
@@ -596,7 +597,7 @@ else{
 <?php
 }
 ?>
-<input type='button' name='btngo' id='btngo' value='  Go  ' onClick='javascript:searchgallery();'>
+<input type='button' name='btngo' id='btngo' value='Search' onClick='javascript:searchgallery();' style="background-image: url(/images/search.png);background-repeat: no-repeat;cursor: pointer;border:none;vertical-align:middle;">
 </form>
 </div>
 		<!-- old css ends -->
