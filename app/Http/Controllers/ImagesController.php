@@ -214,6 +214,20 @@ function iscopyrighted($imagefile){
 }
 
 
+function removeheaders($imagefile){
+    try{
+    $img = new Imagick($imagefile);
+    $img->stripImage();
+    $img->writeImage($imagefile);
+    $img->clear();
+    $img->destroy();
+    }
+    catch(Exception $e){
+	echo 'Exception caught: ',  $e->getMessage(), "\n";
+    }
+}
+
+
 function isduplicateimage($username, $imagefilepath){
     $dir = env("IMAGE_BASE_PATH", "");
     if($dir == ""){
@@ -395,6 +409,7 @@ class ImagesController extends BaseController
 		if($r){
 		    return "This is a duplicate image. This image cannot be uploaded.";
 		}
+		removeheaders($tempfilename);
                 move_uploaded_file($tempfilename, $newfilepath);
                 $imresraw = getimageresolution($newfilepath);
                 $imres = implode("x", $imresraw);
@@ -523,7 +538,7 @@ class ImagesController extends BaseController
 	if($mode == 'all' || $mode == ''){
             $imagesrecs = DB::table('images')->where([ ['verified', '=',1], ['removed', '=', 0]])->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();
             //$imagesrecs = DB::table('images')->where('verified', 1)->orderBy('uploadts', 'DESC')->get();
-            $totalcount = DB::table('images')->where('verified', 1)->count();
+            $totalcount = DB::table('images')->where([['verified', '=', 1], ['removed', '=', 0]])->count();
 	    $lastpoint = $totalcount - $chunksize;
 	}
 	elseif($mode == 'popularity'){
@@ -542,6 +557,8 @@ class ImagesController extends BaseController
 	    $alltags = explode(",", $tags);
 	    for($i=0; $i < count($alltags); $i++){ 
 		$tag = $alltags[$i];
+		$tag = preg_replace('/^\s+/', '', $tag);
+		$tag = preg_replace('/\s+$/', '', $tag);
 	        $imgs = DB::table('images')->where([ ['verified', '=', '1'], ['imagetags', 'like', '%'.$tag.'%'], ['removed', '=',0] ])->skip($startpoint)->take($chunksize)->get();
 		for($c=0; $c < count($imgs); $c++){
 		    $img = $imgs[$c];
@@ -551,7 +568,6 @@ class ImagesController extends BaseController
 	    $totalcount = count($imagesrecs);
 	    $lastpoint = $totalcount - $chunksize;
 	}
-	
         $startpoint = $startpoint + $chunksize;
         $username = getuser();
         $profileimagepath = "";
