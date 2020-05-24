@@ -646,7 +646,7 @@ class ImagesController extends BaseController
 	$lowresimagefilename = $imagepathparts[3];
         $user = DB::table('users')->where('username', $imageownername)->first();
         $ownerid = $user->id;
-        $image = DB::table('images')->where([ ['userid', '=', $ownerid], ['lowresfilename', '=', $lowresimagefilename] ])->first();
+        $image = DB::table('images')->where([ ['userid', '=', $ownerid], ['lowresfilename', '=', $lowresimagefilename], ['removed', '=', 0] ])->first();
         if(!$image){
 	    return "Image Couldn't be found!";
 	}
@@ -691,7 +691,7 @@ class ImagesController extends BaseController
         $imagepathparts = explode("/", $imagepath);
 	$pathpartslength = count($imagepathparts);
 	$imgfilename = $imagepathparts[$pathpartslength-1];
-	$imagerecord = DB::table('images')->where('lowresfilename', $imgfilename)->first();
+	$imagerecord = DB::table('images')->where([ ['lowresfilename', '=', $imgfilename ], ['removed', '=', 0] ])->first();
 	$imagecategory = $imagerecord->categories;
 	$imagetags = $imagerecord->imagetags;
 	$imageprice = $imagerecord->price;
@@ -708,7 +708,7 @@ class ImagesController extends BaseController
 	$unique_images = array();
 	$imagesinfo = array();
 	for($c=0;$c < count($catslist);$c++){
-	    $imagerecs = DB::table('images')->where([ ['categories', 'like', '%'.$catslist[$c].'%'], ['verified', '=', '1'] ])->take(20)->get();
+	    $imagerecs = DB::table('images')->where([ ['categories', 'like', '%'.$catslist[$c].'%'], ['verified', '=', '1'], ['removed', '=', 0] ])->take(20)->get();
 	    for($i=0; $i < count($imagerecs); $i++){
 		$imgrec = $imagerecs[$i];
 		$imgfilename = $imgrec->imagefilename;
