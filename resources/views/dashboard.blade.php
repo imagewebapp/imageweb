@@ -192,13 +192,67 @@ label {
 }
 
 select, option {
-    width: 250px;
+    width: 150px;
 }
 
 option {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+input {
+    width: 200px;
+    border-radius: 5px;
+}
+
+label {
+    font-size: small;
+}
+
+div {
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.select-css {
+	display: block;
+	font-size: 16px;
+	font-family: sans-serif;
+	font-weight: 700;
+	color: #444;
+	line-height: 1.3;
+	padding: .6em 1.4em .5em .8em;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+.select-css::-ms-expand {
+	display: none;
+}
+.select-css:hover {
+	border-color: #888;
+}
+.select-css:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222;
+	outline: none;
+}
+.select-css option {
+	font-weight:normal;
 }
 
 /* Change Style when screen width is 768px or less*/
@@ -323,7 +377,8 @@ option {
 
             }
 
-        </script> 
+        </script>
+
 <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
 <script type='text/javascript'>
 
@@ -502,14 +557,15 @@ function uploadprofileimage(){
 
 							<tr width='100%'>
 
-								<td colspan='8' width='80%'>
+								<td colspan='8' width='80%' align='center'>
 								    <div class="form-container">
-									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/*'><input type='text' name='imagetags' id='imagetags' value='' placeholder='Enter tags here'> <label>Select Categories:</label> <select name='categories' size='3' multiple>
+									<div style="background-color:lightblue;white-space:nowrap">
+									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/jpeg' title="select file" style="color:transparent;" onchange="this.style.color='blue';">&nbsp;&nbsp;<label>Enter Tags</label><input type='text' name='imagetags' id='imagetags' value='' placeholder='Enter tags here'> <label>Select Categories:</label> <select name='categories' size='1' class="select-css" multiple>
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
-									</select> <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'><span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
-						<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></form>
+									</select>&nbsp;&nbsp; <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'></div><div style="background-color:lightblue;white-space:nowrap">&nbsp;&nbsp;<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
+						<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></div></form>
 								    </div>
 								</td>
 

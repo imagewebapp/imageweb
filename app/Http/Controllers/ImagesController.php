@@ -967,7 +967,7 @@ class ImagesController extends BaseController
             return view('login');
         }
         // Now allow user to verify images.
-        $images = DB::table('images')->where('verified', 0)->get();
+        $images = DB::table('images')->where([ ['verified', '=', 0], ['removed', '=', '0'] ])->get();
         $imagesdict = array();
         $numimages = count($images);
         for($i=0; $i < $numimages; $i++){
@@ -1036,7 +1036,7 @@ class ImagesController extends BaseController
   	  $mailcontent->to($emailid, $firstname." ".$lastname)->subject($subject);
   	  $mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
 	});
-	$images = DB::table('images')->where('verified', 0)->get();
+	$images = DB::table('images')->where([ ['verified', '=',  0], ['removed', '=', '0'] ])->get();
         $imagesdict = array();
         $numimages = count($images);
         for($i=0; $i < $numimages; $i++){
