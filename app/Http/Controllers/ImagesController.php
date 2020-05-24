@@ -404,6 +404,11 @@ class ImagesController extends BaseController
 		    return "The file is copyrighted. You may not upload files that are restricted using copyright";
 		}
 		*/
+		$mimetype = mime_content_type($tempfilename);
+                if($mimetype != "image/jpeg" && $mimetype != "image/jpg"){
+                    $msg = "File is not a jpeg image file. Please upload jpeg images only";
+                    return($msg);
+                }
 		$r = isduplicateimage($username, $tempfilename);
 		//$r = isduplicateimage2($userid, $tempfilename);
 		if($r){

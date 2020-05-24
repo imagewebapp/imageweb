@@ -127,7 +127,8 @@
 .form-container {
     position: relative;
     padding: 16px;
-    overflow: hidden;
+    overflow: auto;
+    overflow-y: hidden;
     border: 1px solid rgba(0,0,0,.125);
 }
 
@@ -135,7 +136,9 @@
 .form-inline {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    overflow: auto;
+    overflow-y: hidden;
 }
 
 /* Style Label */
@@ -161,6 +164,8 @@ label {
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
+    overflow: auto;
+    overflow-y: hidden;
 }
 
 /* Style Checkbox Container */
@@ -338,7 +343,17 @@ xmlhttp.onreadystatechange = function(){
 }
 //var file = this.files[0];
 //var file = document.frmimageupload.imgupload.value; 
-var file = document.getElementById('imgupload').files[0]; 
+var file = document.getElementById('imgupload').files[0];
+fname = file.name;
+if(!fname.includes(".")){
+    alert("The file extension is not supported. This file cannot be uploaded");
+    return(false);
+}
+fext = fname.split(".")[1];
+if(fext != "jpg" && fext != "jpeg"){
+    alert("You may upload jpeg files only");
+    return(false);
+}
 formdata = new FormData();
 formdata.append("imgupload", file);
 csrftoken = document.frmimageupload._token.value;
@@ -489,7 +504,7 @@ function uploadprofileimage(){
 
 								<td colspan='8' width='80%'>
 								    <div class="form-container">
-									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/*'> <label>Enter Tags:</label><input type='text' name='imagetags' id='imagetags' value=''> <label>Select Categories:</label> <select name='categories' size='3' multiple>
+									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/*'><input type='text' name='imagetags' id='imagetags' value='' placeholder='Enter tags here'> <label>Select Categories:</label> <select name='categories' size='3' multiple>
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
