@@ -871,7 +871,8 @@ class ImagesController extends BaseController
         $rules = array(
           'username' => 'required|alphaNum|min:4', // make sure the email is an actual email
           'password' => 'required|alphaNum|min:8',
-          'confirmpassword' => 'required|alphaNum|min:8|same:password'
+          'confirmpassword' => 'required|alphaNum|min:8|same:password',
+	  'email' => 'required'
         );
         $validator = Validator::make(Input::all() , $rules);
         // if the validator fails, redirect back to the form
@@ -885,6 +886,9 @@ class ImagesController extends BaseController
         $emailid = $req->input('email');
         $password = Hash::make($req->input('password'));
         $confirmpassword = Hash::make($req->input('confirmpassword'));
+	if($req->input('password') != $req->input('confirmpassword')){
+	    return("Password and Confirm Password fields do not match");
+	}
 
         $data = array('firstname' => $firstname, 'lastname' => $lastname, 'username' => $username, 'email' => $emailid, 'password' => $password);
         // send an email with verification link. Generate a verification code first.
