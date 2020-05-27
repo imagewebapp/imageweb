@@ -193,6 +193,7 @@
 		imgtags = document.getElementById('imagetags');
 		imgtags.innerHTML = imagedetails[lowrespath]['imagetags'];
 		imgprice = document.getElementById('price');
+		price = imagedetails[lowrespath]['price'];
 		if(imagedetails[lowrespath]['price'] == 0 || imagedetails[lowrespath]['price'] == ""){
 		    imagedetails[lowrespath]['price'] = "CURRENT PRICE: FREE";
 		}
@@ -204,6 +205,13 @@
 		imgcats.innerHTML = imagedetails[lowrespath]['categories'];
 		imgowner = document.getElementById('owner');
 		imgowner.innerHTML = imagedetails[lowrespath]['owner'];
+		premiumspan = document.getElementById('premium');
+		if(price > 0){
+		    premiumspan.innerHTML = "&nbsp;&nbsp;<button class='add-to-cart btn btn-default' id='btnbuy' type='button' onclick='javascript:buyimage(\"" + lowrespath + "\");'>Buy Original</button><span id='waitpdiv'></span>";
+		}
+		else{
+		    premiumspan.innerHTML = "";
+		}
 		//captchadiv = document.getElementById('captchacontent');
 		//captchadiv.innerHTML = "<div class='g-recaptcha' data-sitekey='6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s'></div>";
 		downloadbutton = document.getElementById('btndownload');
@@ -263,6 +271,8 @@
 	    waiter.innerHTML = "<img src='/images/loading_small.gif'>";
         }
 
+	function buyimage(){
+	}
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
   </head>
@@ -389,7 +399,15 @@
 						</div>
 						<div class="action">
 
-							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Download</button><span id='waitdiv'></span>
+							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Free Download</button><span id='waitdiv'></span><span id="premium">
+							<?php
+							if(round($imageprice, 2) > 0.00){
+							?> 
+							&nbsp;&nbsp;<button class="add-to-cart btn btn-default" id="btnbuy" type="button" onclick="javascript:buyimage('<?php echo $imagepath; ?>');">Buy Original</button><span id='waitpdiv'></span>
+							<?php
+							}
+							?>
+							</span>
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
