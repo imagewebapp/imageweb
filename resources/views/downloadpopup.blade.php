@@ -215,13 +215,18 @@
 
 
 	function downloadimage(){
-            imgpathparts = imgpath.split("_lowres");
-            origimgpath = imgpathparts[0] + imgpathparts[1];
-            origimgpathparts = origimgpath.split("/");
-            filename = origimgpathparts[origimgpathparts.length - 1];
+            //imgpathparts = imgpath.split("_lowres");
+            //origimgpath = imgpathparts[0] + imgpathparts[1];
+            //origimgpathparts = origimgpath.split("/");
+            //filename = origimgpathparts[origimgpathparts.length - 1];
+	    // ===================================
+	    imgpathparts = imgpath.split("/");
+	    filename = imgpathparts[imgpathparts.length - 1];
+	    // ===================================
             var anchor = document.querySelector('a');
             var a = document.createElement('a');
-	    a.href = origimgpath;
+	    //a.href = origimgpath;
+	    a.href = imgpath;
             a.download = filename;
             a.style = 'display: none';
             anchor.parentNode.appendChild(a);
@@ -353,7 +358,18 @@
 							<span class="review-no" id="imagehits"><?php echo $imagehits; ?> downloads</span>
 						</div>
 						<p class="product-description" id="imagecategory"><?php echo $imagecategory; ?>.</p>
-						<h4 class="price" id="price">current price (US$): <span><?php echo $imageprice; ?></span></h4>
+						<?php
+						if($imageprice == "FREE"){
+						?>
+						<h4 class="price" id="price">current price (US$): <span>FREE</span></h4>
+						<?php
+						}
+						else{
+						?>
+						<h4 class="price" id="price">current price (US$): <span><?php echo number_format(round($imageprice,2), 2); ?></span></h4>
+						<?php
+						}
+						?>
 						<p class="vote" id="owner">This image is owned by <strong><?php echo $imageowner; ?></strong></p>
 						<!--
 						<h5 class="sizes">sizes:
