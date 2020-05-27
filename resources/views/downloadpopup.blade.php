@@ -179,6 +179,21 @@
 	/*# sourceMappingURL=style.css.map */
 
     </style>
+    <style>
+
+	.semitrans {
+		  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		  filter: alpha(opacity=100);
+		  opacity: 1.0;
+		  -moz-opacity: 1.0; 
+		  -khtml-opacity: 1.0;
+		  background-color:#a8e7f0;
+		  color:#0000AA;
+		  position:absolute; top:10px; left:10px; width:400px; height:auto; max-width:60%; max-height:60%; text-align:center; cursor: default;outline: none;align-items: center;border: 20px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
+		}
+
+    </style>
+
     <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
     <script>
 	imgpath = '<?php echo $imagepath; ?>';
@@ -219,6 +234,7 @@
 		downloadbutton.onclick = downloadimage;
 	    }
 	    imagetag.focus();
+	    closescreen();
 	}
 
 
@@ -271,7 +287,17 @@
 	    waiter.innerHTML = "<img src='/images/loading_small.gif'>";
         }
 
-	function buyimage(){
+	function closescreen(){
+	    screendiv = document.getElementById('transscreens');
+  	    screendiv.innerHTML = "";
+  	    screendiv.style.display = "none";
+	}
+
+	function buyimage(lowresimgpath){
+	    screendiv = document.getElementById('transscreens');
+  	    screendiv.innerHTML += "<br>Select your payment option below:";
+	    screendiv.innerHTML += "<br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:blue;font-weight:bold;'>Close&nbsp;Screen</a>";
+  	  screendiv.style.display = "";
 	}
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
@@ -397,6 +423,7 @@
 						<div id="captchacontent">
 						<div class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></div>
 						</div>
+						<div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"></div>
 						<div class="action">
 
 							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Free Download</button><span id='waitdiv'></span><span id="premium">
