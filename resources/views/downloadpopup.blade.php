@@ -189,7 +189,7 @@
 		  -khtml-opacity: 1.0;
 		  background-color:#a8e7f0;
 		  color:#0000AA;
-		  position:absolute; top:10px; left:10px; width:400px; height:auto; max-width:60%; max-height:60%; text-align:center; cursor: default;outline: none;align-items: center;border: 20px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
+		  position:absolute; top:10px; left:10px; width:400px; height:auto; max-width:60%; max-height:60%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
 		}
 
     </style>
@@ -213,7 +213,7 @@
 		    imagedetails[lowrespath]['price'] = "CURRENT PRICE: FREE";
 		}
 		else{
-		    imagedetails[lowrespath]['price'] = "CURRENT PRICE (US$): " + imagedetails[lowrespath]['price'];
+		    imagedetails[lowrespath]['price'] = "CURRENT PRICE (US$): " + parseFloat(imagedetails[lowrespath]['price']).toFixed(2);
 		}
 		imgprice.innerHTML = imagedetails[lowrespath]['price'];
 		imgcats = document.getElementById('imagecategory');
