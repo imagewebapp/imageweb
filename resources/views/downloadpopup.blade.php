@@ -189,7 +189,7 @@
 		  -khtml-opacity: 1.0;
 		  background-color:#a8e7f0;
 		  color:#0000AA;
-		  position:absolute; top:10px; left:10px; width:400px; height:auto; max-width:60%; max-height:60%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
+		  position:absolute; top:10px; left:10px; width:500px; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
 		}
 
     </style>
@@ -293,10 +293,21 @@
   	    screendiv.style.display = "none";
 	}
 
+	function paypal(lowresimgpath){
+	}
+
+	function stripe(lowresimgpath){
+	}
+
 	function buyimage(lowresimgpath){
+	    captchaval = grecaptcha.getResponse();
+	    if(!captchaval || captchaval == ""){
+		alert("Please fulfil the captcha challenge to continue.");
+		return(false);
+	    }
 	    screendiv = document.getElementById('transscreens');
   	    screendiv.innerHTML += "<br>Select your payment option below:";
-	    screendiv.innerHTML += "<br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:blue;font-weight:bold;'>Close&nbsp;Screen</a>";
+	    screendiv.innerHTML += "<br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();'>Close&nbsp;Screen</a>";
   	  screendiv.style.display = "";
 	}
     </script>
@@ -438,6 +449,8 @@
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
+						<div style="font-style:italic;color:blue;"> "Free Download" allows you to download a low resolution version of the selected image.</div>
+						<div style="font-style:italic;color:blue;"> "Buy Original" allows you to purchase and download the original high resolution version of the selected image.</div>
 					</div>
 				</div>
 			</div>
