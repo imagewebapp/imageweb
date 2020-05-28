@@ -536,6 +536,7 @@ function uploadprofileimage(){
 	  </div>
 	    
     </nav>
+
     <div id='cssmenu'>
 	<ul>
 	   <li class='active'><a href='/dashboard'><span>Dashboard</span></a></li>
@@ -551,6 +552,7 @@ function uploadprofileimage(){
 	   <li class='last'><a href='/termsandconditions'><span>Terms and Conditions</span></a></li>
 	</ul>
     </div>
+
 <!-- Top panel ends here -->
 
 						<table>

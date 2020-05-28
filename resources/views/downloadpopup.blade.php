@@ -182,11 +182,11 @@
     <style>
 
 	.semitrans {
-		  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-		  filter: alpha(opacity=100);
-		  opacity: 1.0;
-		  -moz-opacity: 1.0; 
-		  -khtml-opacity: 1.0;
+		  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+		  filter: alpha(opacity=90);
+		  opacity: 0.9;
+		  -moz-opacity: 0.9; 
+		  -khtml-opacity: 0.9;
 		  background-color:#a8e7f0;
 		  color:#0000AA;
 		  position:absolute; top:10px; left:10px; width:500px; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
@@ -294,9 +294,13 @@
 	}
 
 	function paypal(lowresimgpath){
+	    pgdivelem = document.getElementById('pgdiv');
+	    pgdivelem.style.display = "";
 	}
 
 	function stripe(lowresimgpath){
+	    pgdivelem = document.getElementById('pgdiv');
+	    pgdivelem.style.display = "";
 	}
 
 	function buyimage(lowresimgpath){
@@ -307,7 +311,7 @@
 	    }
 	    screendiv = document.getElementById('transscreens');
   	    screendiv.innerHTML += "<br>Select your payment option below:";
-	    screendiv.innerHTML += "<br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(" + lowresimgpath + ");'>Pay&nbsp;Using&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();'>Close&nbsp;Screen</a>";
+	    screendiv.innerHTML += "<br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(" + lowresimgpath + ");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/><div id='pgdiv' style='display:none;'></div>";
   	  screendiv.style.display = "";
 	}
     </script>
