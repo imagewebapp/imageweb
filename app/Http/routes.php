@@ -106,6 +106,14 @@ Route::get('showcaptcha', array(
 Route::post('handlecaptcha', array(
     'uses' => 'ImagesController@handlecaptcha'
 ));
+
+Route::get('cardpayment', array(
+    'uses' => 'ImagesController@cardpaymentbystripe'
+));
+
+Route::post('cardpayment', array(
+    'uses' => 'ImagesController@makepaymentbystripe'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

@@ -1114,6 +1114,16 @@ class ImagesController extends BaseController
 	return view('termsandconditions')->with(array('username' => $username, 'profileimage' => $profileimagepath));
     }
 
+
+    public function cardpaymentbystripe(Request $req){
+	return view('paymentstripe');
+    }
+
+
+    public function makepaymentbystripe(Request $req){
+
+    }
+
 }
 
 
