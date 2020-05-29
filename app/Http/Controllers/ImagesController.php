@@ -32,6 +32,9 @@ use Illuminate\Support\Facades\View;
 
 use App\Validators\ReCaptcha;
 
+use Stripe\Error\Card;
+use Cartalyst\Stripe\Stripe;
+
 $imagedumppath = "/var/www/html/imageweb/users/";
 
 
@@ -1116,12 +1119,76 @@ class ImagesController extends BaseController
 
 
     public function cardpaymentbystripe(Request $req){
-	return view('paymentstripe');
+	$imageprice = 0;
+	$lowrespath = "";
+	if(array_key_exists('img', $_GET)){
+	    $lowresimg = $_GET['img'];
+	    $lowresimgparts = explode("image", $lowresimg);
+	    $basepath = "/var/www/html/imageweb/storage/users";
+	    $lowrespath = $basepath.$lowresimgparts[1];
+	    $recs = DB::table('images')->where('lowrespath', $lowrespath)->get();
+	    if(count($recs) == 0){
+		$msg = "Couldn't find image with the specification submitted";
+	 	return($msg);
+	    }
+	    $imageprice  = $recs[0]->price;
+	}
+	else{
+	    $msg = "Required parameter img missing";
+	    return($msg);
+	}
+	return view('paymentstripe')->with(array('imageprice' => $imageprice, 'lowrespath' => $lowrespath));
     }
 
 
     public function makepaymentbystripe(Request $req){
-
+	$validator = Validator::make($req->all(), ['card_no' => 'required', 
+					'ccExpiryMonth' => 'required',
+					'ccExpiryYear' => 'required',
+					'cvvNumber' => 'required',
+					 ]);
+	$input = $req->all();
+	if ($validator->passes()) {
+	    $input = array_except($input,array('_token'));
+	    $stripe = Stripe\Stripe::setApiKey(env('STRIPE_TEST_SECRET'));
+	    try {
+		$token = $stripe->tokens()->create(['card' => ['number' => $req->get('card_no'), 'exp_month' => $req->get('ccExpiryMonth'), 'exp_year' => $req->get('ccExpiryYear'), 'cvc' => $req->get('cvvNumber'), ], ]);
+		if (!isset($token['id'])) {
+		    return redirect()->route('paymentstripe');
+		}
+		$payamt = $req->get('payamt');
+		$lowrespath = $req->get('lowrespath');
+		// Validate the amount with the image
+		$recs = DB::table('images')->where([ ['price', '=', $payamt], ['lowrespath', '=', $lowrespath] ])->first();
+		if(count($recs) == 0){
+		    $msg = "Invalid price and/or image specification";
+		    return($msg);
+		}
+		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'wallet', ]);
+		if($charge['status'] == 'succeeded') {
+		    Session::flash('success', 'Payment successful!');
+		    echo "<pre>";
+		    print_r($charge);
+		    return redirect()->route('paymentstripe');
+		}
+		else{
+		    \Session::put('error','Payment was not successful!!');
+		    return redirect()->route('paymentstripe');
+		}
+	    }
+	    catch(Exception $e){
+		\Session::put('error',$e->getMessage());
+		return redirect()->route('paymentstripe');
+	    }
+	    catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
+		\Session::put('error',$e->getMessage());
+		return redirect()->route('paymentstripe');
+	    }
+	    catch(\Cartalyst\Stripe\Exception\MissingParameterException $e) {
+		\Session::put('error',$e->getMessage());
+		return redirect()->route('paymentstripe');
+	    }
+	}
     }
 
 }

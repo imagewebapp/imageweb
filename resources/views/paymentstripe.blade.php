@@ -23,7 +23,7 @@
 <div class='row'>
 <div class='col-md-4'></div>
 <div class='col-md-4'>
-<form class="form-horizontal" method="POST" id="payment-form" role="form" action="{!!route('addmoney.stripe')!!}" >
+<form class="form-horizontal" method="POST" id="payment-form" role="form" action="/cardpayment" >
 {{ csrf_field() }}
 <div class='form-row'>
 <div class='col-xs-12 form-group card required'>
@@ -50,7 +50,9 @@
 <div class='col-md-12' style="margin-left:-10px;">
 <div class='form-control total btn btn-primary' >
 Total:
-<span class='amount'><?php echo $imageprice; ?></span>
+<span class='amount'><?php echo number_format(round($imageprice,2), 2); ?></span>
+<input type='hidden' name='payamt' value="<?php echo number_format(round($imageprice,2), 2); ?>">
+<input type='hidden' name='lowrespath' value="<?php echo $lowrespath; ?>">
 </div>
 </div>
 </div>
