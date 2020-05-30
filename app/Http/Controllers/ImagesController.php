@@ -1150,43 +1150,78 @@ class ImagesController extends BaseController
 	$input = $req->all();
 	if ($validator->passes()) {
 	    $input = array_except($input,array('_token'));
-	    $stripe = Stripe\Stripe::setApiKey(env('STRIPE_TEST_SECRET'));
+	    $stripe = \Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+	    $customername = $req->get('customername');
+	    $addressline1 = $req->get('addressline1');
+	    $addressline2 = $req->get('addressline2');
+	    $city = $req->get('city');
+	    $country = $req->get('country');
 	    try {
-		$token = $stripe->tokens()->create(['card' => ['number' => $req->get('card_no'), 'exp_month' => $req->get('ccExpiryMonth'), 'exp_year' => $req->get('ccExpiryYear'), 'cvc' => $req->get('cvvNumber'), ], ]);
+		$token = $stripe->tokens()->create(['card' => ['number' => $req->get('card_no'), 'exp_month' => $req->get('ccExpiryMonth'), 'exp_year' => $req->get('ccExpiryYear'), 'cvc' => $req->get('cvvNumber'), ]]);
 		if (!isset($token['id'])) {
-		    return redirect()->route('paymentstripe');
+		    return ("Token Id is not set");
 		}
+		$tokenid = $token['id'];
 		$payamt = $req->get('payamt');
 		$lowrespath = $req->get('lowrespath');
 		// Validate the amount with the image
-		$recs = DB::table('images')->where([ ['price', '=', $payamt], ['lowrespath', '=', $lowrespath] ])->first();
+		$recs = DB::table('images')->where([ ['price', '=', $payamt], ['lowrespath', '=', $lowrespath] ])->get();
 		if(count($recs) == 0){
 		    $msg = "Invalid price and/or image specification";
 		    return($msg);
 		}
-		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'wallet', ]);
+		$imageid = $recs[0]->id;
+		$ownerid = $recs[0]->userid;
+		$s = checksession();
+		$userid = -1;
+		if($s){
+		    $sessionid = Session::getId();
+        	    $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+		    $userid = $session->userid;
+		}
+		$client_ip = "";
+        	$client_ip = get_client_ip();
+        	$details = json_decode(file_get_contents("http://ipinfo.io/{$client_ip}/json"), true);
+        	$geoloc = "";
+        	try{
+            	    if(array_key_exists("city", $details)){
+                   	$geoloc = $details['city'];
+            	    }
+        	}
+        	catch(Exception $e){
+        	}
+		$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2." ".$city." ".$country, 'tokenid' => $tokenid, 'userid' => $userid);
+		$customer = $stripe->customers()->create(['name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country] ]);
+		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');
+		    // Insert in payments table and add record in imagehits table.
+		    DB::table('payments')->insert($paymentsdata);
 		    echo "<pre>";
 		    print_r($charge);
-		    return redirect()->route('paymentstripe');
+		    DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
+		    $hittime = date("Y-m-d H:i:s");
+            	    $useragent = $_SERVER['HTTP_USER_AGENT'];
+		    $imghitsdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $userid, 'ipaddress' => $client_ip, 'geolocation' => $geoloc, 'user_agent' => $useragent, 'hittime' => $hittime);
+		    DB::table('imagehits')->insert($imghitsdata);
+		    return ('payment successful');
 		}
 		else{
 		    \Session::put('error','Payment was not successful!!');
-		    return redirect()->route('paymentstripe');
+		    return ('payment was NOT successful');
 		}
 	    }
 	    catch(Exception $e){
 		\Session::put('error',$e->getMessage());
-		return redirect()->route('paymentstripe');
+		return ($e->getMessage());
 	    }
 	    catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
 		\Session::put('error',$e->getMessage());
-		return redirect()->route('paymentstripe');
+		return ($e->getMessage());
 	    }
 	    catch(\Cartalyst\Stripe\Exception\MissingParameterException $e) {
 		\Session::put('error',$e->getMessage());
-		return redirect()->route('paymentstripe');
+		return ($e->getMessage());
 	    }
 	}
     }

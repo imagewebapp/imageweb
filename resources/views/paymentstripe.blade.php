@@ -43,8 +43,28 @@
 <div class='col-xs-4 form-group expiration required'>
 <label class='control-label'> </label>
 <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text' name="ccExpiryYear">
-<input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='hidden' name="amount" value="300">
 </div>
+</div>
+<br>
+<div class='form-row'>
+<label class='control-label'>Name</label>
+<input class='form-control' size='16' type='text' name="customername">
+</div>
+<div class='form-row'>
+<label class='control-label'>Address Line 1</label>
+<input class='form-control' size='16' type='text' name="addressline1">
+</div>
+<div class='form-row'>
+<label class='control-label'>Address Line 2</label>
+<input class='form-control' size='16' type='text' name="addressline2">
+</div>
+<div class='form-row'>
+<label class='control-label'>City</label>
+<input class='form-control' size='16' type='text' name="city">
+</div>
+<div class='form-row'>
+<label class='control-label'>Country</label>
+<input class='form-control' size='16' type='text' name="country">
 </div>
 <div class='form-row'>
 <div class='col-md-12' style="margin-left:-10px;">
