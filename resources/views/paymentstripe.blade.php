@@ -108,7 +108,7 @@
   
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay <?php echo number_format(round($imageprice,2), 2); ?></button>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay US$ <?php echo number_format(round($imageprice,2), 2); ?></button>
                             </div>
                         </div>
                         <input type='hidden' name='payamt' value="<?php echo number_format(round($imageprice,2), 2); ?>">

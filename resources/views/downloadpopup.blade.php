@@ -189,7 +189,7 @@
 		  -khtml-opacity: 1.0;
 		  background-color:#a8e7f0;
 		  color:#0000AA;
-		  position:absolute; top:10px; left:10px; width:500px; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;overflow-y:scroll;
+		  position:absolute; top:10px; left:10px; width:auto; height:auto; max-width:100%; max-height:100%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;overflow-y:scroll;
 		}
 
     </style>
@@ -436,7 +436,7 @@
 						<div id="captchacontent">
 						<div class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></div>
 						</div>
-						<div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"></div>
+						<div id="transscreens" class="semitrans" style="max-height:100%;max-width:100%;display:none;"></div>
 						<div class="action">
 
 							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Free Download</button><span id='waitdiv'></span><span id="premium">
