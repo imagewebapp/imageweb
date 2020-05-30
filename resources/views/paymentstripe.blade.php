@@ -86,7 +86,7 @@ on <= small devices and 4/12 page width on >= medium devices -->
 <div class="row">
 <div class="col-xs-12">
 <div class="form-group">
-<label for="cardNumber">Name on Card</label>
+<label for="customername">Name on Card</label>
 <div class="input-group">
 <input type="tel" class="form-control" name="customername"  placeholder="Name on card" autocomplete="cc-number" />
 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
@@ -97,7 +97,7 @@ on <= small devices and 4/12 page width on >= medium devices -->
 <div class="row">
 <div class="col-xs-12">
 <div class="form-group">
-<label for="cardNumber">Card Number</label>
+<label for="card_no">Card Number</label>
 <div class="input-group">
 <input type="tel" class="form-control" name="card_no"  placeholder="Valid Card Number" autocomplete="cc-number" required autofocus />
 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
@@ -106,23 +106,24 @@ on <= small devices and 4/12 page width on >= medium devices -->
 </div>
 
 <div class="row">
-<div class="col-xs-7 col-md-7">
+<div class="col-xs-4">
 <div class="form-group">
-<label for="cardExpiry"><span class="hidden-xs">Expiration Month</span><span class="visible-xs-inline"></span></label>
-<input type="tel" class="form-control" name="ccExpiryMonth" placeholder="MM" autocomplete="cc-exp" required />
+<label><span class="hidden-xs">Expiration Month/Year</span><span class="visible-xs-inline"></span></label>
+<input type="tel" class="form-control" name="ccExpiryMonth" placeholder="MM" autocomplete="cc-exp" size=4 required />
 </div>
 </div>
-<div class="col-xs-7 col-md-7">
+/
+<div class="col-xs-4">
 <div class="form-group">
-<label for="cardExpiry"><span class="hidden-xs">Expiration Year</span><span class="visible-xs-inline"></span></label>
-<input type="tel" class="form-control" name="ccExpiryYear" placeholder="YYYY" autocomplete="cc-exp" required />
+<input type="tel" class="form-control" name="ccExpiryYear" placeholder="YYYY" autocomplete="cc-exp" size=4 required />
 </div>
 </div>
 </div>
-<div class="col-xs-5 col-md-5 pull-right">
+<div class="col-xs-5">
 <div class="form-group">
 <label for="cardCVC">CVV Code</label>
 <input type="tel" class="form-control" name="cvvNumber" placeholder="CVC" autocomplete="cc-csc" required />
+<span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
 </div>
 </div>
 
@@ -131,8 +132,7 @@ on <= small devices and 4/12 page width on >= medium devices -->
 <div class="form-group">
 <label for="cardNumber">Address Line 1</label>
 <div class="input-group">
-<input type="tel" class="form-control" name="addressline1"  placeholder="Address line 1" />
-<span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+<input type="tel" class="form-control" name="addressline1"  placeholder="Address line 1" size=12 />
 </div>
 </div>                            
 </div>
@@ -142,23 +142,22 @@ on <= small devices and 4/12 page width on >= medium devices -->
 <div class="form-group">
 <label for="cardNumber">Address Line 2</label>
 <div class="input-group">
-<input type="tel" class="form-control" name="addressline2"  placeholder="Address line 2" />
-<span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+<input type="tel" class="form-control" name="addressline2"  placeholder="Address line 2" size=12 />
 </div>
 </div>                            
 </div>
 
 <div class="row">
-<div class="col-xs-7 col-md-7">
+<div class="col-xs-4">
 <div class="form-group">
 <label for="cardExpiry"><span class="hidden-xs">City</span><span class="visible-xs-inline"></span></label>
-<input type="tel" class="form-control" name="city" autocomplete="cc-exp" required />
+<input type="tel" class="form-control" name="city" autocomplete="cc-exp" size=8 required />
 </div>
 </div>
-<div class="col-xs-7 col-md-7">
+<div class="col-xs-4">
 <div class="form-group">
 <label for="cardExpiry"><span class="hidden-xs">Country</span><span class="visible-xs-inline"></span></label>
-<input type="tel" class="form-control" name="country" autocomplete="cc-exp" required />
+<input type="tel" class="form-control" name="country" autocomplete="cc-exp" size=8 required />
 </div>
 </div>
 </div>

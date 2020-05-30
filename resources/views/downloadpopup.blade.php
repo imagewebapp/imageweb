@@ -182,14 +182,14 @@
     <style>
 
 	.semitrans {
-		  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
-		  filter: alpha(opacity=90);
-		  opacity: 0.9;
-		  -moz-opacity: 0.9; 
-		  -khtml-opacity: 0.9;
+		  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		  filter: alpha(opacity=100);
+		  opacity: 1.0;
+		  -moz-opacity: 1.0; 
+		  -khtml-opacity: 1.0;
 		  background-color:#a8e7f0;
 		  color:#0000AA;
-		  position:absolute; top:10px; left:10px; width:500px; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;
+		  position:absolute; top:10px; left:10px; width:500px; height:auto; max-width:80%; max-height:80%; text-align:center; cursor: default;outline: none;align-items: center;border: 10px solid rgba(0, 0, 0, 0.3);overflow-x:scroll;overflow-y:scroll;
 		}
 
     </style>
@@ -239,14 +239,23 @@
 
 
 	function downloadimage(){
-            //imgpathparts = imgpath.split("_lowres");
-            //origimgpath = imgpathparts[0] + imgpathparts[1];
-            //origimgpathparts = origimgpath.split("/");
-            //filename = origimgpathparts[origimgpathparts.length - 1];
+	    filename = "";
+	    /*
+	    if(parseFloat(imgprice) == 0.00 || imgprice == "FREE" || !imgprice){
+                imgpathparts = imgpath.split("_lowres");
+            	origimgpath = imgpathparts[0] + imgpathparts[1];
+            	origimgpathparts = origimgpath.split("/");
+            	filename = origimgpathparts[origimgpathparts.length - 1];
+	    }
+	    else{
+	    */
 	    // ===================================
-	    imgpathparts = imgpath.split("/");
-	    filename = imgpathparts[imgpathparts.length - 1];
+	    	imgpathparts = imgpath.split("/");
+	    	filename = imgpathparts[imgpathparts.length - 1];
 	    // ===================================
+	    /*
+	    }
+	    */
             var anchor = document.querySelector('a');
             var a = document.createElement('a');
 	    //a.href = origimgpath;
@@ -301,6 +310,23 @@
 	function stripe(lowresimgpath){
 	    pgdivelem = document.getElementById('pgdiv');
 	    pgdivelem.style.display = "";
+	    var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    //alert(xmlhttp.responseText);
+		    pgdivelem.innerHTML = xmlhttp.responseText;
+                }
+            }
+            targeturl = "/cardpayment?img=" + lowresimgpath;
+            xmlhttp.open("GET",targeturl,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
+            xmlhttp.send();
 	}
 
 	function buyimage(lowresimgpath){
@@ -311,7 +337,7 @@
 	    }
 	    screendiv = document.getElementById('transscreens');
   	    screendiv.innerHTML += "<br>Select your payment option below:";
-	    screendiv.innerHTML += "<br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(" + lowresimgpath + ");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/><div id='pgdiv' style='display:none;'></div>";
+	    screendiv.innerHTML += "<div><br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/></div><div id='pgdiv' style='display:none;'></div>";
   	  screendiv.style.display = "";
 	}
     </script>
