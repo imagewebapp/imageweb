@@ -1192,7 +1192,7 @@ class ImagesController extends BaseController
         	}
 		$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2." ".$city." ".$country, 'tokenid' => $tokenid, 'userid' => $userid);
 		$customer = $stripe->customers()->create(['name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country] ]);
-		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer]);
+		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer->id]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');
 		    // Insert in payments table and add record in imagehits table.
