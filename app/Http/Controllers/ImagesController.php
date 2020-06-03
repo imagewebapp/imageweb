@@ -1117,6 +1117,38 @@ class ImagesController extends BaseController
 	return view('termsandconditions')->with(array('username' => $username, 'profileimage' => $profileimagepath));
     }
 
+    public function paymentbypaypal(Request $req){
+	$imageprice = 0;
+        $lowrespath = "";
+        if(array_key_exists('img', $_GET)){
+	    $lowresimg = $_GET['img'];
+            $lowresimgparts = explode("image", $lowresimg);
+            $basepath = "/var/www/html/imageweb/storage/users";
+            $lowrespath = $basepath.$lowresimgparts[1];
+            $recs = DB::table('images')->where('lowrespath', $lowrespath)->get();
+            if(count($recs) == 0){
+                $msg = "Couldn't find image with the specification submitted";
+                return($msg);
+            }
+            $imageprice  = $recs[0]->price;
+	}
+	else{
+	    $msg = "Required parameter img missing";
+            return($msg);
+	}
+	return view('paymentpaypal')->with(array('imageprice' => $imageprice, 'lowrespath' => $lowrespath));
+    }
+
+
+    public function makepaymentbypaypal(Request $req){
+	require 'vendor/autoload.php';
+	$apiContext = new \PayPal\Rest\ApiContext(
+  	    new \PayPal\Auth\OAuthTokenCredential(
+    	    	env('PAYPAL_CLIENT_ID'),
+    	    	env('PAYPAL_SECRET')
+  	    )
+	);
+    }
 
     public function cardpaymentbystripe(Request $req){
 	$imageprice = 0;
@@ -1195,6 +1227,8 @@ class ImagesController extends BaseController
 		if(!$customer){
 		    return("Could not create a customer object. Could not complete this transaction");
 		}
+		// Associate a source with the customer
+		$stripe->customers()->createSource($customer['id'], ['source' => $tokenid]);
 		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');

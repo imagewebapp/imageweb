@@ -114,6 +114,14 @@ Route::get('cardpayment', array(
 Route::post('cardpayment', array(
     'uses' => 'ImagesController@makepaymentbystripe'
 ));
+
+Route::get('paypalpayment', array(
+    'uses' => 'ImagesController@paymentbypaypal'
+));
+
+Route::post('paypalpayment', array(
+    'uses' => 'ImagesController@makepaymentbypaypal'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

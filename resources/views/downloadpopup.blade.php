@@ -305,6 +305,23 @@
 	function paypal(lowresimgpath){
 	    pgdivelem = document.getElementById('pgdiv');
 	    pgdivelem.style.display = "";
+	    var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    //alert(xmlhttp.responseText);
+		    pgdivelem.innerHTML = xmlhttp.responseText;
+                }
+            }
+            targeturl = "/paypalpayment?img=" + lowresimgpath;
+            xmlhttp.open("GET",targeturl,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
+            xmlhttp.send();
 	}
 
 	function stripe(lowresimgpath){
@@ -337,8 +354,51 @@
 	    }
 	    screendiv = document.getElementById('transscreens');
   	    screendiv.innerHTML += "<br>Select your payment option below:";
-	    screendiv.innerHTML += "<div><br><a href='#_' onclick='javascript:paypal(" + lowresimgpath + ");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/></div><div id='pgdiv' style='display:none;'></div>";
+	    screendiv.innerHTML += "<div><br><a href='#_' onclick='javascript:paypal(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/></div><div id='pgdiv' style='display:none;'></div>";
   	  screendiv.style.display = "";
+	}
+
+
+	if(typeof(String.prototype.trim) === "undefined"){
+	    String.prototype.trim = function(){
+		return String(this).replace(/^\s+|\s+$/g, '');
+	    };
+	}
+
+	function validate_and_submit(){
+	    //alert("HELLO");
+	    cust_name = document.payment_form.customername.value;
+	    card_num = document.payment_form.card_no.value;
+	    cvv_num = document.payment_form.cvvNumber.value;
+	    exp_mon = document.payment_form.ccExpiryMonth.value;
+	    exp_year = document.payment_form.ccExpiryYear.value;
+	    addr_line1 = document.payment_form.addressline1.value;
+	    addr_line2 = document.payment_form.addressline2.value;
+	    city = document.payment_form.city.value;
+	    country = document.payment_form.country.value;
+	    payamount = document.payment_form.payamt.value;
+	    lowresimgpath = document.payment_form.lowrespath.value;
+	    if(cust_name.trim() == ""){
+		alert("Customer name field should not be empty");
+		return(false);
+	    }
+	    if(card_num.trim() == ""){
+		alert("Card number field should not be empty");
+		return(false);
+	    }
+	    if(cvv_num.trim() == ""){
+		alert("CVV number field should not be empty");
+		return(false);
+	    }
+	    if(exp_mon.trim() == "" || exp_year.trim() == ""){
+		alert("Expiry month and year fields should not be empty");
+		return(false);
+	    }
+	    if(addr_line1.trim() == ""){
+		alert("Address line1 should not be empty");
+		return(false);
+	    }
+	    document.payment_form.submit();
 	}
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
