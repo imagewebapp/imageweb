@@ -197,6 +197,20 @@
     <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
     <script>
 	imgpath = '<?php echo $imagepath; ?>';
+	imprice = 0.00;
+	<?php
+	if($imageprice == "FREE" || round($imageprice,2) == 0.00){
+	?>
+	    imprice = 0.00;
+	<?php
+	}
+	else{
+	?>
+	    imprice = <?php echo number_format(round($imageprice,2), 2); ?>;
+	<?php
+	}
+	?>
+	
 	function showimage(lowrespath){
 	    imagedetails = <?php echo json_encode($imagesinfo); ?>;
 	    imagetag = document.getElementById('mainimage');
@@ -235,6 +249,12 @@
 		//captchadiv.innerHTML = "<div class='g-recaptcha' data-sitekey='6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s'></div>";
 		downloadbutton = document.getElementById('btndownload');
 		imgpath = lowrespath;
+		imprice = imagedetails[lowrespath]['price'];
+		//alert(imagedetails[lowrespath]['price']);
+		if(imagedetails[lowrespath]['price'] == "CURRENT PRICE: FREE"){
+		    imprice = 0.00;
+		}
+		//alert(imprice);
 		downloadbutton.onclick = downloadimage;
 	    }
 	    imagetag.focus();
@@ -244,26 +264,37 @@
 
 	function downloadimage(){
 	    filename = "";
-	    /*
-	    if(parseFloat(imgprice) == 0.00 || imgprice == "FREE" || !imgprice){
+	    imprice = imprice.toString(10);
+	    imprice = imprice.replace("CURRENT PRICE (US$): ", "");
+	    if(parseFloat(imprice) == 0.00 || imprice == "CURRENT PRICE: FREE" || !imprice || isNaN(parseFloat(imprice))){
                 imgpathparts = imgpath.split("_lowres");
             	origimgpath = imgpathparts[0] + imgpathparts[1];
             	origimgpathparts = origimgpath.split("/");
             	filename = origimgpathparts[origimgpathparts.length - 1];
 	    }
 	    else{
-	    */
+	    
 	    // ===================================
 	    	imgpathparts = imgpath.split("/");
 	    	filename = imgpathparts[imgpathparts.length - 1];
 	    // ===================================
-	    /*
+	    
 	    }
-	    */
+	    
             var anchor = document.querySelector('a');
             var a = document.createElement('a');
-	    //a.href = origimgpath;
-	    a.href = imgpath;
+	    //alert(imprice);
+	    imprice = imprice.replace("CURRENT PRICE (US$): ", "");
+	    //alert(typeof(imprice));
+	    //alert(isNaN(parseFloat(imprice)));
+	    if(parseFloat(imprice) == 0.00 || imprice == "CURRENT PRICE: FREE" || !imprice || isNaN(parseFloat(imprice))){
+	     	a.href = origimgpath;
+		//alert("original " + origimgpath);
+	    }
+	    else{
+	    	a.href = imgpath;
+		//alert("lowres " + imgpath);
+	    }
             a.download = filename;
             a.style = 'display: none';
             anchor.parentNode.appendChild(a);
