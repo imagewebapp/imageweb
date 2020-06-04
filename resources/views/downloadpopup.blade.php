@@ -223,9 +223,13 @@
 		premiumspan = document.getElementById('premium');
 		if(price > 0){
 		    premiumspan.innerHTML = "&nbsp;&nbsp;<button class='add-to-cart btn btn-default' id='btnbuy' type='button' onclick='javascript:buyimage(\"" + lowrespath + "\");'>Buy Original</button><span id='waitpdiv'></span>";
+		    buyorigdiv = document.getElementById("buyorig");
+		    buyorigdiv.innerHTML = '"Buy Original" allows you to purchase and download the original high resolution version of the selected image.';
 		}
 		else{
 		    premiumspan.innerHTML = "";
+		    buyorigdiv = document.getElementById("buyorig");
+		    buyorigdiv.innerHTML = "";
 		}
 		//captchadiv = document.getElementById('captchacontent');
 		//captchadiv.innerHTML = "<div class='g-recaptcha' data-sitekey='6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s'></div>";
@@ -512,7 +516,15 @@
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
 						<div style="font-style:italic;color:blue;"> "Free Download" allows you to download a low resolution version of the selected image.</div>
-						<div style="font-style:italic;color:blue;"> "Buy Original" allows you to purchase and download the original high resolution version of the selected image.</div>
+						<div style="font-style:italic;color:blue;" id="buyorig">
+						<?php
+						if(round($imageprice, 2) > 0.00){
+						?>
+						 "Buy Original" allows you to purchase and download the original high resolution version of the selected image.
+						<?php
+						}
+						?>
+						</div>
 					</div>
 				</div>
 			</div>
