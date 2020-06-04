@@ -1183,6 +1183,7 @@ class ImagesController extends BaseController
 	if ($validator->passes()) {
 	    $input = array_except($input,array('_token'));
 	    $stripe = \Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+	    //$stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
 	    $customername = $req->get('customername');
 	    $addressline1 = $req->get('addressline1');
 	    $addressline2 = $req->get('addressline2');
@@ -1228,7 +1229,7 @@ class ImagesController extends BaseController
 		    return("Could not create a customer object. Could not complete this transaction");
 		}
 		// Associate a source with the customer
-		$stripe->customers()->createSource($customer['id'], ['source' => $tokenid]);
+		$stripe->customers->createSource($customer['id'], ['source' => $tokenid]);
 		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');

@@ -101,4 +101,7 @@
   background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
 }
 
+#cssmenu .active {
+  background-color: #1275ae;
+}
 

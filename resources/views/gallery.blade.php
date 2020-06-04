@@ -157,7 +157,8 @@
 .form-inline {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    padding:5px;
 }
 
 /* Style Label */
@@ -401,7 +402,7 @@ option {
             selectedmode = document.frmsearch.selmode.options[document.frmsearch.selmode.options.selectedIndex].value;
             containerdiv = document.getElementById('tagscontainer');
             if(selectedmode == 'tags'){
-                containerdiv.innerHTML = "<label style='color:blue;'>Enter Keywords(separated by commas):</label> <input type='text' name='tagslist' size='30'> ";
+                containerdiv.innerHTML = "&nbsp;&nbsp; <input type='text' name='tagslist' size='30' placeholder='comma separated keywords'> &nbsp;&nbsp;";
             }
             else{
                 containerdiv.innerHTML = "";
@@ -473,9 +474,9 @@ option {
 	function showoverlay(imgpath){
 	  //alert(imgpath);
   	  screendiv = document.getElementById('transscreens');
-	  screendiv.innerHTML = "<a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");'>Download</a>";
+	  screendiv.innerHTML = "<a href='#_' onclick='javascript:closeimg();' style='color:blue;font-weight:bold;'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");' style='color:blue;font-weight:bold;'>Download</a>";
   	  screendiv.innerHTML += "<br><img src='" + imgpath + "' style='width:100%;height:100%;'>";
-	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");'>Download</a>";
+	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();' style='color:blue;font-weight:bold;'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");' style='color:blue;font-weight:bold;'>Download</a>";
   	  screendiv.style.display = "";
 	}
         </script>
@@ -560,7 +561,7 @@ option {
 	<!-- HTML from template download page ends here... -->
 <div class="form-container">
 <form name='frmsearch' method='GET' class="form-inline" style="color:blue;">
-<label style="color:blue;">Search Images </label><select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
+<label style="color:blue;">Search Images </label>&nbsp;&nbsp;<select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
 <?php
 	if(!array_key_exists('selmode', $_GET) || $_GET['selmode'] == "all"){
 ?>
@@ -584,11 +585,11 @@ option {
 <?php
 	}
 ?>
-</select>
+</select>&nbsp;&nbsp;
 <?php
 	if(array_key_exists('selmode', $_GET) && $_GET['selmode'] == "tags"){
 ?>
-<span id='tagscontainer'><label style="color:blue;">Enter Tags:</label><input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>"> </span>
+<span id='tagscontainer'>&nbsp;&nbsp;<input type='text' name='tagslist' size='30' value="<?php echo $_GET['tagslist']; ?>" placeholder='Comma separated keywords'> &nbsp;&nbsp;</span>
 <?php
 }
 else{
@@ -597,7 +598,7 @@ else{
 <?php
 }
 ?>
-<input type='button' name='btngo' id='btngo' value='Search' onClick='javascript:searchgallery();' style="background-image: url(/images/search.png);background-repeat: no-repeat;cursor: pointer;border:none;vertical-align:middle;">
+&nbsp;&nbsp;<input type='button' name='btngo' id='btngo' value='Search' onClick='javascript:searchgallery();' style="background-image: url(/images/search.png);background-repeat: no-repeat;cursor: pointer;border:none;vertical-align:middle;padding:5px;">
 </form>
 </div>
 		<!-- old css ends -->
