@@ -159,6 +159,8 @@ return [
 
 	LaravelCaptcha\Providers\LaravelCaptchaServiceProvider::class,
 
+	Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
+
     ],
 
     /*
@@ -207,6 +209,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
+	'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
 
     ],
 
