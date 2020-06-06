@@ -414,9 +414,11 @@ class ImagesController extends BaseController
                 }
 		$r = isduplicateimage($username, $tempfilename);
 		//$r = isduplicateimage2($userid, $tempfilename);
+		/*
 		if($r){
 		    return "This is a duplicate image. This image cannot be uploaded.";
 		}
+		*/
 		removeheaders($tempfilename);
                 move_uploaded_file($tempfilename, $newfilepath);
                 $imresraw = getimageresolution($newfilepath);
@@ -1182,7 +1184,7 @@ class ImagesController extends BaseController
 	$input = $req->all();
 	if ($validator->passes()) {
 	    $input = array_except($input,array('_token'));
-	    $stripe = \Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+	    $stripe = \Stripe::setApiKey(env('STRIPE_API_SECRET'));
 	    $customername = $req->get('customername');
 	    $addressline1 = $req->get('addressline1');
 	    $addressline2 = $req->get('addressline2');
