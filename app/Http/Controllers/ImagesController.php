@@ -1229,7 +1229,8 @@ class ImagesController extends BaseController
 		    return("Could not create a customer object. Could not complete this transaction");
 		}
 		// Associate a source with the customer
-		$stripe->customers->createSource($customer['id'], ['source' => $tokenid]);
+		//$stripe->customers->createSource($customer['id'], ['source' => $tokenid]);
+		\Stripe\Customer::createSource($customer['id'], ['source' => $tokenid]);
 		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');
