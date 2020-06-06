@@ -1183,7 +1183,6 @@ class ImagesController extends BaseController
 	if ($validator->passes()) {
 	    $input = array_except($input,array('_token'));
 	    $stripe = \Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-	    //$stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
 	    $customername = $req->get('customername');
 	    $addressline1 = $req->get('addressline1');
 	    $addressline2 = $req->get('addressline2');
