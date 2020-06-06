@@ -414,11 +414,11 @@ class ImagesController extends BaseController
                 }
 		$r = isduplicateimage($username, $tempfilename);
 		//$r = isduplicateimage2($userid, $tempfilename);
-		/*
+		
 		if($r){
 		    return "This is a duplicate image. This image cannot be uploaded.";
 		}
-		*/
+		
 		removeheaders($tempfilename);
                 move_uploaded_file($tempfilename, $newfilepath);
                 $imresraw = getimageresolution($newfilepath);
