@@ -118,6 +118,10 @@
                                 <label class='control-label'>City</label> <input autocomplete='off'
                                     class='form-control card-cvc' size='4' type='text' name="city">
                             </div>
+			    <div class='col-xs-12 col-md-4 form-group cvc required'>
+                                <label class='control-label'>State</label> <input autocomplete='off'
+                                    class='form-control state' size='4' type='text' name="state">
+                            </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Country</label> 
 				<select id="country" name="country" class='form-control'>
@@ -369,6 +373,12 @@
 				   <option value="Zimbabwe">Zimbabwe</option>
 				</select>
                             </div>
+                        </div>
+  			<div class='form-row row'>
+			    <div class='col-xs-12 col-md-4 form-group cvc required'>
+                                <label class='control-label'>Zip Code</label> <input autocomplete='off'
+                                    class='form-control zip' size='4' type='text' name="zipcode">
+                            </div>
 			    <div class='col-xs-12 col-md-4 form-group required'>
                                 <label class='control-label'>Card Type</label> 
 				<select id="cardtype" name="cardtype" class='form-control'>
@@ -376,8 +386,7 @@
 				    <option value="debit">Debit Card</option>
 				</select>
 			    </div>
-                        </div>
-  
+			</div>
                         <div class='form-row row'>
                             <div class='col-md-12 error form-group hide'>
                                 <div class='alert-danger alert'>Please correct the errors and try

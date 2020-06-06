@@ -1190,6 +1190,8 @@ class ImagesController extends BaseController
 	    $addressline2 = $req->get('addressline2');
 	    $city = $req->get('city');
 	    $country = $req->get('country');
+	    $state = $req->get('state');
+	    $zipcode = $req->get('zipcode');
 	    try {
 		$token = $stripe->tokens()->create(['card' => ['number' => $req->get('card_no'), 'exp_month' => $req->get('ccExpiryMonth'), 'exp_year' => $req->get('ccExpiryYear'), 'cvc' => $req->get('cvvNumber'), ]]);
 		if (!isset($token['id'])) {
@@ -1224,8 +1226,8 @@ class ImagesController extends BaseController
         	}
         	catch(Exception $e){
         	}
-		$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2." ".$city." ".$country, 'tokenid' => $tokenid, 'userid' => $userid);
-		$customer = $stripe->customers()->create(['name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country] ]);
+		$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2.", ".$city.", ".$state.", ".$country.", PIN Code: ".$zipcode, 'tokenid' => $tokenid, 'userid' => $userid);
+		$customer = $stripe->customers()->create(['name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country, 'state' => $state, 'postal_code' => $zipcode] ]);
 		if(!$customer){
 		    return("Could not create a customer object. Could not complete this transaction");
 		}
