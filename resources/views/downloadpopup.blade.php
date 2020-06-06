@@ -16,10 +16,13 @@
 	/*****************globals*************/
 	body {
 	  font-family: 'open sans';
-	  overflow-x: hidden; }
+	  overflow-x: hidden;
+	}
 
 	img {
-	  max-width: 100%; }
+	  max-width: 100%;
+	  pointer-events: none;
+	}
 
 	.preview {
 	  display: -webkit-box;
@@ -196,6 +199,13 @@
 
     <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
     <script>
+	$('img').mousedown(function (e) {
+	  if(e.button == 2) { // right click
+	    return false; // do nothing!
+	  }
+	}
+    </script>
+    <script>
 	imgpath = '<?php echo $imagepath; ?>';
 	imprice = 0.00;
 	<?php
@@ -244,6 +254,25 @@
 		    premiumspan.innerHTML = "";
 		    buyorigdiv = document.getElementById("buyorig");
 		    buyorigdiv.innerHTML = "";
+		}
+		starsdiv = document.getElementById("stars");
+		if(!imagedetails[lowrespath]['imagehits'] || imagedetails[lowrespath]['imagehits'] == 0){
+		    starsdiv.innerHTML = "<span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span>";
+		}
+		else if(imagedetails[lowrespath]['imagehits'] > 0 && imagedetails[lowrespath]['imagehits'] <= 10){
+		    starsdiv.innerHTML = "<span class='fa fa-star checked'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span>";
+		}
+		else if(imagedetails[lowrespath]['imagehits'] > 10 && imagedetails[lowrespath]['imagehits'] <= 25){
+		    starsdiv.innerHTML = "<span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star'></span><span class='fa fa-star'></span><span class='fa fa-star'></span>";
+		}
+		else if(imagedetails[lowrespath]['imagehits'] > 25 && imagedetails[lowrespath]['imagehits'] <= 50){
+		    starsdiv.innerHTML = "<span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star'></span><span class='fa fa-star'></span>";
+		}
+		else if(imagedetails[lowrespath]['imagehits'] > 50 && imagedetails[lowrespath]['imagehits'] <= 75){
+		    starsdiv.innerHTML = "<span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star'></span>";
+		}
+		else if(imagedetails[lowrespath]['imagehits'] > 75){
+		    starsdiv.innerHTML = "<span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span><span class='fa fa-star checked'></span>";
 		}
 		//captchadiv = document.getElementById('captchacontent');
 		//captchadiv.innerHTML = "<div class='g-recaptcha' data-sitekey='6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s'></div>";
