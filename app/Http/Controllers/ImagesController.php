@@ -29,6 +29,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\URL;
 
 use App\Validators\ReCaptcha;
 
@@ -588,11 +589,40 @@ class ImagesController extends BaseController
     }
 
     
-    public function displayimage($username, $filename){
+    public function displayimage(Request $req, $username, $filename, $paymentid=-1){
         $path = storage_path('users/'.$username."/".$filename);
         if (!File::exists($path)) {
             return "file doesn't exist";
         }
+	/*
+	$referer = $req->header('HTTP_REFERER');
+	if(!$referer){
+	    $referer = URL::previous();
+	}
+	$callerdomain = env("DOMAIN_URL");
+	if(!preg_match("/".$callerdomain."/", $referer)){
+	    return "The request for the image didn't come from the correct domain";
+	}
+	*/
+	/*
+	To Do: Check if the $filename is a high res image. If so, check if it is a premium image.
+	If so, check to see if we have a valid paymentid. If not, return message saying user can't
+	see the image. If we have a valid paymentid (verified from the DB), we allow the user to
+	take the image.
+	*/
+	// Get the current (image) request URL
+	$imgurl = URL::current();
+	if(!preg_match("/lowres/", $imgurl)){
+	    // Get the price of the image
+	    $user = DB::table('users')->where('username', $username)->first();
+	    $userid = $user->id;
+	    $imgrec = DB::table('images')->where([ ['userid', '=', $userid], ['imagefilename', '=', $filename]])->first();
+	    $imgprice = number_format(round($imgrec->price, 2), 2);
+	    if($imgprice > 0.00){
+	 	// check payment Id
+		return "You can't download this image without paying for it.";
+	    }
+	}
         $file = File::get($path);
         $type = File::mimeType($path);
         $response = Response::make($file, 200);
