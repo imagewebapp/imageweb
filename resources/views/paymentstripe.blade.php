@@ -39,6 +39,7 @@
                         </div>
                     </div>                    
                 </div>
+		<div style="color:red;font-style:italic;">Fields marked with asterisk ('*') are mandatory</div>
                 <div class="panel-body">
   
                     @if (Session::has('success'))
@@ -53,23 +54,23 @@
   
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Name on Card</label> <input class='form-control' size='4' type='text' name="customername">
+                                <label class='control-label'>Name on Card *</label> <input class='form-control' size='4' type='text' name="customername">
                             </div>
                         </div>
   
                         <div class='form-row row'>
-                            <div class='col-xs-12 form-group card required'>
-                                <label class='control-label'>Card Number</label> <input autocomplete='off' class='form-control card-number' size='20' type='text' name="card_no">
+                            <div class='col-xs-12 form-group required'>
+                                <label class='control-label'>Card Number *</label> <input autocomplete='off' class='form-control card-number' size='20' type='text' name="card_no">
                             </div>
                         </div>
 			
                         <div class='form-row row'>
                             <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label> <input autocomplete='off'
+                                <label class='control-label'>CVC *</label> <input autocomplete='off'
                                     class='form-control card-cvc' placeholder='ex. 311' size='4' type='text' name="cvvNumber">
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration&nbsp;Month</label> <select id="ccExpiryMonth" name="ccExpiryMonth" class='form-control card-expiry-month'>
+                                <label class='control-label'>Expiration&nbsp;Month *</label> <select id="ccExpiryMonth" name="ccExpiryMonth" class='form-control card-expiry-month'>
 				    <option value="01">01</option>
 				    <option value="02">02</option>
 				    <option value="03">03</option>
@@ -85,7 +86,7 @@
 			    	</select>
                             </div>
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration&nbsp;Year</label> <select id="ccExpiryYear" name="ccExpiryYear" class='form-control card-expiry-year'>
+                                <label class='control-label'>Expiration&nbsp;Year *</label> <select id="ccExpiryYear" name="ccExpiryYear" class='form-control card-expiry-year'>
 				    <option value="2020">2020</option>
 				    <option value="2021">2021</option>
 				    <option value="2022">2022</option>
@@ -103,27 +104,27 @@
 
 			<div class='form-row row'>
                             <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Address Line 1</label> <input class='form-control' size='4' type='text' name="addressline1">
+                                <label class='control-label'>Address Line 1 *</label> <input class='form-control' size='4' type='text' name="addressline1">
                             </div>
                         </div>
 
 			<div class='form-row row'>
-                            <div class='col-xs-12 form-group required'>
+                            <div class='col-xs-12 form-group'>
                                 <label class='control-label'>Address Line 2</label> <input class='form-control' size='4' type='text' name="addressline2">
                             </div>
                         </div>
 
 			<div class='form-row row'>
-                            <div class='col-xs-12 col-md-4 form-group cvc required'>
+                            <div class='col-xs-12 col-md-4 form-group city'>
                                 <label class='control-label'>City</label> <input autocomplete='off'
-                                    class='form-control card-cvc' size='4' type='text' name="city">
+                                    class='form-control city' size='4' type='text' name="city">
                             </div>
-			    <div class='col-xs-12 col-md-4 form-group cvc required'>
+			    <div class='col-xs-12 col-md-4 form-group state'>
                                 <label class='control-label'>State</label> <input autocomplete='off'
                                     class='form-control state' size='4' type='text' name="state">
                             </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Country</label> 
+                            <div class='col-xs-12 col-md-4 form-group country required'>
+                                <label class='control-label'>Country *</label> 
 				<select id="country" name="country" class='form-control'>
 				   <option value="Afganistan">Afghanistan</option>
 				   <option value="Albania">Albania</option>
@@ -375,12 +376,12 @@
                             </div>
                         </div>
   			<div class='form-row row'>
-			    <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>Zip Code</label> <input autocomplete='off'
+			    <div class='col-xs-12 col-md-4 form-group zipcode required'>
+                                <label class='control-label'>Zip Code *</label> <input autocomplete='off'
                                     class='form-control zip' size='4' type='text' name="zipcode">
                             </div>
 			    <div class='col-xs-12 col-md-4 form-group required'>
-                                <label class='control-label'>Card Type</label> 
+                                <label class='control-label'>Card Type *</label> 
 				<select id="cardtype" name="cardtype" class='form-control'>
 				    <option value="credit">Credit Card</option>
 				    <option value="debit">Debit Card</option>

@@ -440,6 +440,7 @@
 	    addr_line2 = document.payment_form.addressline2.value;
 	    city = document.payment_form.city.value;
 	    country = document.payment_form.country.value;
+	    zipcode = document.payment_form.zipcode.value;
 	    payamount = document.payment_form.payamt.value;
 	    lowresimgpath = document.payment_form.lowrespath.value;
 	    if(cust_name.trim() == ""){
@@ -460,6 +461,10 @@
 	    }
 	    if(addr_line1.trim() == ""){
 		alert("Address line1 should not be empty");
+		return(false);
+	    }
+	    if(zipcode.trim() == ""){
+		alert("Zip code should not be empty");
 		return(false);
 	    }
 	    document.payment_form.submit();
