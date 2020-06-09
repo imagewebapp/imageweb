@@ -988,7 +988,7 @@ class ImagesController extends BaseController
         $categories = DB::table('categories')->get();
         $username = getuser();
         $profileimagepath = getprofileimage($username);
-        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username, 'profileimage' => $profileimagepath, 'lastpoint' => $lastpoint ));
+        return view('dashboard')->with(array('images' => $images, 'categories' => $categories, 'usertype' => $usertype, 'start' => $start, 'max' => $max, 'chunk' => $chunksize, 'username' => $username, 'userid' => $userid, 'profileimage' => $profileimagepath, 'lastpoint' => $lastpoint ));
     }
 
 

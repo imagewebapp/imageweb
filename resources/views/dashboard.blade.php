@@ -646,6 +646,7 @@ function uploadprofileimage(){
 
                       							<tr class="row100 body">
 										<?php
+										//if($img->price > 0.00 && $img->userid != $userid){
 										if($img->price > 0.00){
 										?>
 										<td class="cell100 column2">Premium Image, Can't be displayed</td>
@@ -669,7 +670,7 @@ function uploadprofileimage(){
 										@if($img->price == 0.00)
 										<td class="cell100 column6">Free</td>
 										@else
-										<td class="cell100 column6">USD {{$img->price}}</td>
+										<td class="cell100 column6">USD <?php echo number_format(round($img->price,2), 2); ?></td>
 										@endif
 										@if($img->verified == 0)										
 										<td class="cell100 column6">No</td>
