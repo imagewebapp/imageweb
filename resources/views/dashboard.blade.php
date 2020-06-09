@@ -645,9 +645,18 @@ function uploadprofileimage(){
 									?>
 
                       							<tr class="row100 body">
-
+										<?php
+										if($img->price > 0.00){
+										?>
+										<td class="cell100 column2">Premium Image, Can't be displayed</td>
+										<?php
+										}
+										else{
+										?>
 										<td class="cell100 column2"><img src='{{$imagepath}}' width='200' height='200'></td>
-
+										<?php
+										}
+										?>
 										<td class="cell100 column3"><img src='{{$lowrespath}}' width='150' height='150'></td>
 
 										<td class="cell100 column4"><img src='{{$iconpath}}' width='50' height='50'></td>

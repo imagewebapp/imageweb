@@ -612,7 +612,7 @@ class ImagesController extends BaseController
 	*/
 	// Get the current (image) request URL
 	$imgurl = URL::current();
-	if(!preg_match("/lowres/", $imgurl)){
+	if(!preg_match("/lowres/", $imgurl) && !preg_match("/_ico/", $imgurl)){
 	    // Get the price of the image
 	    $user = DB::table('users')->where('username', $username)->first();
 	    $userid = $user->id;
