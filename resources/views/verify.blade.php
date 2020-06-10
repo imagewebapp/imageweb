@@ -4,7 +4,7 @@
 
 <head>
 
-	<title>Dashboard</title>
+	<title>Verify Images Email</title>
 
 	<meta charset="UTF-8">
 
