@@ -566,7 +566,7 @@
 						<div class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></div>
 						</div>
 						<div id="transscreens" class="semitrans" style="max-height:100%;max-width:100%;display:none;"></div>
-						<div class="action">
+						<div class="action" style="display:flex;align-content: space-between;">
 
 							<button class="add-to-cart btn btn-default" id="btndownload" type="button" onclick="javascript:downloadimage();">Free Download</button><span id='waitdiv'></span><span id="premium">
 							<?php
@@ -578,7 +578,7 @@
 							?>
 							</span>
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
-							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
+							&nbsp;&nbsp;<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
 						<div style="font-style:italic;color:blue;"> "Free Download" allows you to download a low resolution version of the selected image, if the image is a premium one. If the image is not a premium image, then the original high resoluton version will be downloaded.</div><br />
 						<div style="font-style:italic;color:blue;" id="buyorig">
