@@ -580,7 +580,7 @@
 							<!-- <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> -->
 							<button class="add-to-cart btn btn-default" type="button" onclick="javascript:window.close();">Close</button>
 						</div>
-						<div style="font-style:italic;color:blue;"> "Free Download" allows you to download a low resolution version of the selected image.</div>
+						<div style="font-style:italic;color:blue;"> "Free Download" allows you to download a low resolution version of the selected image, if the image is a premium one. If the image is not a premium image, then the original high resoluton version will be downloaded.</div><br />
 						<div style="font-style:italic;color:blue;" id="buyorig">
 						<?php
 						if(round($imageprice, 2) > 0.00){

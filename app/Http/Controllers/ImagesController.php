@@ -603,6 +603,9 @@ class ImagesController extends BaseController
 	if(!preg_match("/".$callerdomain."/", $referer)){
 	    return "The request for the image didn't come from the correct domain";
 	}
+	$sessionid = Session::getId();
+        $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        $userid = $session->userid;
 	*/
 	/*
 	To Do: Check if the $filename is a high res image. If so, check if it is a premium image.
@@ -618,7 +621,8 @@ class ImagesController extends BaseController
 	    $userid = $user->id;
 	    $imgrec = DB::table('images')->where([ ['userid', '=', $userid], ['imagefilename', '=', $filename]])->first();
 	    $imgprice = number_format(round($imgrec->price, 2), 2);
-	    if($imgprice > 0.00){
+	    //if($imgprice > 0.00 && $imgrec->userid != $userid){ // This will allow the image to be viewed by its owner.
+	    if($imgprice > 0.00){ // This will allow the image to be viewed by its owner.
 	 	// check payment Id
 		return "You can't download this image without paying for it.";
 	    }
@@ -1017,7 +1021,10 @@ class ImagesController extends BaseController
             $ownername = $ownerobj->username;
             $imagepathparts = explode($ownername, $imgpath);
             $imgwebpath = "/image/".$ownername.$imagepathparts[1];
-            $imagesdict[$imgwebpath] = $imgid;
+	    $lowrespath = $images[$i]->lowrespath;
+	    $lowrespathparts = explode("users", $lowrespath);
+	    $lowreswebpath = "/image".$lowrespathparts[1];
+            $imagesdict[$imgwebpath] = [$imgid, $lowreswebpath];
         } 
         $username = getuser();
         $profileimagepath = getprofileimage($username);

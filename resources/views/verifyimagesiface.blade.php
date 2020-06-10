@@ -269,11 +269,15 @@ function submitverification(){
 								</thead>
 
 								<tbody>
-                                                                @foreach ($imagesdict as $imgpath => $imgid)
+                                                                @foreach ($imagesdict as $imgpath => $itemslist)
+									<?php
+									$imgid = $itemslist[0];
+									$lowreswebpath = $itemslist[1];
+									?>
 									
                       							<tr class="row100 body">
 
-										<td class="cell100 column2"><img src='{{$imgpath}}' width='300' height='300'></td>
+										<td class="cell100 column2"><img src='{{$lowreswebpath}}' width='300' height='300'></td>
 
 										<td class="cell100 column3">
 										Accept:<input type='radio' name='imgverify{{$imgid}}' value="accept">&nbsp;&nbsp;Reject:<input type='radio' name='imgverify{{$imgid}}' value="reject">
