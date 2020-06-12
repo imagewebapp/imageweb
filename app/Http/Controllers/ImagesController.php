@@ -1229,6 +1229,7 @@ class ImagesController extends BaseController
 	    $country = $req->get('country');
 	    $state = $req->get('state');
 	    $zipcode = $req->get('zipcode');
+	    $currency = $req->get('currency');
 	    try {
 		$token = $stripe->tokens()->create(['card' => ['number' => $req->get('card_no'), 'exp_month' => $req->get('ccExpiryMonth'), 'exp_year' => $req->get('ccExpiryYear'), 'cvc' => $req->get('cvvNumber'), ]]);
 		if (!isset($token['id'])) {
@@ -1271,7 +1272,15 @@ class ImagesController extends BaseController
 		}
 		// Associate a source with the customer
 		//\Stripe\Customer::createSource($customer['id'], ['source' => $tokenid]);
-		$charge = $stripe->charges()->create(['currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
+		$raterecs = DB::table('currencyrates')->where('currcode', $currency)->get();
+		if(count($raterecs) == 0){
+		    $currency = "USD";
+		}
+		else{
+		    $rate = $raterecs[0]->numunitsperusd;
+		    $payamt = $payamt * $rate;
+		}
+		$charge = $stripe->charges()->create(['currency' => $currency, 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
 		//$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');

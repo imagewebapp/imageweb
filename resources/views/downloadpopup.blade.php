@@ -492,10 +492,11 @@
                 }
             }
             targeturl = "/getcurrencyrate";
-	    postdata = "currname=" + currname + "&_token=" + document.frmdummy._token.value;
-	    alert(postdata);
+	    postdata = "currname=" + currname + "&_token=" + document.payment_form._token.value;
+	    //alert(postdata);
             xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
-            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
+            xmlhttp.setRequestHeader('X-CSRFToken', document.payment_form._token.value);
+	    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xmlhttp.send(postdata);
 	}
     </script>
