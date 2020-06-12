@@ -1246,6 +1246,7 @@ class ImagesController extends BaseController
 		}
 		$imageid = $recs[0]->id;
 		$ownerid = $recs[0]->userid;
+	 	$origimgpath = $recs[0]->imagepath;
 		$s = checksession();
 		$userid = -1;
 		if($s){
@@ -1286,8 +1287,15 @@ class ImagesController extends BaseController
 		    Session::flash('success', 'Payment successful!');
 		    // Insert in payments table and add record in imagehits table.
 		    DB::table('payments')->insert($paymentsdata);
-		    echo "<pre>";
-		    print_r($charge);
+		    //echo "<pre>";
+		    //print_r($charge);
+		    // Download the image on buyers device 
+		    $origimgpathparts = explode("users", $origimgpath);
+		    $origimgurl = "/image".$origimgpathparts[1];
+		    header("Content-Description: File Transfer");
+		    header("Content-Type: image/jpeg");
+		    header("Content-Disposition: attachment; filename=\"".basename($origimgurl)."\"");
+		    readfile($origimgpath);
 		    DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
 		    $hittime = date("Y-m-d H:i:s");
             	    $useragent = $_SERVER['HTTP_USER_AGENT'];
