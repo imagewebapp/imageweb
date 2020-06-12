@@ -21,6 +21,7 @@
             width: 61%;
         }
     </style>
+    
 </head>
 <body>
   
@@ -387,6 +388,15 @@
 				    <option value="debit">Debit Card</option>
 				</select>
 			    </div>
+			    <div class='col-xs-12 col-md-4 form-group required'>
+                                <label class='control-label'>Currency *</label> 
+				<select id="currency" name="currency" class='form-control' onchange="javascript:adjustpayamt();">
+				    <option value="USD">US Dollar (US$)</option>
+				    <option value="INR">Indian Rupee (Rs)</option>
+				    <option value="GBP">British Pounds (GBP)</option>
+				    <option value="EUR">Euro (EUR)</option>
+				</select>
+			    </div>
 			</div>
                         <div class='form-row row'>
                             <div class='col-md-12 error form-group hide'>
@@ -397,10 +407,10 @@
   
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-primary btn-lg btn-block" type="button" onclick='javascript:validate_and_submit();'>Pay US$ <?php echo number_format(round($imageprice,2), 2); ?></button>
+                                <button class="btn btn-primary btn-lg btn-block" id="btnpay" type="button" onclick='javascript:validate_and_submit();'>Pay US$ <?php echo number_format(round($imageprice,2), 2); ?></button>
                             </div>
                         </div>
-                        <input type='hidden' name='payamt' value="<?php echo number_format(round($imageprice,2), 2); ?>">
+                        <input type='hidden' name='payamt' id='payamt' value="<?php echo number_format(round($imageprice,2), 2); ?>">
 			<input type='hidden' name='lowrespath' value="<?php echo $lowrespath; ?>">
                     </form>
                 </div>

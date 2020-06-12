@@ -470,6 +470,35 @@
 	    document.payment_form.submit();
 	}
     </script>
+
+    <script type='text/javascript'>
+	function adjustpayamt(){
+	    currname = document.payment_form.currency.options[document.payment_form.currency.options.selectedIndex].value;
+	    //alert(currname);
+	    var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    //alert(xmlhttp.responseText);
+		    rate = xmlhttp.responseText;
+		    currvalue = document.getElementById('payamt').value * rate;
+		    document.getElementById('btnpay').innerHTML = "Pay " + currname + " " + currvalue.toFixed(2);
+		    //document.getElementById('payamt').value = currvalue.toFixed(2);
+                }
+            }
+            targeturl = "/getcurrencyrate";
+	    postdata = "currname=" + currname + "&_token=" + document.frmdummy._token.value;
+	    alert(postdata);
+            xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmdummy._token.value);
+            xmlhttp.send(postdata);
+	}
+    </script>
     <link rel="stylesheet" href="template/css/main.css" />
   </head>
 

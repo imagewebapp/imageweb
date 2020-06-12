@@ -1264,13 +1264,15 @@ class ImagesController extends BaseController
         	catch(Exception $e){
         	}
 		$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2.", ".$city.", ".$state.", ".$country.", PIN Code: ".$zipcode, 'tokenid' => $tokenid, 'userid' => $userid);
-		$customer = $stripe->customers()->create(['name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country, 'state' => $state, 'postal_code' => $zipcode] ]);
+		//$customer = $stripe->customers()->create(['name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country, 'state' => $state, 'postal_code' => $zipcode] ]);
+		$customer = $stripe->customers()->create(['source' => $tokenid, 'name' => $customername, 'address' => ['line1' => $addressline1, 'line2' => $addressline2, 'city' => $city, 'country' => $country, 'state' => $state, 'postal_code' => $zipcode] ]);
 		if(!$customer){
 		    return("Could not create a customer object. Could not complete this transaction");
 		}
 		// Associate a source with the customer
-		\Stripe\Customer::createSource($customer['id'], ['source' => $tokenid]);
-		$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
+		//\Stripe\Customer::createSource($customer['id'], ['source' => $tokenid]);
+		$charge = $stripe->charges()->create(['currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
+		//$charge = $stripe->charges()->create(['card' => $token['id'], 'currency' => 'USD', 'amount' => $payamt, 'description' => 'image payment', 'customer' => $customer['id']]);
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');
 		    // Insert in payments table and add record in imagehits table.
@@ -1302,6 +1304,16 @@ class ImagesController extends BaseController
 		return ($e->getMessage());
 	    }
 	}
+    }
+
+    function currencyrate(Request $req){
+	$currname = $req->get('currname');
+	$recs = DB::table('currencyrates')->where('currcode', $currname)->get();
+	if(count($recs) == 0){
+	    return (1);
+	}
+	$rate = $recs[0]->numunitsperusd;
+	return($rate);
     }
 
 }

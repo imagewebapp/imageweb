@@ -122,6 +122,10 @@ Route::get('paypalpayment', array(
 Route::post('paypalpayment', array(
     'uses' => 'ImagesController@makepaymentbypaypal'
 ));
+
+Route::post('getcurrencyrate', array(
+    'uses' => 'ImagesController@currencyrate'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 
