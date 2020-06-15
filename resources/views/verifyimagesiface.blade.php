@@ -278,12 +278,19 @@ function submitverification(){
 				<?php
 				echo "<span style='color:#0000AA'>".$verifymessage."</span>";
 				?>
-					<div class="wrap-table100-nextcols js-pscroll"><h3>Verify Images</h3></div>
+					<div class="wrap-table100-nextcols js-pscroll"><h3 style='text-align:center;padding-left:20px;'>Verify Images</h3></div>
 					<form name='frmimageverification' id='frmimageverification' action='/verifyimages' method='POST'>
 
 					<div class="wrap-table100-nextcols js-pscroll">
 
 						<div class="table100-nextcols">
+						<?php
+							$imageskeys = array_keys($imagesdict);
+							if(count($imageskeys) == 0){
+							    echo "<div style='text-align:center;font-weight:bold;color:red;padding-left:20px;'>There are no images to verify</div>";
+							}
+							else{
+						?>
 
 							<table width='100%'>
 
@@ -324,6 +331,9 @@ function submitverification(){
 								</tbody>
 
 							</table>
+						<?php
+							}
+						?>
 
 						</div>
 
