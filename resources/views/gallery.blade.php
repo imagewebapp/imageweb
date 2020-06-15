@@ -35,6 +35,12 @@
 
     <!-- top panel CSS -->
 
+    <!--/////////////////////////////////////////// IMP /////////////////////////////////////////////////////-->
+    <link rel="stylesheet" href="/template/com_app_min.css">	 
+      
+    <script src="/template/nn.js.download"></script>	 
+    <!--//////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
     <style>
     .container {
 	  max-width: 960px;
@@ -319,7 +325,7 @@ option {
         </script>
         <script>
 
-          $("body").on('contextmenu', function(e) {
+          $("img").on('contextmenu', function(e) {
               e.preventDefault();
           })
 
@@ -467,7 +473,7 @@ option {
 
 	function showdownloadimage(imgpath){
 	  //alert("Download Image");
-	  winnew = window.open("/downloadpopup?imagepath=" + imgpath, "downloadwindow", "width=1080,height=640");
+	  winnew = window.open("/downloadpopup?imagepath=" + imgpath, "downloadwindow", "width=1080,height=640,toolbar=no,location=no");
 	  closeimg();
 	}
 
@@ -480,6 +486,7 @@ option {
   	  screendiv.style.display = "";
 	}
         </script>
+	<script src="/template/js/common.js.download" defer=""></script>
 	<style>
 	img {
 	    pointer-events: none;
@@ -548,14 +555,39 @@ option {
 	    
     </nav>
 
-    <div id='cssmenu'>
-	<ul>
-	   <li class='active'><a href='/dashboard'><span>Dashboard</span></a></li>
-	   <li><a href='/gallery'><span>Gallery</span></a></li>
-	   <li><a href='/aboutus'><span>About Us</span></a></li>
-	   <li class='last'><a href='/termsandconditions'><span>Terms and Conditions</span></a></li>
-	</ul>
-    </div>
+    <div class="wrapper" style="transform: none;border:4px solid blue;">
+	  <header>
+        <div class="clearfix head-bottom">
+          <div class="red-navigation">
+            <div class="nav-f-block">
+              <div id="nav-icon"><span></span><span></span><span></span></div>
+              <a href="https://zeenews.india.com/"><img src="./Death of pregnant elephant in Kerala, Maneka Gandhi flays Kerala government_files/zeenewslogo_nav.png" alt="Image Web" title="Image Web"></a>
+            </div>
+            <div class="nav-s-block">
+              <div class="search" id="searchb" style="border:4px solid green;">
+						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search">
+						<button type="submit" class="searchButton">Search</button>
+                </div>
+              <div class="d-none">
+                <ul>
+				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
+				  <li><a href="/gallery" title="Gallery" style="color: yellow;border: 1px solid yellow;border-radius: 10px;margin: 14px 0px;line-height: 54px;display: inline;padding: 6px;">Gallery</a></li>
+				 <li><a href="/aboutus" title="About Us">About Us</a></li>
+				  <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="nav-t-block">
+              <ul class="social-block">
+                <li><button class="search-click"><i class="fa fa-search" aria-hidden="true"></i></button></li>
+
+              </ul>
+            </div>
+          </div>
+        </div>	
+      </header>
+ 
+      </div>
 <!-- Top panel ends here -->
 
 	<!-- HTML from template download page ends here... -->

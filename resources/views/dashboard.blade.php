@@ -117,6 +117,12 @@
     </style>
 
     <!-- top panel CSS ends -->
+	
+  <!--/////////////////////////////////////////// IMP /////////////////////////////////////////////////////-->
+<link rel="stylesheet" href="/template/com_app_min.css">	 
+      
+ <script src="/template/nn.js.download"></script>	 
+ <!--//////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <!-- upload form css -->
 <style>
@@ -380,6 +386,7 @@ div {
         </script>
 
 <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
+<script src="/template/js/common.js.download" defer=""></script>
 <script type='text/javascript'>
 
 function uploadfile(){
@@ -537,21 +544,47 @@ function uploadprofileimage(){
 	    
     </nav>
 
-    <div id='cssmenu'>
-	<ul>
-	   <li class='active'><a href='/dashboard'><span>Dashboard</span></a></li>
-	   <li><a href='/gallery'><span>Gallery</span></a></li>
-	   <?php
-		if($usertype == "admin"){
-	   ?>
-	        <li class="nav-item"><a class="nav-link" href="/verifyimagesiface">Verify Images</a></li>
-	   <?php
-	        }
-	   ?>
-	   <li><a href='/aboutus'><span>About Us</span></a></li>
-	   <li class='last'><a href='/termsandconditions'><span>Terms and Conditions</span></a></li>
-	</ul>
-    </div>
+
+	<div class="wrapper" style="transform: none;border:4px solid blue;">
+	  <header>
+        <div class="clearfix head-bottom">
+          <div class="red-navigation">
+            <div class="nav-f-block">
+              <div id="nav-icon"><span></span><span></span><span></span></div>
+              <a href=""><img src="" alt="Image Web" title="Image Web"></a>
+            </div>
+            <div class="nav-s-block">
+              <div class="search" id="searchb" style="border:4px solid green;">
+						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search">
+						<button type="submit" class="searchButton">Search</button>
+                </div>
+              <div class="d-none">
+                <ul>
+				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
+				  <li><a href="/gallery" title="Gallery" style="color: yellow;border: 1px solid yellow;border-radius: 10px;margin: 14px 0px;line-height: 54px;display: inline;padding: 6px;">Gallery</a></li>
+				<?php
+					if($usertype == "admin"){
+				?>
+					<li><a href="/verifyimagesiface">Verify Images</a></li>
+				<?php
+					}
+				?>
+				 <li><a href="/aboutus" title="About Us">About Us</a></li>
+				  <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="nav-t-block">
+              <ul class="social-block">
+                <li><button class="search-click"><i class="fa fa-search" aria-hidden="true"></i></button></li>
+
+              </ul>
+            </div>
+          </div>
+        </div>	
+      </header>
+ 
+      </div>
 
 <!-- Top panel ends here -->
 
