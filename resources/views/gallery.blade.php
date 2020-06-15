@@ -561,7 +561,7 @@ option {
           <div class="red-navigation">
             <div class="nav-f-block">
               <div id="nav-icon"><span></span><span></span><span></span></div>
-              <a href="https://zeenews.india.com/"><img src="./Death of pregnant elephant in Kerala, Maneka Gandhi flays Kerala government_files/zeenewslogo_nav.png" alt="Image Web" title="Image Web"></a>
+              <a href=""><img src="./Death of pregnant elephant in Kerala, Maneka Gandhi flays Kerala government_files/zeenewslogo_nav.png" alt="Image Web" title="Image Web"></a>
             </div>
             <div class="nav-s-block">
               <div class="search" id="searchb" style="border:4px solid green;">
@@ -640,16 +640,16 @@ else{
 			<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
-					      echo "<a href='/gallery?startpoint=".$startpoint."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-					      echo "<a href='/gallery?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					      echo "<a href='/gallery?startpoint=".$startpoint."' style='color:blue;font-weight:bold;'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					      echo "<a href='/gallery?lastpoint=".$lastpoint."' style='color:blue;font-weight:bold;'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 					 if($startpoint > $chunksize){
 					      $prev = $startpoint - 2*$chunksize;
 					      if($prev < 0){
 						  $prev = 0;
 					      }
-					     echo "<a href='/gallery?startpoint=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-					     echo "<a href='/gallery?startpoint=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					     echo "<a href='/gallery?startpoint=0' style='color:blue;font-weight:bold;'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					     echo "<a href='/gallery?startpoint=".$prev."' style='color:blue;font-weight:bold;'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 				    ?>
 
@@ -707,16 +707,16 @@ else{
 				<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
-					      echo "<a href='/gallery?startpoint=".$startpoint."'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-					      echo "<a href='/gallery?lastpoint=".$lastpoint."'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					      echo "<a href='/gallery?startpoint=".$startpoint."' style='color:blue;font-weight:bold;'>Next<img src='/images/next.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					      echo "<a href='/gallery?lastpoint=".$lastpoint."' style='color:blue;font-weight:bold;'>Last<img src='/images/last.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 					 if($startpoint > $chunksize){
 					      $prev = $startpoint - 2*$chunksize;
 					      if($prev < 0){
 						  $prev = 0;
 					      }
-					     echo "<a href='/gallery?startpoint=0'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
-					     echo "<a href='/gallery?startpoint=".$prev."'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					     echo "<a href='/gallery?startpoint=0' style='color:blue;font-weight:bold;'>First<img src='/images/first.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
+					     echo "<a href='/gallery?startpoint=".$prev."' style='color:blue;font-weight:bold;'>Prev<img src='/images/prev.png' style='width:24px;height:24px;'></a>&nbsp;&nbsp;";
 					 }
 				    ?>
 
