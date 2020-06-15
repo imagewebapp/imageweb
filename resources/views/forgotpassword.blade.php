@@ -187,6 +187,12 @@
             }
 
         </script> 
+    <!--/////////////////////////////////////////// IMP /////////////////////////////////////////////////////-->
+    <link rel="stylesheet" href="/template/com_app_min.css">	 
+      
+    <script src="/template/nn.js.download"></script>	 
+    <!--//////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
 <script src='https://www.google.com/recaptcha/api.js' async defer ></script>
 <script type='text/javascript'>
 	function generatepasscode(){
@@ -223,7 +229,7 @@
 	    waiter.innerHTML = "<img src='/images/loading_small.gif'>";
 	}
 </script>
-
+<script src="/template/js/common.js.download" defer=""></script>
 </head>
 
 <body>
@@ -242,25 +248,51 @@
 	  </div>
 	    
     </nav>
-	
+
+    <div class="wrapper" style="transform: none;border:4px solid blue;">
+	  <header>
+        <div class="clearfix head-bottom">
+          <div class="red-navigation">
+            <div class="nav-f-block">
+              <div id="nav-icon"><span></span><span></span><span></span></div>
+              <a href=""><img src="" alt="Image Web" title="Image Web"></a>
+            </div>
+            <div class="nav-s-block">
+              
+              <div class="d-none">
+                <ul>
+				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
+				  <li><a href="/gallery" title="Gallery" style="color: yellow;border: 1px solid yellow;border-radius: 10px;margin: 14px 0px;line-height: 54px;display: inline;padding: 6px;">Gallery</a></li>
+				 <li><a href="/aboutus" title="About Us">About Us</a></li>
+				  <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+        </div>	
+      </header>
+ 
+      </div>
+	<br /><br /><hr>
     <div class="wrap-table100-nextcols js-pscroll">
 	<div class="table100-nextcols">
 	<form name='frmpasscode' method='GET' action='/changepassword'>
 	<table border='0' cellpadding='4'>
 	    <tr>
-		<td>&nbsp;</td><td>Enter username: </td><td><input type='text' name='username' id='username' value=''></td>
+		<td>&nbsp;</td><td style="padding-left:20px;color:blue;font-weight:bold;">Enter username: </td><td><input type='text' name='username' id='username' value=''></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'>&nbsp;</td>
 	    </tr>
 	    <tr>
-		<td>&nbsp;</td><td>Enter email address: </td><td><input type='text' name='emailid' id='emailid' value=''></td>
+		<td>&nbsp;</td><td style="padding-left:20px;color:blue;font-weight:bold;">Enter email address: </td><td><input type='text' name='emailid' id='emailid' value=''></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'>&nbsp;</td>
 	    </tr>
 	    <tr>
-		<td>&nbsp;</td><td colspan='2' align='center'><input type='button' name='btnpasscode' id='btnpasscode' value='Generate Passcode' onclick='javascript:generatepasscode();'><div id='waitdiv'></div><input type='button' name='btnback' id='btnback' value='Back' onclick='javascript:window.location="/login";'></td>
+		<td>&nbsp;</td><td colspan='2' align='center'><span><input type='button' name='btnpasscode' id='btnpasscode' value='Generate Passcode' onclick='javascript:generatepasscode();'>&nbsp;&nbsp;<input type='button' name='btnback' id='btnback' value='Back' onclick='javascript:window.location="/login";'></span><div id='waitdiv'></div></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'><input type='hidden' name='_token' value='{{ csrf_token() }}'></td>

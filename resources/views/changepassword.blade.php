@@ -164,7 +164,11 @@
 
         <!-- jQuery (https://jquery.com/download/) -->
 
-
+	<!--/////////////////////////////////////////// IMP /////////////////////////////////////////////////////-->
+    	<link rel="stylesheet" href="/template/com_app_min.css">	 
+      
+    	<script src="/template/nn.js.download"></script>	 
+    	<!--//////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
         <script>
 
@@ -223,7 +227,7 @@
 	    waiter.innerHTML = "<img src='/images/loading_small.gif'>";
 	}
 </script>
-
+<script src="/template/js/common.js.download" defer=""></script>
 </head>
 
 <body>
@@ -242,31 +246,58 @@
 	  </div>
 	    
     </nav>
-	
+
+    <div class="wrapper" style="transform: none;border:4px solid blue;">
+	  <header>
+        <div class="clearfix head-bottom">
+          <div class="red-navigation">
+            <div class="nav-f-block">
+              <div id="nav-icon"><span></span><span></span><span></span></div>
+              <a href=""><img src="" alt="Image Web" title="Image Web"></a>
+            </div>
+            <div class="nav-s-block">
+              
+              <div class="d-none">
+                <ul>
+				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
+				  <li><a href="/gallery" title="Gallery" style="color: yellow;border: 1px solid yellow;border-radius: 10px;margin: 14px 0px;line-height: 54px;display: inline;padding: 6px;">Gallery</a></li>
+				 <li><a href="/aboutus" title="About Us">About Us</a></li>
+				  <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+        </div>	
+      </header>
+ 
+      </div>
+	<br /><br/>
     <div class="wrap-table100-nextcols js-pscroll">
 	<div class="table100-nextcols">
 	<form name='frmchangepassword' method='POST' action='/changepassword'>
+	<div style="color:blue;padding-left:20px;font-weight:bold;">Change Password</div>
 	<table border='0' cellpadding='4'>
 	    <tr>
-		<td>&nbsp;</td><td>Enter passcode: </td><td><input type='text' name='passcode' id='passcode' value=''></td>
+		<td>&nbsp;</td><td style="padding-left:20px;color:blue;font-weight:bold;">Enter passcode: </td><td><input type='text' name='passcode' id='passcode' value=''></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'>&nbsp;</td>
 	    </tr>
 	    <tr>
-		<td>&nbsp;</td><td>Enter New Password: </td><td><input type='password' name='password' id='password' value=''></td>
+		<td>&nbsp;</td><td style="padding-left:20px;color:blue;font-weight:bold;">Enter New Password: </td><td><input type='password' name='password' id='password' value=''></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'>&nbsp;</td>
 	    </tr>
 	    <tr>
-		<td>&nbsp;</td><td>Confirm Password: </td><td><input type='password' name='confirmpassword' id='confirmpassword' value=''></td>
+		<td>&nbsp;</td><td style="padding-left:20px;color:blue;font-weight:bold;">Confirm Password: </td><td><input type='password' name='confirmpassword' id='confirmpassword' value=''></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'>&nbsp;</td>
 	    </tr>
 	    <tr>
-		<td>&nbsp;</td><td colspan='2' align='center'><input type='button' name='btnpassword' id='btnpassword' value='Save Password' onclick='javascript:savepassword();'><div id='waitdiv'></div><input type='button' name='btnback' id='btnback' value='Back' onclick='javascript:window.location="/login";'></td>
+		<td>&nbsp;</td><td colspan='2' align='center'><span><input type='button' name='btnpassword' id='btnpassword' value='Save Password' onclick='javascript:savepassword();'>&nbsp;&nbsp;<input type='button' name='btnback' id='btnback' value='Back' onclick='javascript:window.location="/login";'></span><div id='waitdiv'></div></td>
 	    </tr>
 	    <tr>
 		<td colspan='3'><input type='hidden' name='_token' value='{{ csrf_token() }}'></td>
