@@ -234,28 +234,28 @@
 	<!-- Top panel ends here -->
 
       {{ Form::open(array('url' => 'login')) }}
-      <h1>Login</h1>
+      <h1 style="color:blue;padding-left:20px;">Login</h1>
       <!-- if there are login errors, show them here -->
      <?php
        if(Session::has('activation')){
 	 echo "<div style='color:0000AA;padding-left:20px;'>".Session::get("activation")."</div>";
        }       
       ?>
-      <p style="padding-left:20px;">
+      <p style="color:blue;padding-left:20px;">
          {{ $errors->first('username') }}
          {{ $errors->first('password') }}
       </p>
-      <p style="padding-left:20px;">
+      <p style="color:blue;padding-left:20px;">
          {{ Form::label('username', 'Username') }}
          {{ Form::text('username', Input::old('text'), array('placeholder' => 'myusername')) }}
       </p>
-      <p style="padding-left:20px;">
+      <p style="color:blue;padding-left:20px;">
          {{ Form::label('password', 'Password') }}
          {{ Form::password('password') }}
       </p>
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
       <p style="padding-left:20px;color:blue;font-weight:bold;"><a href="/forgotpassword">Forgot Password</a>|New user?<a href='/register'>Register here</a></p>
-      <p style="padding-left:20px;">{{ Form::submit('Submit!') }}</p>
+      <p style="color:blue;padding-left:20px;">{{ Form::submit('Submit!') }}</p>
       {{ Form::close() }}
 </body>
 </html>
