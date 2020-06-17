@@ -430,6 +430,17 @@ option {
             document.frmsearch.submit();
         }
 
+	function searchgallery2(){
+            tags = document.getElementById('tagslist2').value;
+            document.frmsearch2.action = "/gallery?mode=tags";
+            if(tags != ""){
+                document.frmsearch2.action += "&tags=" + tags;
+            }
+	    alert(document.frmsearch2.action);
+            document.frmsearch2.method='GET';
+            document.frmsearch2.submit();
+        }
+
 
         function showprofileimagescreen(){
             profileimguploaddiv = document.getElementById('profileimagediv');
@@ -564,9 +575,9 @@ option {
               <a href=""><img src="./Death of pregnant elephant in Kerala, Maneka Gandhi flays Kerala government_files/zeenewslogo_nav.png" alt="Image Web" title="Image Web"></a>
             </div>
             <div class="nav-s-block">
-              <div class="search" id="searchb" style="border:4px solid green;">
-						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search">
-						<button type="submit" class="searchButton">Search</button>
+              <div class="search" id="searchb" style="border:4px solid green;"><form name='frmsearch2' method='GET'>
+						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search" name='tagslist2' id='tagslist2'>
+						<button type="submit" class="searchButton" onClick='javascript:searchgallery2();'>Search</button></form>
                 </div>
               <div class="d-none">
                 <ul>

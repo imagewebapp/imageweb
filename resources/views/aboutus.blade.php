@@ -237,10 +237,10 @@
               <a href="https://zeenews.india.com/"><img src="./Death of pregnant elephant in Kerala, Maneka Gandhi flays Kerala government_files/zeenewslogo_nav.png" alt="Image Web" title="Image Web"></a>
             </div>
             <div class="nav-s-block">
-              <div class="search" id="searchb" style="border:4px solid green;">
+              <!-- <div class="search" id="searchb" style="border:4px solid green;">
 						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search">
 						<button type="submit" class="searchButton">Search</button>
-                </div>
+                </div> -->
               <div class="d-none">
                 <ul>
 				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
@@ -250,12 +250,12 @@
                 </ul>
               </div>
             </div>
-            <div class="nav-t-block">
+            <!-- <div class="nav-t-block">
               <ul class="social-block">
                 <li><button class="search-click"><i class="fa fa-search" aria-hidden="true"></i></button></li>
 
               </ul>
-            </div>
+            </div> -->
           </div>
         </div>	
       </header>
