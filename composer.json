@@ -9,7 +9,11 @@
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "5.*",
         "guzzlehttp/guzzle": "^6.5",
-        "captcha-com/laravel-captcha": "4.*"
+        "captcha-com/laravel-captcha": "4.*",
+        "anhskohbo/no-captcha": "^3.2",
+        "stripe/stripe-php": "^6.43",
+        "paypal/rest-api-sdk-php": "^1.14",
+	"cartalyst/stripe-laravel": "4.0.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
