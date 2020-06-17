@@ -879,7 +879,7 @@ class ImagesController extends BaseController
                return Redirect::to('dashboard');
            } 
         }        
-        return Redirect::to('login');
+        return Redirect::to('login')->withErrors(['The username or password was incorrect']);
       }
     }
 

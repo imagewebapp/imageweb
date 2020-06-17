@@ -371,6 +371,9 @@ transform: translate(0%,0%);
          {{ $errors->first('password') }}
       </p>
       <p style="color:blue;padding-left:20px;">
+	@if($errors->any())
+	<p style="color:red;">{{$errors->first()}}</p>
+	@endif
          
          {{ Form::text('username', Input::old('text'), array('placeholder' => 'username', 'title' => 'username')) }}
       </p>
