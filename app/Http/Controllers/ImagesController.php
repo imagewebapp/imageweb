@@ -928,7 +928,10 @@ class ImagesController extends BaseController
 	if($req->input('password') != $req->input('confirmpassword')){
 	    return("Password and Confirm Password fields do not match");
 	}
-
+	$users = DB::table('users')->where('email', $emailid)->get();
+	if($users && count($users) >= 1){
+	    return Redirect::back()->withErrors(["This email Id has already been used by another user. Please insert another email Id"]);
+	}
         $data = array('firstname' => $firstname, 'lastname' => $lastname, 'username' => $username, 'email' => $emailid, 'password' => $password);
         // send an email with verification link. Generate a verification code first.
         $randomtoken = str_random(32);

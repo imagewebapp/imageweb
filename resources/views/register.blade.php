@@ -345,6 +345,9 @@ transform: translate(0%,0%);
          {{ $errors->first('email') }}
          {{ $errors->first('password') }}
       </p>
+	@if($errors->any())
+	<p style="color:red;">{{$errors->first()}}</p>
+	@endif
       <p style="padding-left:20px;color:blue;display:float;">
          {{ Form::label('firstname', 'Firstname') }}
          {{ Form::text('firstname', Input::old('text'), array('placeholder' => '')) }}
