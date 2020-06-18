@@ -581,6 +581,17 @@ class ImagesController extends BaseController
 		    $img = $imgs[$c];
 		    array_push($imagesrecs, $img);
 		}
+		// User may enter file name (or partial filenames) in tags text input. So do a search using filenames.
+		$tagparts = explode(".", $tag);
+		array_pop($tagparts);
+		if(count($tagparts) > 0){
+		    $tagname = implode(".", $tagparts);
+		    $imgs = DB::table('images')->where([ ['verified', '=', '1'], ['imagefilename', 'like', '%'.$tagname.'%'], ['removed', '=',0] ])->skip($startpoint)->take($chunksize)->get();
+		    for($c=0; $c < count($imgs); $c++){
+                        $img = $imgs[$c];
+                    	array_push($imagesrecs, $img);
+                    }
+		}
 	    }
 	    $totalcount = count($imagesrecs);
 	    $lastpoint = $totalcount - $chunksize;
