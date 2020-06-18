@@ -705,31 +705,31 @@ function uploadprofileimage(){
 
 										<td class="cell100 column4"><img src='{{$iconpath}}' width='50' height='50'></td>
 
-										<td class="cell100 column5">{{$img->uploadts}}</td>
+										<td class="cell100 column5" style="font-family:droid sans;">{{$img->uploadts}}</td>
 										
-										<td class="cell100 column5">{{$img->resolution}}</td>
+										<td class="cell100 column5" style="font-family:droid sans;">{{$img->resolution}}</td>
 										
-										<td class="cell100 column5">{{$img->imagetags}}</td>
+										<td class="cell100 column5" style="font-family:droid sans;">{{$img->imagetags}}</td>
 										@if($img->price == 0.00)
-										<td class="cell100 column6">Free</td>
+										<td class="cell100 column6" style="font-family:droid sans;">Free</td>
 										@else
-										<td class="cell100 column6">USD <?php echo number_format(round($img->price,2), 2); ?></td>
+										<td class="cell100 column6" style="font-family:droid sans;">USD <?php echo number_format(round($img->price,2), 2); ?></td>
 										@endif
 										@if($img->verified == 0)
-										<td class="cell100 column6">Pending</td>
+										<td class="cell100 column6" style="font-family:droid sans;">Pending</td>
 										@elseif($img->verified == 1)
-										<td class="cell100 column6">Verified</td>
+										<td class="cell100 column6" style="font-family:droid sans;">Verified</td>
 										@elseif($img->verified == -1)
-										<td class="cell100 column6">Rejected</td>
+										<td class="cell100 column6" style="font-family:droid sans;">Rejected</td>
 										@endif
 
-										<td class="cell100 column7"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}', '<?php echo $ctr; ?>');">Remove Image</a><div id='rmdiv<?php echo $ctr; ?>' style="display:none;"></div></td>
+										<td class="cell100 column7" style="font-family:droid sans;"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}', '<?php echo $ctr; ?>');">Remove Image</a><div id='rmdiv<?php echo $ctr; ?>' style="display:none;"></div></td>
 										<?php
 										$imgid = $img->id;
 										$imghits = DB::table('imagehits')->where('imageid', $imgid)->get();
 										$counthits = count($imghits);
 										?>
-										<td class="cell100 column8" style="text-align:center;">{{$counthits}}</td>
+										<td class="cell100 column8" style="text-align:center;font-family:droid sans;">{{$counthits}}</td>
 									<!-- Add pagination here -->
 									</tr>
 									<?php $ctr++; ?>

@@ -314,8 +314,7 @@ function submitverification(){
 									?>
 									
                       							<tr class="row100 body">
-
-										<td class="cell100 column2"><img src='{{$lowreswebpath}}' width='300' height='300'></td>
+										<td class="cell100 column2">dddd<?php echo $imgid; ?><img src='{{$lowreswebpath}}' width='300' height='300'></td>
 
 										<td class="cell100 column3">
 										Accept:<input type='radio' name='imgverify{{$imgid}}' value="accept">&nbsp;&nbsp;Reject:<input type='radio' name='imgverify{{$imgid}}' value="reject">
