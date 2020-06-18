@@ -545,6 +545,12 @@ class ImagesController extends BaseController
 	    $mode = "all";
 	}
 	$tags = $req->input('tagslist');
+	if(!$tags){
+	    $tags = $req->input('tagslist2');
+	    if($tags){
+		$mode = "tags";
+	    }
+	}
 	$imagesrecs = [];
 	if($mode == 'all' || $mode == ''){
             $imagesrecs = DB::table('images')->where([ ['verified', '=',1], ['removed', '=', 0]])->orderBy('uploadts', 'DESC')->skip($startpoint)->take($chunksize)->get();

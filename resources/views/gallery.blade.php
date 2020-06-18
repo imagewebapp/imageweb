@@ -436,7 +436,7 @@ option {
             if(tags != ""){
                 document.frmsearch2.action += "&tags=" + tags;
             }
-	    alert(document.frmsearch2.action);
+	    //alert(document.frmsearch2.action);
             document.frmsearch2.method='GET';
             document.frmsearch2.submit();
         }
@@ -602,6 +602,7 @@ option {
 <!-- Top panel ends here -->
 
 	<!-- HTML from template download page ends here... -->
+<!--
 <div class="form-container">
 <form name='frmsearch' method='GET' class="form-inline" style="color:blue;">
 <label style="color:blue;">Search Images </label>&nbsp;&nbsp;<select name='selmode' id='selmode' onchange='javascript:showtagscontainer();'>
@@ -644,6 +645,7 @@ else{
 &nbsp;&nbsp;<input type='button' name='btngo' id='btngo' value='Search' onClick='javascript:searchgallery();' style="background-image: url(/images/search.png);background-repeat: no-repeat;cursor: pointer;border:none;vertical-align:middle;padding:5px;">
 </form>
 </div>
+-->
 		<!-- old css ends -->
 
 		<!-- Main -->
