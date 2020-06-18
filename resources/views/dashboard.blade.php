@@ -675,9 +675,17 @@ function uploadprofileimage(){
 									$lowrespath = "/image".$lowrespathparts[1];
 									$iconpathparts = explode("users", $img->iconpath);
        									$iconpath = "/image".$iconpathparts[1];
+									$verified = $img->verified;
+									$rowcolor = "#0000AA";
+									if((int)$verified == -1){
+									    $rowcolor = "#AA0000";
+									}
+									else if((int)$verified == 0){
+									    $rowcolor = "#00AA00";
+									}
 									?>
 
-                      							<tr class="row100 body">
+                      							<tr class="row100 body" style="color:<?php echo $rowcolor; ?>;">
 										<!--
 										<?php
 										//if($img->price > 0.00 && (int)$img->userid != (int)$userid){
@@ -707,10 +715,12 @@ function uploadprofileimage(){
 										@else
 										<td class="cell100 column6">USD <?php echo number_format(round($img->price,2), 2); ?></td>
 										@endif
-										@if($img->verified == 0)										
-										<td class="cell100 column6">No</td>
-										@else
-										<td class="cell100 column6">Yes</td>
+										@if($img->verified == 0)
+										<td class="cell100 column6">Pending</td>
+										@elseif($img->verified == 1)
+										<td class="cell100 column6">Verified</td>
+										@elseif($img->verified == -1)
+										<td class="cell100 column6">Rejected</td>
 										@endif
 
 										<td class="cell100 column7"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}', '<?php echo $ctr; ?>');">Remove Image</a><div id='rmdiv<?php echo $ctr; ?>' style="display:none;"></div></td>
