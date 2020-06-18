@@ -298,9 +298,9 @@ function submitverification(){
 
 									<tr class="row100 head">
 
-										<th class="cell100 column2">Image File</th>
+										<th class="cell100 column2" style="font-family:droid sans;">Image File</th>
 
-										<th class="cell100 column3">Verify</th>
+										<th class="cell100 column3" style="font-family:droid sans;">Verify</th>
 
 									</tr>
 
@@ -316,7 +316,7 @@ function submitverification(){
                       							<tr class="row100 body">
 										<td class="cell100 column2"><img src='{{$lowreswebpath}}' width='300' height='300'></td>
 
-										<td class="cell100 column3">
+										<td class="cell100 column3" style="font-family:droid sans;">
 										Accept:<input type='radio' name='imgverify{{$imgid}}' value="accept">&nbsp;&nbsp;Reject:<input type='radio' name='imgverify{{$imgid}}' value="reject">
 										<input type='hidden' name='imgverify[]' value='{{$imgid}}'>
 										<!-- <input type='checkbox' name='imgverify[]' value='{{$imgid}}'></td> -->
