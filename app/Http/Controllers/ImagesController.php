@@ -1102,7 +1102,10 @@ class ImagesController extends BaseController
             $ownername = $ownerobj->username;
             $imagepathparts = explode($ownername, $imgpath);
             $imgwebpath = "/image/".$ownername.$imagepathparts[1];
-            $imagesdict[$imgwebpath] = $imgid;
+	    $lowrespath = $images[$i]->lowrespath;
+            $lowrespathparts = explode("users", $lowrespath);
+            $lowreswebpath = "/image".$lowrespathparts[1];
+            $imagesdict[$imgwebpath] = [$imgid, $lowreswebpath];
         }
         $username = getuser();
         $profileimagepath = getprofileimage($username);
