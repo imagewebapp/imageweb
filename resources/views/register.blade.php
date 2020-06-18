@@ -317,7 +317,7 @@ transform: translate(0%,0%);
           <div class="red-navigation">
             <div class="nav-f-block">
               <div id="nav-icon"><span></span><span></span><span></span></div>
-              <a href=""><img src="" alt="Image Web" title="Image Web"></a>
+              <a href=""><img src="/template/img/imageweb_logo.png" alt="Image Web" title="Image Web" width="50px" height="50px"></a>
             </div>
             <div class="nav-s-block">
               <div class="d-none">
@@ -338,7 +338,7 @@ transform: translate(0%,0%);
 	<!-- Top panel ends here -->
 	<div class="register-form">
       {{ Form::open(array('url' => 'register')) }}
-      <h2 style="padding-left:20px;color:blue;">Register</h2><span style="color:blue;font-style:italic;padding-left:20px;">Already an user?<a href="/login">Login here</a></span>
+      <h2 style="padding-left:20px;color:blue;">Register</h2><span style="color:blue;font-style:italic;padding-left:20px;">Already an user?	 <a href="/login">Login here</a></span>
       <!-- if there are login errors, show them here -->
       <p style="padding-left:20px;color:red;">
          {{ $errors->first('username') }}

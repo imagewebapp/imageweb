@@ -551,7 +551,7 @@ function uploadprofileimage(){
           <div class="red-navigation">
             <div class="nav-f-block">
               <div id="nav-icon"><span></span><span></span><span></span></div>
-              <a href=""><img src="" alt="Image Web" title="Image Web"></a>
+              <a href=""><img src="/template/img/imageweb_logo.png" alt="Image Web" title="Image Web" width="50px" height="50px"></a>
             </div>
             <div class="nav-s-block">
               <!-- <div class="search" id="searchb" style="border:4px solid green;">
