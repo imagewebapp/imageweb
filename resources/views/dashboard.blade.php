@@ -634,7 +634,7 @@ function uploadprofileimage(){
 
 						<div class="table100-nextcols">
 
-							<table width='100%'>
+							<table width='100%' cellpadding='4' cellspacing='2'>
 
 								<thead>
 
@@ -642,7 +642,7 @@ function uploadprofileimage(){
 
 										<th class="cell100 column2">Image File</th>
 
-										<th class="cell100 column3">Low Res File</th>
+										<!-- <th class="cell100 column3">Low Res File</th> -->
 
 										<th class="cell100 column4">Icon File</th>
 
@@ -678,8 +678,9 @@ function uploadprofileimage(){
 									?>
 
                       							<tr class="row100 body">
+										<!--
 										<?php
-										//if($img->price > 0.00 && $img->userid != $userid){
+										//if($img->price > 0.00 && (int)$img->userid != (int)$userid){
 										if($img->price > 0.00){
 										?>
 										<td class="cell100 column2">Premium Image, Can't be displayed</td>
@@ -691,7 +692,8 @@ function uploadprofileimage(){
 										<?php
 										}
 										?>
-										<td class="cell100 column3"><img src='{{$lowrespath}}' width='150' height='150'></td>
+										-->
+										<td class="cell100 column3"><img src='{{$lowrespath}}' width='200' height='200'></td>
 
 										<td class="cell100 column4"><img src='{{$iconpath}}' width='50' height='50'></td>
 
@@ -712,8 +714,12 @@ function uploadprofileimage(){
 										@endif
 
 										<td class="cell100 column7"><a href='#/' onclick="javascript:removeimage('{{$img->imagefilename}}', '{{$img->userid}}', '<?php echo $ctr; ?>');">Remove Image</a><div id='rmdiv<?php echo $ctr; ?>' style="display:none;"></div></td>
-
-										<td class="cell100 column8"></td>
+										<?php
+										$imgid = $img->id;
+										$imghits = DB::table('imagehits')->where('imageid', $imgid)->get();
+										$counthits = count($imghits);
+										?>
+										<td class="cell100 column8" style="text-align:center;">{{$counthits}}</td>
 									<!-- Add pagination here -->
 									</tr>
 									<?php $ctr++; ?>
