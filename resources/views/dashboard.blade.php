@@ -508,7 +508,7 @@ function uploadprofileimage(){
     statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
 }
 </script>
-
+<script src="/template/js/searchgallery.js"></script>
 </head>
 
 <body>
@@ -554,10 +554,10 @@ function uploadprofileimage(){
               <a href=""><img src="/template/img/imageweb_logo.png" alt="Image Web" title="Image Web" width="50px" height="50px"></a>
             </div>
             <div class="nav-s-block">
-              <!-- <div class="search" id="searchb" style="border:4px solid green;">
-						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search">
-						<button type="submit" class="searchButton">Search</button>
-                </div> -->
+              <div class="search" id="searchb" style="border:4px solid green;"><form name='frmsearch2' method='GET' action='/gallery?mode=tags'>
+						<input autocomplete="on" type="text" placeholder="Search on Imageweb..." class="input-search" name='tagslist2' id='tagslist2'>
+						<button type="submit" class="searchButton" onClick='javascript:searchgallery2();'>Search</button>
+                </form></div>
               <div class="d-none">
                 <ul>
 				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
@@ -574,12 +574,12 @@ function uploadprofileimage(){
                 </ul>
               </div>
             </div>
-            <!-- <div class="nav-t-block">
+            <div class="nav-t-block">
               <ul class="social-block">
                 <li><button class="search-click"><i class="fa fa-search" aria-hidden="true"></i></button></li>
 
               </ul>
-            </div> -->
+            </div>
           </div>
         </div>	
       </header>
