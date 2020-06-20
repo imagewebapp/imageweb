@@ -538,7 +538,7 @@ class ImagesController extends BaseController
             $lastpoint = $_GET['lastpoint'];
 	    $startpoint = $lastpoint;
         }
-        $chunksize = 20;
+        $chunksize = 30;
         $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
         if($mode == ""){

@@ -11,10 +11,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<link rel="stylesheet" href="template/css/navbar.css">
+	
 	<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-	<script src="template/js/navbar.js"></script>
-
+	
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -197,6 +196,11 @@ label {
     background-color: #007bff;
 }
 
+button {
+    font-family : verdana;
+    font-size: 12px;
+}
+
 select, option {
     width: 150px;
 }
@@ -223,8 +227,8 @@ div {
 
 .select-css {
 	display: block;
-	font-size: 16px;
-	font-family: sans-serif;
+	font-size: 14px;
+	font-family: verdana;
 	font-weight: 700;
 	color: #444;
 	line-height: 1.3;
@@ -259,6 +263,8 @@ div {
 }
 .select-css option {
 	font-weight:normal;
+	font-size: 14px;
+	font-family: verdana;
 }
 
 /* Change Style when screen width is 768px or less*/
@@ -389,6 +395,12 @@ div {
 <script src="/template/js/common.js.download" defer=""></script>
 <script type='text/javascript'>
 
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+}
+
 function uploadfile(){
 var xmlhttp;
 statusdiv = document.getElementById('uploadstatus');
@@ -400,7 +412,7 @@ else{
 }
 xmlhttp.onreadystatechange = function(){
     if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-        statusdiv.innerHTML = "<p style='color:#0000AA;'>" + xmlhttp.responseText + ".</p>";
+        statusdiv.innerHTML = "<p style='color:#0000AA;font-family:verdana;font-size:12px;'>" + xmlhttp.responseText + ".</p>";
     }
 }
 //var file = this.files[0];
@@ -421,6 +433,10 @@ formdata.append("imgupload", file);
 csrftoken = document.frmimageupload._token.value;
 formdata.append("_token", csrftoken);
 imgtags = document.getElementById('imagetags').value;
+if(imgtags.trim() == ""){
+    alert("Please enter at least one tag word.");
+    return(false);
+}
 formdata.append('imagetags', imgtags);
 price = document.frmimageupload.price.value;
 formdata.append('price', price);
@@ -433,10 +449,14 @@ for(i=0; i < sel.options.length; i++){
         selectedcats += sel.options[i].value + ",";
     }
 }
+if(selectedcats.trim() == ""){
+    alert("Please select at least one category");
+    return(false);
+}
 formdata.append('categories', selectedcats);
 xmlhttp.open('POST', "/upload", true);
 xmlhttp.send(formdata);
-statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";    
+statusdiv.innerHTML = "<img src='/images/loading_small.gif'>Please wait while we upload your image...";    
 }
 
 function removeimage(imagefilename, userid, ctr){
@@ -595,12 +615,11 @@ function uploadprofileimage(){
 								<td colspan='8' width='80%' align='center'>
 								    <div class="form-container">
 									<div style="background-color:lightblue;white-space:nowrap">
-									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/jpeg' title="select file" style="color:transparent;" onchange="this.style.color='blue';">&nbsp;&nbsp;<label>Enter Tags</label><input type='text' name='imagetags' id='imagetags' value='' placeholder='Enter tags here'> <label>Select Categories:</label> <select name='categories' size='1' class="select-css" multiple>
+									<form name='frmimageupload' method='POST' action='/upload' enctype='multipart/formdata' class="form-inline" style="color:blue;"><label>Upload Image:</label> <input type='file' name='imgupload' id='imgupload' accept='image/jpeg' title="select file" style="color:transparent;font-family : verdana;font-size:12px;font-weight:bold;color:blue;" onchange="this.style.color='blue';">&nbsp;&nbsp;<label>Enter Tags</label><input type='text' name='imagetags' id='imagetags' value='' placeholder='Enter tags here'> <label>Select Categories:</label> <select name='categories' size='3' class="select-css" multiple>
 									@foreach ($categories as $category)
 									<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 									@endforeach
-									</select>&nbsp;&nbsp; <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'></div><div style="background-color:lightblue;white-space:nowrap">&nbsp;&nbsp;<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>
-						<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus'></div></div></form>
+									</select>&nbsp;&nbsp; <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'></div><div style="background-color:lightblue;white-space:nowrap">&nbsp;&nbsp;<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>&nbsp;&nbsp;<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();' style='font-family : verdana;font-size:12px;font-weight:bold;color:blue;'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus' style="font-family:verdana;font-size:12px;color:#0000AA;"></div></div></form>
 								    </div>
 								</td>
 
