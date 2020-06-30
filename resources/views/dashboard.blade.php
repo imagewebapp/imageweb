@@ -118,7 +118,8 @@
     <!-- top panel CSS ends -->
 	
   <!--/////////////////////////////////////////// IMP /////////////////////////////////////////////////////-->
-<link rel="stylesheet" href="/template/com_app_min.css">	 
+<link rel="stylesheet" href="/template/com_app_min.css">
+<link rel="stylesheet" href="/template/css/toppanel.css"> 
       
  <script src="/template/nn.js.download"></script>	 
  <!--//////////////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -563,6 +564,10 @@ function uploadprofileimage(){
 	  </div>
 	    
     </nav>
+
+        <!-- adobe top panel -->
+	<div class="react-spectrum-provider spectrum spectrum--light spectrum--medium"><main><div><div class="sc-iGPElx sc-hgHYgh hhOipk"></div><nav data-t="navbar" class="sc-kgoBCf cNdcvw"><div class="sc-kGXeez sc-kpOJdX bHSdES"></div></div><div class="sc-kGXeez sc-dxgOiQ jsiCyh"><section><section data-t="photos-lp-hero" class="sc-iuJeZd enkIOd"><div class="heroWithSearchstyle__StyledSearchBarWrapper-sc-1komyey-0 dMOYUP"><div class="is-floating sc-bYwvMP iDJxkn"><div data-t="filter-asset-type" class="sc-hUMlYv sc-ESoVU YBXb"></div><div class="sc-hUMlYv sc-kkbgRg tORwQ"><div class="sc-jMMfwr fgEjFF"></div></div></div></div></div></section></main></div>
+	<!-- adobe top panel ends -->
 
 
 	<div class="wrapper" style="transform: none;border:4px solid blue;">
