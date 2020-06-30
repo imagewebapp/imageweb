@@ -541,14 +541,14 @@ function uploadprofileimage(){
 	      <img src="https://lh3.googleusercontent.com/-ZAS0BBE8Sm0/WaFOdATxW9I/AAAAAAAAAf4/8FfuKoWw6n0cvynAv7Fv2sdYESliQEm4wCL0BGAYYCw/h18/2017-08-26.png" alt="L A N T E R N">
 	    </a>
 
-	    <div class="collapse navbar-collapse" id="navbarColor02">
-	      <ul class="navbar-nav mr-auto">
+	    <div class="collapse navbar-collapse" id="navbarColor02" style="display:flex;flex-direction:row;color:white;">
+	      <ul>
 		<?php
 		if($username != ""){
-		    echo "<li class='nav-item'>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'>";
-		    echo "<a class='nav-link' href='/logout'>Logout</a></li>";
-		    echo "<li class='nav-item'><a class='nav-link' href='#/' onClick='javascript:showprofileimagescreen();'>Change Profile Image</a></li>";
-		    echo "<div id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></div><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
+		    echo "<li>You are logged in as ".$username."<img src='".$profileimage."' height='50px' width='50px'>";
+		    echo "<a class='nav-link' href='/logout' style='color:white;'>Logout</a></li>";
+		    echo "<a class='nav-link' href='#/' onClick='javascript:showprofileimagescreen();' style='color:white;'>Change Profile Image</a>";
+		    echo "<span id='profileimagediv' style='display:none;'><form id='frmprofimg' name='frmprofimg'><input type='file' name='uploadfile' id='uploadfile'><input type='button' name='btnupload' value='  Go  ' onClick='javascript:uploadprofileimage();'><div id='profstatus'></span><input type='button' name='btnclose' value='Close' onClick='javascript:closeuploadform();'>";
 	        ?>
 	         <input type='hidden' name='_token' value='{{ csrf_token() }}'>
 	        <?php
