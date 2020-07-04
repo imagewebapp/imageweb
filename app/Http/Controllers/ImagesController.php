@@ -1383,6 +1383,11 @@ class ImagesController extends BaseController
 	    $message = "You have already downloaded the image. If you feel otherwise, or there was a problem with your download, please contact the support at support@imageweb.com with the token Id ".$tokenid;
 	    return($message);
 	}
+	$recs2 = DB::table('payments')->where('tokenid', $tokenid)->get();
+	if(count($recs2) == 0){
+	    $message = "Could not find the given token. Please contact the support with the given token for further assistance. Token: ".$tokenid;
+	    return($message);
+	}
 	header("Content-Description: File Transfer");
 	header("Content-Type: image/jpeg");
 	header("Content-Disposition: attachment; filename=\"".basename($origimgurl)."\"");
