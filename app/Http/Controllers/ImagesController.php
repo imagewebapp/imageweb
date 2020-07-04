@@ -1248,6 +1248,7 @@ class ImagesController extends BaseController
 	    $input = array_except($input,array('_token'));
 	    $stripe = \Stripe::setApiKey(env('STRIPE_API_SECRET'));
 	    $customername = $req->get('customername');
+	    $emailid = $req->get('emailid');
 	    $addressline1 = $req->get('addressline1');
 	    $addressline2 = $req->get('addressline2');
 	    $city = $req->get('city');
@@ -1317,16 +1318,29 @@ class ImagesController extends BaseController
 		    // Download the image on buyers device 
 		    $origimgpathparts = explode("users", $origimgpath);
 		    $origimgurl = "/image".$origimgpathparts[1];
+		    /*
 		    header("Content-Description: File Transfer");
 		    header("Content-Type: image/jpeg");
 		    header("Content-Disposition: attachment; filename=\"".basename($origimgurl)."\"");
 		    readfile($origimgpath);
 		    DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
+		    */
+		    $hostname = $req->getHost();
+		    $rooturl = "http://".$hostname;
+		    //$rooturl = "https://".$hostname;
+		    $imageurl = $rooturl."/getimage?img=".$origimgurl."&tokenid=".$tokenid;
+		    $mailcontent = "<a href='".$imageurl."'>Download Image Here</a>";
+		    $maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
+		    $subject = "Download Image Link";
+		    Mail::send('downloadlinkmail', $maildata, function ($mailcontent) use($emailid, $customername, $subject){
+			$mailcontent->to($emailid, $customername)->subject($subject);
+			$mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
+		    });
 		    $hittime = date("Y-m-d H:i:s");
             	    $useragent = $_SERVER['HTTP_USER_AGENT'];
 		    $imghitsdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $userid, 'ipaddress' => $client_ip, 'geolocation' => $geoloc, 'user_agent' => $useragent, 'hittime' => $hittime);
 		    DB::table('imagehits')->insert($imghitsdata);
-		    return ('payment successful');
+		    return ('payment successful. A link has been sent to the email you have specified. You may download the image by clicking on that link in the email.');
 		}
 		else{
 		    \Session::put('error','Payment was not successful!!');
@@ -1356,6 +1370,11 @@ class ImagesController extends BaseController
 	}
 	$rate = $recs[0]->numunitsperusd;
 	return($rate);
+    }
+
+
+    function getimage(Request $req){
+
     }
 
 }

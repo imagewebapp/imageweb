@@ -432,6 +432,7 @@
 	function validate_and_submit(){
 	    //alert("HELLO");
 	    cust_name = document.payment_form.customername.value;
+	    emailid = document.payment_form.emailid.value;
 	    card_num = document.payment_form.card_no.value;
 	    cvv_num = document.payment_form.cvvNumber.value;
 	    exp_mon = document.payment_form.ccExpiryMonth.value;
@@ -445,6 +446,10 @@
 	    lowresimgpath = document.payment_form.lowrespath.value;
 	    if(cust_name.trim() == ""){
 		alert("Customer name field should not be empty");
+		return(false);
+	    }
+	    if(emailid.trim() == ""){
+		alert("Email Id field should not be empty");
 		return(false);
 	    }
 	    if(card_num.trim() == ""){

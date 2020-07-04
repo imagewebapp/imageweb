@@ -58,6 +58,11 @@
                                 <label class='control-label'>Name on Card *</label> <input class='form-control' size='4' type='text' name="customername">
                             </div>
                         </div>
+			<div class='form-row row'>
+                            <div class='col-xs-12 form-group required'>
+                                <label class='control-label'>Email Id *</label> <input class='form-control' size='4' type='text' name="emailid">
+                            </div>
+                        </div>
   
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group required'>
