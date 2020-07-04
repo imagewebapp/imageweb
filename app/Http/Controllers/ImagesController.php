@@ -1326,10 +1326,11 @@ class ImagesController extends BaseController
 		    DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
 		    */
 		    $hostname = $req->getHost();
-		    $rooturl = "http://".$hostname;
-		    //$rooturl = "https://".$hostname;
-		    $imageurl = $rooturl."/getimage?img=".$origimgurl."&tokenid=".$tokenid;
-		    $mailcontent = "<a href='".$imageurl."'>Download Image Here</a>";
+		    $hostportname = $req->getHttpHost();
+		    $rooturl = "http://".$hostportname;
+		    //$rooturl = "https://".$hostportname;
+		    $downloadimageurl = $rooturl."/getimage?imgurl=".$origimgurl."&imgpath=".$origimgpath."&tokenid=".$tokenid;
+		    $mailcontent = "<a href='".$downloadimageurl."'>Download Image Here</a>";
 		    $maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
 		    $subject = "Download Image Link";
 		    Mail::send('downloadlinkmail', $maildata, function ($mailcontent) use($emailid, $customername, $subject){
@@ -1374,7 +1375,19 @@ class ImagesController extends BaseController
 
 
     function getimage(Request $req){
-
+	$origimgurl = $req->get('imgurl');
+	$origimgpath = $req->get('imgpath');
+	$tokenid = $req->get('tokenid');
+	$recs = DB::table('payments')->where([['tokenid', '=', $tokenid],['downloaded', '=', true]])->get();
+	if(count($recs) > 0){
+	    $message = "You have already downloaded the image. If you feel otherwise, or there was a problem with your download, please contact the support at support@imageweb.com with the token Id ".$tokenid;
+	    return($message);
+	}
+	header("Content-Description: File Transfer");
+	header("Content-Type: image/jpeg");
+	header("Content-Disposition: attachment; filename=\"".basename($origimgurl)."\"");
+	readfile($origimgpath);
+	DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
     }
 
 }

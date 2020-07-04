@@ -414,6 +414,7 @@
                             <div class="col-xs-12">
                                 <button class="btn btn-primary btn-lg btn-block" id="btnpay" type="button" onclick='javascript:validate_and_submit();'>Pay US$ <?php echo number_format(round($imageprice,2), 2); ?></button>
                             </div>
+			    <div id='waitdiv'></div>
                         </div>
                         <input type='hidden' name='payamt' id='payamt' value="<?php echo number_format(round($imageprice,2), 2); ?>">
 			<input type='hidden' name='lowrespath' value="<?php echo $lowrespath; ?>">

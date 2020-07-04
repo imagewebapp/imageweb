@@ -472,6 +472,9 @@
 		alert("Zip code should not be empty");
 		return(false);
 	    }
+	    document.getElementById('btnpay').disabled = true;
+	    waitdivelem = document.getElementById('waitdiv');
+	    waitdivelem.innerHTML = "Please wait while we process your payment.";
 	    document.payment_form.submit();
 	}
     </script>

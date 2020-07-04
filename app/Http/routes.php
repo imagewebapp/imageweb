@@ -127,7 +127,7 @@ Route::post('getcurrencyrate', array(
     'uses' => 'ImagesController@currencyrate'
 ));
 
-Route::post('getimage', array(
+Route::get('getimage', array(
     'uses' => 'ImagesController@getimage'
 ));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
