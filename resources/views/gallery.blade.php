@@ -22,7 +22,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<link rel="stylesheet" href="template/css/navbar.css">
 		<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-		<script src="template/js/navbar.js"></script>
+
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="stylesheet" href="template/css/main.css" />
 
@@ -295,7 +298,11 @@ option {
 
         <!-- These two JS are loaded at the top for gray scale including the loader. -->
 
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">  
 
+    	<!-- Google web font "Open Sans" -->
+
+    	<link rel="stylesheet" href="/template/Font-Awesome-4.7/css/font-awesome.min.css"> 
 
         <script src="/template/js/jquery-1.11.3.min.js"></script>
 

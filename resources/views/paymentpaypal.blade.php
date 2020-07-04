@@ -24,12 +24,12 @@
 </head>
 <body>
   
-<div class="container">
+<span class="container" style="width:100%;">
   
-    <h1>PayPal Payment Gateway</h1>
+    <h2>PayPal Payment Gateway</h2>
   
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6 col-md-offset-3" style="width:100%;display:block;margin-left:10px;margin-right:auto;text-align:center;">
             <div class="panel panel-default credit-card-box">
                 <div class="row display-tr" >
                         <h3 class="panel-title display-td" >Payment Details</h3>
