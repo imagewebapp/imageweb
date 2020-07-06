@@ -1423,7 +1423,6 @@ class ImagesController extends BaseController
 	readfile($origimgpath);
 	DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
 	$referer = $req->header('HTTP_REFERER');
-	//$referer = URL::previous();
 	preg_match('/login/', $referer, $matches);
 	if(count($matches) > 0){
 	    return Redirect::to('dashboard');
