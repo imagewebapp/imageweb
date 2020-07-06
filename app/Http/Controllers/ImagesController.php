@@ -895,6 +895,11 @@ class ImagesController extends BaseController
                    $sessdata = array('sessionid' => $sessionid, 'userid' => $userid, 'starttime' => $starttime);
                    DB::table('sessions')->insert($sessdata);
                }
+	       $rurl = $req->input('rurl');
+	       preg_match('/getimage/', $rurl, $matches);
+	       if(count($matches) > 0){
+		  return Redirect::to($rurl);
+	       }
                return Redirect::to('dashboard');
            } 
         }        
@@ -1378,26 +1383,22 @@ class ImagesController extends BaseController
 	$s = checksession();
         if(!$s){
 	    $message = "You are not logged in. Please login to download the image. The image will get downloaded once you login into your account";
-	    return Redirect::to('login')->withErrors([$message]);
+	    $queryurl = $req->fullUrl();
+	    return Redirect::to('login?url='.urlencode($queryurl))->withErrors([$message]);
         }
 	$sessionid = Session::getId();
     	$sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
     	if(!$sessobj){
-            return("Invalid session");
+            return("Invalid session. Please login into the website and then try to download the image.");
     	}
     	$sessionstatus = $sessobj->sessionstatus;
     	if(!$sessionstatus){
-            return("Invalid session status");
+            return("Invalid session status. Please login into the website and then try to download the image.");
     	}
     	$userid = $sessobj->userid;
 	$origimgurl = $req->get('imgurl');
 	$origimgpath = $req->get('imgpath');
 	$tokenid = $req->get('tokenid');
-	//$recs = DB::table('payments')->where([['tokenid', '=', $tokenid],['downloaded', '=', true]])->get();
-	//if(count($recs) > 0){
-	//    $message = "You have already downloaded the image. If you feel otherwise, or there was a problem with your download, please contact the support at support@imageweb.com with the token Id ".$tokenid;
-	//    return($message);
-	//}
 	$recs2 = DB::table('payments')->where('tokenid', $tokenid)->get();
 	if(count($recs2) == 0){
 	    $message = "Could not find the given token. Please contact the support with the given token for further assistance. Token: ".$tokenid;

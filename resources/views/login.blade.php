@@ -390,7 +390,7 @@ transform: translate(0%,0%);
          
          {{ Form::password('password', array('placeholder' => 'password', 'title' => 'password')) }}
       </p>
-      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="_token" value="{{ csrf_token() }}"><input type='hidden' name='rurl' value="{{request()->query('url')}}">
       <p style="color:blue;padding-left:20px;">{{ Form::submit('Submit!') }}</p>
       <p style="padding-left:20px;color:blue;font-weight:bold;"><a class='forgot' href="/forgotpassword">Forgot Password</a>|New user?<a href='/register' class='forgot'>Register here</a></p>
       </div>
