@@ -130,6 +130,17 @@ Route::post('getcurrencyrate', array(
 Route::get('getimage', array(
     'uses' => 'ImagesController@getimage'
 ));
+Route::get('checkbuylogin', array(
+    'uses' => 'ImagesController@buylogin'
+));
+
+Route::get('floatlogin', array(
+    'uses' => 'ImagesController@floatlogin'
+));
+
+Route::post('floatlogin', array(
+    'uses' => 'ImagesController@dofloatlogin'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

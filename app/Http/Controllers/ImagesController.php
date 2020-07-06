@@ -1375,17 +1375,45 @@ class ImagesController extends BaseController
 
 
     function getimage(Request $req){
+	$s = checksession();
+        if(!$s){
+	    $message = "You are not logged in. Please login to download the image. The image will get downloaded once you login into your account";
+	    return Redirect::to('login')->withErrors([$message]);
+        }
+	$sessionid = Session::getId();
+    	$sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
+    	if(!$sessobj){
+            return("Invalid session");
+    	}
+    	$sessionstatus = $sessobj->sessionstatus;
+    	if(!$sessionstatus){
+            return("Invalid session status");
+    	}
+    	$userid = $sessobj->userid;
 	$origimgurl = $req->get('imgurl');
 	$origimgpath = $req->get('imgpath');
 	$tokenid = $req->get('tokenid');
-	$recs = DB::table('payments')->where([['tokenid', '=', $tokenid],['downloaded', '=', true]])->get();
-	if(count($recs) > 0){
-	    $message = "You have already downloaded the image. If you feel otherwise, or there was a problem with your download, please contact the support at support@imageweb.com with the token Id ".$tokenid;
-	    return($message);
-	}
+	//$recs = DB::table('payments')->where([['tokenid', '=', $tokenid],['downloaded', '=', true]])->get();
+	//if(count($recs) > 0){
+	//    $message = "You have already downloaded the image. If you feel otherwise, or there was a problem with your download, please contact the support at support@imageweb.com with the token Id ".$tokenid;
+	//    return($message);
+	//}
 	$recs2 = DB::table('payments')->where('tokenid', $tokenid)->get();
 	if(count($recs2) == 0){
 	    $message = "Could not find the given token. Please contact the support with the given token for further assistance. Token: ".$tokenid;
+	    return($message);
+	}
+	$payuserid = $recs2[0]->userid;
+	if($payuserid != $userid){
+	    $message = "You are not logged in as the user who paid for the image";
+	    return Redirect::to('login')->withErrors([$message]);
+	}
+	$currtime = date('Y-m-d H:i:s');
+	$createdtime = $recs2[0]->created_at;
+	// Add 72 hours to $createdtime
+	$maxtime = date('Y-m-d H:i:s', strtotime($createdtime.' + 3 days'));
+	if($currtime > $maxtime){
+	    $message = "Your link to the image has been deactivated as 72 hours have passed since you paid for it. If you haven't been able to download the image as yet, please contact support at support@imageweb.com with the token Id ".$tokenid;
 	    return($message);
 	}
 	header("Content-Description: File Transfer");
@@ -1395,6 +1423,73 @@ class ImagesController extends BaseController
 	DB::table('payments')->where('tokenid', $tokenid)->update(array('downloaded' => true));
     }
 
+
+    function buylogin(Request $req){
+        $s = checksession();
+        if(!$s){
+            $message = "You are not logged in. Please login to buy the image.";
+            return Redirect::to('floatlogin')->withErrors([$message]);
+        }
+        $sessionid = Session::getId();
+        $sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        if(!$sessobj){
+            $message = "Invalid session. Please login again to buy the selected image";
+	    return Redirect::to('floatlogin')->withErrors([$message]);
+        }
+        $sessionstatus = $sessobj->sessionstatus;
+        if(!$sessionstatus){
+            $message = "Invalid session status. Please login again to buy the selected image";
+	    return Redirect::to('floatlogin')->withErrors([$message]);
+        }
+	return("1");
+    }
+
+
+    function floatlogin(Request $req){
+	return view('floatlogin');
+    }
+
+    function dofloatlogin(Request $req){
+	$rules = array(
+      'username' => 'required|alphaNum|min:4', // make sure the email is an actual email
+      'password' => 'required|alphaNum|min:8'
+      );
+      // checking all field
+      $validator = Validator::make(Input::all() , $rules);
+      // if the validator fails, redirect back to the form
+      if ($validator->fails())
+        {
+        return Redirect::to('floatlogin')->withErrors($validator) // send back all errors to the login form
+        ->withInput(Input::except('password')); // send back the input (not the password) so that we can repopulate the form
+        }
+        else
+        {
+        // create our user data for the authentication
+        $username = $req->input('username');
+        $password = $req->input('password');
+	$lowresimgpath = $req->input('lowresimgpath');
+        $hashedpassword = Hash::make($password);
+        //$user = User::where('username', '=', $username);
+        $user = DB::table('users')->where('username', $username)->first();
+        if(Hash::check($password, $user->password)){
+           if($user->verified){
+               // Add session to sessions table
+               if(!checksession()){
+                   $req->session()->regenerate();
+                   $sessionid = Session::getId();
+                   $userid = $user->id;
+                   $starttime = date("Y-m-d H:i:s");
+                   $sessdata = array('sessionid' => $sessionid, 'userid' => $userid, 'starttime' => $starttime);
+                   DB::table('sessions')->insert($sessdata);
+               }
+	       $message = "<br>Select your payment option below:<div><br><a href='#_' onclick='javascript:paypal(\"".$lowresimgpath."\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(\"".$lowresimgpath."\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/></div><div id='pgdiv' style='display:none;'></div>";
+               return ($message);
+           }
+        }
+        return Redirect::to('floatlogin')->withErrors(['The username or password was incorrect']);
+      }
+
+    }
 }
 
 

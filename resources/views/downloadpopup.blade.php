@@ -416,10 +416,62 @@
 		alert("Please fulfil the captcha challenge to continue.");
 		return(false);
 	    }
-	    screendiv = document.getElementById('transscreens');
-  	    screendiv.innerHTML += "<br>Select your payment option below:";
-	    screendiv.innerHTML += "<div><br><a href='#_' onclick='javascript:paypal(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/></div><div id='pgdiv' style='display:none;'></div>";
-  	  screendiv.style.display = "";
+	    // Check login status
+	    var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+	    xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    //alert(xmlhttp.responseText);
+		    if(xmlhttp.responseText == '1'){
+			screendiv = document.getElementById('transscreens');
+	  	        screendiv.innerHTML += "<br>Select your payment option below:";
+		        screendiv.innerHTML += "<div><br><a href='#_' onclick='javascript:paypal(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;PayPal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:stripe(\"" + lowresimgpath + "\");' style='color:#0000AA;font-weight:bold;'>Pay&nbsp;With&nbsp;Card</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:closescreen();' style='color:#0000AA;font-weight:bold;'>Close&nbsp;Screen</a><br/></div><div id='pgdiv' style='display:none;'></div>";
+	  	        screendiv.style.display = "";
+		    }
+		    else{ // Show login screen
+			screendiv = document.getElementById('transscreens');
+		   	//alert(xmlhttp.responseText);
+			content = xmlhttp.responseText;
+			content = content.replace(/LOWRESIMGPATH/, lowresimgpath);
+			screendiv.innerHTML = content;
+			screendiv.style.display = "";
+		    }
+                }
+            }
+	    targeturl = "/checkbuylogin";
+            xmlhttp.open("GET",targeturl,true); // Make it an ajax call.
+            xmlhttp.send();
+	}
+
+
+	function dologin(){
+	    var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+	    xmlhttp.onreadystatechange = function(){
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+		    //alert(xmlhttp.responseText);
+		    screendiv = document.getElementById('transscreens');
+		    screendiv.innerHTML = xmlhttp.responseText;
+		    screendiv.style.display = "";
+                }
+            }
+            targeturl = "/floatlogin";
+	    postdata = "username=" + document.frmlogin.username.value + "&_token=" + document.frmlogin._token.value + "&password=" + document.frmlogin.password.value + "&lowresimgpath=" + document.frmlogin.lowresimgpath.value;
+	    //alert(postdata);
+            xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', document.frmlogin._token.value);
+	    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send(postdata);
 	}
 
 
