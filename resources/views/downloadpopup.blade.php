@@ -481,6 +481,29 @@
 	    };
 	}
 
+	function luhntest(cardno){
+	    lastchar = cardno[cardno.length-1];
+	    restofthestring = cardno.slice(0, -1);
+	    splitrestofthestring = restofthestring.split("");
+	    reverserestofthestring = splitrestofthestring.reverse();
+	    reversestring = reverserestofthestring.join("");
+	    for(i=1; i < reversestring.length;i=i+2){
+		reversestring[i] = parseInt(reversestring[i]) * 2;
+		if(reversestring[i] > 9){
+		    reversestring[i] = reversestring[i] - 9;
+		}
+	    }
+	    sumofdigits = 0;
+	    for(j=0; j < reversestring.length; j++){
+		sumofdigits = sumofdigits + reversestring[j];
+	    }
+	    remainder = sumofdigits % 10;
+	    if(parseInt(remainder) != parseInt(lastchar)){
+		return (false);
+	    }
+	    return (true);
+	}
+
 	function validate_and_submit(){
 	    //alert("HELLO");
 	    cust_name = document.payment_form.customername.value;
@@ -508,6 +531,11 @@
 		alert("Card number field should not be empty");
 		return(false);
 	    }
+	    //luhnres = luhntest(card_num.trim());
+	    //if(!luhnres){
+	    //	alert("Your card number is invalid");
+	    //	return (false);
+	    //}
 	    if(cvv_num.trim() == ""){
 		alert("CVV number field should not be empty");
 		return(false);
@@ -529,6 +557,8 @@
 	    waitdivelem.innerHTML = "Please wait while we process your payment.";
 	    document.payment_form.submit();
 	}
+
+	
     </script>
 
     <script type='text/javascript'>
