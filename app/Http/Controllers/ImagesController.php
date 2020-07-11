@@ -347,6 +347,31 @@ function fingerprint_image($img, $resolution=8){
     return($fingerprint);
 }
 
+function checkcardvalidity($cardno){
+        $lastchar = mb_substr($cardno, -1);
+        $restofthestring = mb_substr($cardno, 0, -1);
+        $splitrestofthestring = str_split($restofthestring);
+        $reverserestofthestring = array_reverse($splitrestofthestring);
+        $reversestring = join("", $reverserestofthestring);
+        $strlength = strlen($reversestring);
+        for($i=0; $i < $strlength; $i+=2){
+            $reversestring[$i] = (int)$reversestring[$i] * 2;
+            if((int)$reversestring[$i] > 9){
+                $reversestring[$i] = (int)$reversestring[$i] - 9;
+            }
+        }
+        $sumofdigits = 0;
+        for($j=0; $j < strlen($reversestring); $j += 1){
+            $sumofdigits = $sumofdigits + (int)$reversestring[$j];
+        }
+        $remainder = $sumofdigits % 10;
+        if((int)$remainder != (int)$lastchar){
+            return(0);
+        }
+        return(1);
+}
+
+
 
 class ImagesController extends BaseController
 {
@@ -1261,6 +1286,11 @@ class ImagesController extends BaseController
 	    $state = $req->get('state');
 	    $zipcode = $req->get('zipcode');
 	    $currency = $req->get('currency');
+	    $cardnum = $req->get('card_no');
+	    $cardvalidity = checkcardvalidity($cardnum);
+	    //if(!$cardvalidity){
+	    //	return("The card number entered by you is invalid");
+	    //}
 	    try {
 		$token = $stripe->tokens()->create(['card' => ['number' => $req->get('card_no'), 'exp_month' => $req->get('ccExpiryMonth'), 'exp_year' => $req->get('ccExpiryYear'), 'cvc' => $req->get('cvvNumber'), ]]);
 		if (!isset($token['id'])) {
