@@ -247,6 +247,7 @@
                 <ul>
 				<li><a href="/dashboard" title="Dashboard">Dashboard</a></li>
 				  <li><a href="/gallery" title="Gallery" style="color: yellow;border: 1px solid yellow;border-radius: 10px;margin: 14px 0px;line-height: 54px;display: inline;padding: 6px;">Gallery</a></li>
+				 <li><a href="/withdrawscreen" title="Withdraw funds">Withdraw Funds</a></li>
 				 <li><a href="/aboutus" title="About Us">About Us</a></li>
 				  <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
                 </ul>

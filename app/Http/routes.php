@@ -141,6 +141,15 @@ Route::get('floatlogin', array(
 Route::post('floatlogin', array(
     'uses' => 'ImagesController@dofloatlogin'
 ));
+
+Route::get('withdrawscreen', array(
+    'uses' => 'ImagesController@showwithdrawscreen'
+));
+
+Route::post('withdrawscreen', array(
+    'uses' => 'ImagesController@maketransfer'
+));
+
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

@@ -1347,7 +1347,7 @@ class ImagesController extends BaseController
 		if($charge['status'] == 'succeeded') {
 		    Session::flash('success', 'Payment successful!');
 		    // Insert in payments table and add record in imagehits table.
-		    DB::table('payments')->insert($paymentsdata);
+		    $paymentid = DB::table('payments')->insertGetId($paymentsdata);
 		    //echo "<pre>";
 		    //print_r($charge);
 		    // Download the image on buyers device 
@@ -1376,6 +1376,27 @@ class ImagesController extends BaseController
             	    $useragent = $_SERVER['HTTP_USER_AGENT'];
 		    $imghitsdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $userid, 'ipaddress' => $client_ip, 'geolocation' => $geoloc, 'user_agent' => $useragent, 'hittime' => $hittime);
 		    DB::table('imagehits')->insert($imghitsdata);
+		    // 1. Add a record in transactions table with all appropriate values.
+		    $transactionrec = array('imgownerid' => $ownerid, 'buyerid' => $userid, 'paymentid' => $paymentid, 'amount' => $payamt, 'currency' => $currency);
+		    DB::table('transactions')->insert($transactionrec);
+		    // 2. Adjust 'fundstatus' table record for this user so that the user's finances on this website are correctly reflected.
+		    // Convert $payamt to USD
+		    if($currency == 'USD'){
+			$payamt = $payamt;
+		    }
+		    $raterec = DB::table('currencyrates')->where('currcode', $currency)->first();
+		    $payamt_USD = $payamt/$raterec->numunitsperusd;
+		    $fundstatusrecs = DB::table('fundstatus')->where('userid', $ownerid)->get();
+		    if(count($fundstatusrecs) > 0){
+			$existing_amt = $fundstatusrecs[0]->accountbalance;
+			$new_amt = $existing_amt + (1 - env('COMMISSION_PERCENT')/100)*$payamt_USD;
+			DB::table('fundstatus')->where('userid', $ownerid)->update(array('accountbalance' => $new_amt));
+		    }
+		    else{
+			$new_amt = (1 - env('COMMISSION_PERCENT')/100)*$payamt_USD;
+			$fundstatusrec = array('userid' => $ownerid, 'accountbalance' => $new_amt);
+			DB::table('fundstatus')->insert($fundstatusrec);
+		    }
 		    return ('payment successful. A link has been sent to the email you have specified. You may download the image by clicking on that link in the email.');
 		}
 		else{
@@ -1525,6 +1546,124 @@ class ImagesController extends BaseController
         return Redirect::to('floatlogin')->withErrors(['The username or password was incorrect']);
       }
 
+    }
+
+    function showwithdrawscreen(Request $req){
+	$s = checksession();
+        if(!$s){
+            $message = "You are not logged in. Please login to download the image. The image will get downloaded once you login into your account";
+            $queryurl = $req->fullUrl();
+            return Redirect::to('login?url='.urlencode($queryurl))->withErrors([$message]);
+        }
+        $sessionid = Session::getId();
+        $sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        if(!$sessobj){
+            return("Invalid session. Please login into the website and then try to download the image.");
+        }
+        $sessionstatus = $sessobj->sessionstatus;
+        if(!$sessionstatus){
+            return("Invalid session status. Please login into the website and then try to download the image.");
+        }
+	$userid = $sessobj->userid;
+	$userobj = DB::table('users')->where('id', $userid)->first();
+	$firstname = $userobj->firstname;
+	$lastname = $userobj->lastname;
+	$username = $userobj->username;
+	$emailid = $userobj->email;
+	$bankaccts = array();
+	$bankaccountqset = DB::table('bankaccount')->where('userid', $userid)->get();
+	for($i=0; $i < count($bankaccountqset); $i++){
+	    $bankaccountobj = $bankaccountqset[$i];
+	    $acctname = $bankaccountobj->accountname;
+	    $holdername = $bankaccountobj->holdername;
+	    $bankname = $bankaccountobj->bankname;
+	    $branchname = $bankaccountobj->branchname;
+	    $bankcode = $bankaccountobj->bankcode;
+	    $acctnumber = $bankaccountobj->accountnumber;
+	    $bankaccts[$acctname] = array('holdername' => $holdername, 'bankname' => $bankname, 'branchname' => $branchname, 'bankcode' => $bankcode, 'accountnumber' => $acctnumber);
+	}
+	$balancerec = DB::table('fundstatus')->where('userid', $userid)->first();
+	$balanceamt = 0.00;
+	if($balancerec){
+	    $balanceamt = $balancerec->accountbalance;
+	}
+	return view('withdrawscreen')->with(array('bankaccts' => $bankaccts, 'firstname' => $firstname, 'lastname' => $lastname, 'username'=> $username, 'emailid' => $emailid, 'balanceamount' => $balanceamt ));
+    }
+
+
+    function maketransfer(Request $req){
+        $s = checksession();
+        if(!$s){
+            $message = "You are not logged in. Please login to download the image. The image will get downloaded once you login into your account";
+            $queryurl = $req->fullUrl();
+            return Redirect::to('login?url='.urlencode($queryurl))->withErrors([$message]);
+        }
+        $sessionid = Session::getId();
+        $sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        if(!$sessobj){
+            return("Invalid session. Please login into the website and then try to download the image.");
+        }
+        $sessionstatus = $sessobj->sessionstatus;
+        if(!$sessionstatus){
+            return("Invalid session status. Please login into the website and then try to download the image.");
+        }
+        $userid = $sessobj->userid;
+	$userobj = DB::table('users')->where('id', $userid)->first();
+	// Get POST input data
+	$firstname = $req->input('first_name');
+	$lastname = $req->input('last_name');
+	$emailid = $req->input('emailid');
+	$amount = $req->input('amount_transfer');
+	$bankaccount = $req->input('bank_account');
+	$newbankaccount = $req->input('new_bank_account');
+	$acctnumber = $req->input('acct_number');
+	$bankname = $req->input('bank_name');
+	$bankbranch = $req->input('bank_branch');
+	$branchcode = $req->input('branch_id_code');
+	$countryname = $req->input('country');
+	// Now we have got all values. So we start the transfer if the amount is less than or equal to the amount in the fundstatus table
+	$fundrec = DB::table('fundstatus')->where('userid', $userid)->first();
+	if(!$fundrec || $fundrec->accountbalance == 0){ // The user doesn't seem to have any funds. So we create the bank account if it doesn't exist and return.
+	    if(!$newbankaccount){
+		return("No funds to withdraw");
+	    }
+	    else{
+	    	$acctrec = array('userid' => $userid, 'bankname' => $bankname, 'branchname'	=> $bankbranch, 'bankcode' => $branchcode, 'holdername' => $firstname." ".$lastname, 'accountname' => $newbankaccount, 'accountnumber' => $acctnumber);
+	    	// Check if an account with the same account number exists
+	    	$acctrecs = DB::table('bankaccount')->where('accountnumber', $acctnumber)->get();
+	    	if(count($acctrecs) > 0){
+		    return("An account with the same account number exists. Please provide an alternate account number and try again!");
+		}
+		DB::table('bankaccount')->insert($acctrec);
+	    } 
+	}
+	else if($amount > $fundrec->accountbalance){
+	    if($newbankaccount != ""){
+	        $acctrec = array('userid' => $userid, 'bankname' => $bankname, 'branchname'     => $bankbranch, 'bankcode' => $branchcode, 'holdername' => $firstname." ".$lastname, 'accountname' => $newbankaccount, 'accountnumber' => $acctnumber);
+                // Check if an account with the same account number exists
+                $acctrecs = DB::table('bankaccount')->where('accountnumber', $acctnumber)->get();
+                if(count($acctrecs) > 0){
+                    return("An account with the same account number exists. Please provide an alternate account number and try again!");
+                }
+                DB::table('bankaccount')->insert($acctrec);
+	    }
+	    return("Amount requested is greater than the balance amount you have. Please enter an appropriate value for your amount and try again");
+	}
+	else{
+	    if($newbankaccount != ""){
+            	$acctrec = array('userid' => $userid, 'bankname' => $bankname, 'branchname'     => $bankbranch, 'bankcode' => $branchcode, 'holdername' => $firstname." ".$lastname, 'accountname' => $newbankaccount, 'accountnumber' => $acctnumber);
+            	// Check if an account with the same account number exists
+            	$acctrecs = DB::table('bankaccount')->where('accountnumber', $acctnumber)->get();
+            	if(count($acctrecs) > 0){
+                    return("An account with the same account number exists. Please provide an alternate account number and try again!");
+            	}
+            	DB::table('bankaccount')->insert($acctrec);
+            }
+
+	    // 1. Make transfer through razorpay
+	    // 2. Add a record in 'transactions' table with all the required fields.
+	    // 3. Update 'fundstatus' table to reflect the status of the user's finances on this website. 
+	}
     }
 }
 

@@ -594,8 +594,9 @@ function uploadprofileimage(){
 				<?php
 					}
 				?>
+				 <li><a href="/withdrawscreen" title="Withdraw funds">Withdraw Funds</a></li>
 				 <li><a href="/aboutus" title="About Us">About Us</a></li>
-				  <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
+				 <li><a href="/termsandconditions" title="Terms and Conditions">Terms and Conditions</a></li>
                 </ul>
               </div>
             </div>
