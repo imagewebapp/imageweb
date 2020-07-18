@@ -1657,14 +1657,30 @@ class ImagesController extends BaseController
             	if(count($acctrecs) > 0){
                     return("An account with the same account number exists. Please provide an alternate account number and try again!");
             	}
-            	DB::table('bankaccount')->insert($acctrec);
+            	$acctid = DB::table('bankaccount')->insertGetId($acctrec);
             }
+	    else{
+		$acctrec = DB::table('bankaccount')->where([['accountnumber', '=', $acctnumber], ['userid', '=', $userid]])->first();
+		$acctid = $acctrec->id;
+	    }
 
 	    // 1. Make transfer through razorpay
 	    // 2. Add a record in 'transactions' table with all the required fields.
+	    $transactionrec = array('imgownerid' => $userid, 'buyerid' => '', paymentid => '', 'amount' => $amount, 'currency' => 'USD', 'accountid' => $acctid, 'trx_type' => 'c');
+	    DB::table('transactions')->insert($transactionrec);
 	    // 3. Update 'fundstatus' table to reflect the status of the user's finances on this website. 
+	    $fundstatusrec = DB::table('fundstatus')->where('userid', $userid)->first();
+	    if($fundstatusrec){
+		$acctbalance = $fundstatusrec->accountbalance - $amount;
+		DB::table('fundstatus')->where('userid', $userid)->update(array('accountbalance' => $acctbalance));
+	    }
+	    else{
+	   	return("Cannot withdraw funds - No funds available for withdrawal"); 
+	    }
 	}
+	return("Transfer completed successfully");
     }
+
 }
 
 

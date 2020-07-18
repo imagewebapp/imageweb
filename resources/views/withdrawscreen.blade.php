@@ -958,39 +958,98 @@ table.form-address-table {
 <script src="https://cdn.jotfor.ms/js/paypal.js?v=3.3.19109" type="text/javascript"></script>
 <script src="https://cdn.jotfor.ms/js/vendor/math-processor.js?v=3.3.19109" type="text/javascript"></script>
 <script type="text/javascript">
-   JotForm.setCalculations([{"resultField":"10","operands":"4","readOnly":false,"showBeforeInput":false,"equation":"[{4}]","decimalPlaces":"2","newCalculationType":true,"insertAsText":false,"showEmptyDecimals":false,"ignoreHiddenFields":false,"conditionId":"1408945627066","conditionTrue":false}]);
-   JotForm.setConditions([{"action":[{"fields":["11","12","19","10"],"visibility":"ShowMultiple"}],"id":"1408945597909","index":"0","link":"Any","priority":"0","terms":[{"field":"15","operator":"equals","value":"Yes"}],"type":"field"},{"action":[{"resultField":"10","operands":"4","readOnly":false,"showBeforeInput":false,"equation":"[{4}]","decimalPlaces":"2","newCalculationType":true,"insertAsText":false,"showEmptyDecimals":false,"ignoreHiddenFields":false,"conditionId":"1408945627066","conditionTrue":false}],"id":"1408945627066","index":"1","link":"Any","priority":"1","terms":[{"field":"19","operator":"equals","value":"Yes"}],"type":"calculation"}]);
-	JotForm.init(function(){
-      setTimeout(function() {
-          $('input_3').hint('ex: myname@example.com');
-       }, 20);
-      productID = {"0":"input_7_1001","1":"input_7_1002","2":"input_7_1003"};
-      paymentType = "product";
-      JotForm.setCurrencyFormat('USD',true, 'point');
-      JotForm.totalCounter({"input_7_1001":{"price":"100","quantityField":"input_7_quantity_1001_0"},"input_7_1002":{"price":"100","quantityField":"input_7_quantity_1002_0"},"input_7_1003":{"price":"100","quantityField":"input_7_quantity_1003_0"}});
-      $$('.form-product-custom_quantity').each(function(el, i){el.observe('blur', function(){isNaN(this.value) || this.value < 1 ? this.value = '0' : this.value = parseInt(this.value)})});
-      $$('.form-product-custom_quantity').each(function(el, i){el.observe('focus', function(){this.value == 0 ? this.value = '' : this.value})});
-      JotForm.handleProductLightbox();
-if (window.JotForm && JotForm.accessible) $('input_14').setAttribute('tabindex',0);
-	JotForm.newDefaultTheme = false;
-	JotForm.newPaymentUIForNewCreatedForms = false;
-    /*INIT-END*/
-	});
-
-   JotForm.prepareCalculationsOnTheFly([null,{"name":"clickTo","qid":"1","text":"Funds Withdrawal Form","type":"control_head"},{"name":"fullName","qid":"2","text":"Full Name","type":"control_fullname"},{"name":"email3","qid":"3","text":"E-mail","type":"control_email"},{"name":"billingAddress","qid":"4","text":"Billing Address","type":"control_address"},{"name":"contactNumber","qid":"5","text":"Contact Number","type":"control_phone"},null,{"name":"products","qid":"7","text":"Products","type":"control_paypal"},null,null,{"name":"shippingAdress","qid":"10","text":"Shipping Adress","type":"control_address"},{"name":"fullName11","qid":"11","text":"Full Name","type":"control_fullname"},{"name":"phoneNumber12","qid":"12","text":"Phone Number","type":"control_phone"},{"name":"submit","qid":"13","text":"SUBMIT","type":"control_button"},{"name":"additionalRequests","qid":"14","text":"Additional Requests","type":"control_textarea"},{"name":"sendGift","qid":"15","text":"Send Gift","type":"control_radio"},{"name":"clickTo16","qid":"16","text":"section separator for the form style - do not remove","type":"control_collapse"},null,{"name":"clickTo18","qid":"18","text":"section separator for the form style - do not remove","type":"control_collapse"},{"name":"sameAs19","qid":"19","text":"Same as the Billing Address?","type":"control_checkbox"}]);
-   setTimeout(function() {
-JotForm.paymentExtrasOnTheFly([null,{"name":"clickTo","qid":"1","text":"Funds Withdrawal Form","type":"control_head"},{"name":"fullName","qid":"2","text":"Full Name","type":"control_fullname"},{"name":"email3","qid":"3","text":"E-mail","type":"control_email"},{"name":"billingAddress","qid":"4","text":"Billing Address","type":"control_address"},{"name":"contactNumber","qid":"5","text":"Contact Number","type":"control_phone"},null,{"name":"products","qid":"7","text":"Products","type":"control_paypal"},null,null,{"name":"shippingAdress","qid":"10","text":"Shipping Adress","type":"control_address"},{"name":"fullName11","qid":"11","text":"Full Name","type":"control_fullname"},{"name":"phoneNumber12","qid":"12","text":"Phone Number","type":"control_phone"},{"name":"submit","qid":"13","text":"SUBMIT","type":"control_button"},{"name":"additionalRequests","qid":"14","text":"Additional Requests","type":"control_textarea"},{"name":"sendGift","qid":"15","text":"Send Gift","type":"control_radio"},{"name":"clickTo16","qid":"16","text":"section separator for the form style - do not remove","type":"control_collapse"},null,{"name":"clickTo18","qid":"18","text":"section separator for the form style - do not remove","type":"control_collapse"},{"name":"sameAs19","qid":"19","text":"Same as the Billing Address?","type":"control_checkbox"}]);}, 20); 
-</script>
-<script>
 function do_transfer(){
+    //alert("hi");
+    firstname = document.frmwithdrawal.first_name.value;
+    lastname = document.frmwithdrawal.last_name.value;
+    emailid = document.frmwithdrawal.emailid.value;
+    amount = document.frmwithdrawal.amount_transfer.value;
+    bankacctname = document.frmwithdrawal.bank_account.options[document.frmwithdrawal.bank_account.options.selectedIndex].value;
+    newacctname = "";
+    if(bankacctname == ""){
+        newacctname = document.frmwithdrawal.new_bank_account.value;
+	if(newacctname == ""){
+	    alert("Please either select a bank account name or enter a new one if you are looking to register a new account");
+	    return(false);
+	}
+    }
+    acctnumber = document.frmwithdrawal.acct_number.value;
+    bankname = document.frmwithdrawal.bank_name.value;
+    bankbranch = document.frmwithdrawal.bank_branch.value;
+    branchcode = document.frmwithdrawal.branch_id_code.value;
+    country = document.frmwithdrawal.country.options[document.frmwithdrawal.country.options.selectedIndex].value;
+    if(country == ""){
+	alert("Please select a country to proceed with the payment");
+  	return(false);
+    }
+    var xmlhttp;
+    if (window.XMLHttpRequest){
+        xmlhttp=new XMLHttpRequest();
+    }
+    else{
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function(){
+        if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+	    //alert(xmlhttp.responseText);
+	    screendiv = document.getElementById('transscreens');
+	    screendiv.innerHTML = xmlhttp.responseText;
+	    screendiv.style.display = "";
+        }
+    }
+    targeturl = document.frmwithdrawal.action;
+    postdata = "first_name=" + firstname + "&_token=" + document.frmwithdrawal._token.value + "&last_name=" + lastname + "&emailid=" + emailid + "&amount_transfer=" + amount + "&bank_account=" + bankacctname + "&new_bank_account=" + newacctname + "&acct_number=" + acctnumber + "&bank_name=" + bankname + "&bank_branch=" + bankbranch + "&branch_id_code=" + branchcode + "&country=" + country;
+    //alert(postdata);
+    xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
+    xmlhttp.setRequestHeader('X-CSRFToken', document.frmwithdrawal._token.value);
+    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xmlhttp.send(postdata);
+}
 
+
+function populateacctinfo(){
+    <?php
+    $bankdetails = "bankaccounts = {";
+    foreach ($bankaccts as $acctname => $acctvalue){
+	$bankdetails = $bankdetails."'".$acctname."' : new Array('".$acctvalue['holdername']."', '".$acctvalue['bankname']."', '".$acctvalue['branchname']."', '".$acctvalue['bankcode']."', '".$acctvalue['accountnumber']."'),";
+    }
+    $bankdetails = substr($bankdetails, 0, -1);
+    $bankdetails = $bankdetails."};";
+    echo $bankdetails;
+    ?>
+    bankacctselected = document.frmwithdrawal.bank_account.options[document.frmwithdrawal.bank_account.options.selectedIndex].value;
+    if(bankacctselected == ""){
+	document.frmwithdrawal.first_name.value = "";
+    	document.frmwithdrawal.last_name.value = "";
+    	document.frmwithdrawal.acct_number.value = "";
+    	document.frmwithdrawal.bank_name.value = "";
+    	document.frmwithdrawal.bank_branch.value = "";
+    	document.frmwithdrawal.branch_id_code.value = "";
+    }
+    else{
+	holdername = bankaccounts[bankacctselected][0];
+    	bankname = bankaccounts[bankacctselected][1];
+    	branchname = bankaccounts[bankacctselected][2];
+    	branchcode = bankaccounts[bankacctselected][3];
+    	acctnumber = bankaccounts[bankacctselected][4];
+    	nameparts = holdername.split(" ");
+    	firstname = nameparts[0];
+    	lastname = nameparts[1];
+     	document.frmwithdrawal.first_name.value = firstname;
+    	document.frmwithdrawal.last_name.value = lastname;
+    	document.frmwithdrawal.acct_number.value = acctnumber;
+    	document.frmwithdrawal.bank_name.value = bankname;
+    	document.frmwithdrawal.bank_branch.value = branchname;
+    	document.frmwithdrawal.branch_id_code.value = branchcode;
+    }
 }
 </script>
+
 </head>
 <body>
-<form class="jotform-form" action="/dowithdrawal" method="post" name="frmwithdrawal" id="frmwithdrawal" accept-charset="utf-8" autocomplete="on">
+<form class="jotform-form" action="/withdrawscreen" method="post" name="frmwithdrawal" id="frmwithdrawal" accept-charset="utf-8" autocomplete="on">
   {{ csrf_field() }}
-  
+  <div id="transscreens" class="semitrans" style="max-height:100%;max-width:100%;display:none;"></div>
   <div role="main" class="form-all">
     <ul class="form-section page-section">
       <li id="cid_1" class="form-input-wide" data-type="control_head">
@@ -1055,7 +1114,7 @@ function do_transfer(){
               <div class="form-address-line-wrapper jsTest-address-line-wrapperField">
                 <span class="form-address-line form-address-street-line jsTest-address-lineField">
                   <span class="form-sub-label-container " style="vertical-align:top">
-                    <select class="form-dropdown form-address-country noTranslate" name="bank_account" id="bank_account" data-component="bank accounts" required="" aria-labelledby="label_4 sublabel_4_country">
+                    <select class="form-dropdown form-address-country noTranslate" name="bank_account" id="bank_account" data-component="bank accounts" required="" aria-labelledby="label_4 sublabel_4_country" onchange='javascript:populateacctinfo();'>
                       <option value=""> Please Select an existing account </option>
 		      @foreach ($bankaccts as $acct => $details)
 			<option value="<?php echo $acct; ?>"> <?php echo $acct; ?> </option>
@@ -1360,7 +1419,7 @@ function do_transfer(){
         <li class="form-line" data-type="control_radio" id="id_15">
           <div id="cid_16" class="form-input">
             <div class="form-multiple-column" data-columncount="2" role="group" aria-labelledby="label_15">
-              <input type="button" id="do_transfer" name="do_transfer" class="form-textbox" size="10" value="Make Transfer" data-component="first" aria-labelledby="label_2 sublabel_2_first" onClick='javascript:do_transfer();'/>&nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="button" id="btn_transfer" name="btn_transfer" class="form-textbox" size="10" value="Make Transfer" data-component="first" aria-labelledby="label_2 sublabel_2_first" onClick='javascript:do_transfer();'/>&nbsp;&nbsp;&nbsp;&nbsp;
 	      <input type="button" id="cancel" name="cancel" class="form-textbox" size="10" value="Cancel Transfer" data-component="first" aria-labelledby="label_2 sublabel_2_first" onClick='javascript:history.go(-1);'/>
             </div>
           </div>
