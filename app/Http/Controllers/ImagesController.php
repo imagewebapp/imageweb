@@ -36,6 +36,9 @@ use App\Validators\ReCaptcha;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 
+use imagescompare;
+
+
 $imagedumppath = "/var/www/html/imageweb/users/";
 
 
