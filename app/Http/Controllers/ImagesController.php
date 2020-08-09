@@ -1573,6 +1573,9 @@ class ImagesController extends BaseController
 	$lastname = $userobj->lastname;
 	$username = $userobj->username;
 	$emailid = $userobj->email;
+        $user = DB::table('users')->where('id', $userid)->first();
+        $usertype = $user->usertype;
+        $profileimagepath = getprofileimage($username);
 	$bankaccts = array();
 	$bankaccountqset = DB::table('bankaccount')->where('userid', $userid)->get();
 	for($i=0; $i < count($bankaccountqset); $i++){
@@ -1590,7 +1593,7 @@ class ImagesController extends BaseController
 	if($balancerec){
 	    $balanceamt = $balancerec->accountbalance;
 	}
-	return view('withdrawscreen')->with(array('bankaccts' => $bankaccts, 'firstname' => $firstname, 'lastname' => $lastname, 'username'=> $username, 'emailid' => $emailid, 'balanceamount' => $balanceamt ));
+	return view('withdrawscreen')->with(array('bankaccts' => $bankaccts, 'firstname' => $firstname, 'lastname' => $lastname, 'username'=> $username, 'emailid' => $emailid, 'balanceamount' => $balanceamt, 'userid' => $userid, 'usertype' => $usertype, 'profileimage' => $profileimagepath ));
     }
 
 
