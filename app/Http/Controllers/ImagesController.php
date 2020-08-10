@@ -37,6 +37,8 @@ use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 
 use Srmklive\PayPal\Services\ExpressCheckout;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
 
 use imagescompare;
 
@@ -1240,14 +1242,92 @@ class ImagesController extends BaseController
     }
 
 
+    public function __construct(){
+	/** PayPal api context **/
+        $paypal_conf = \Config::get('paypal');
+        $this->_api_context = new ApiContext(new OAuthTokenCredential(
+            $paypal_conf['client_id'],
+            $paypal_conf['secret'])
+        );
+        $this->_api_context->setConfig($paypal_conf['settings']);
+    }
+
     public function makepaymentbypaypal(Request $req){
-	require 'vendor/autoload.php';
+	//require 'vendor/autoload.php';
 	$apiContext = new \PayPal\Rest\ApiContext(
   	    new \PayPal\Auth\OAuthTokenCredential(
     	    	env('PAYPAL_CLIENT_ID'),
     	    	env('PAYPAL_SECRET')
   	    )
 	);
+	$customername = $req->get('customername');
+	$cmd = $req->get('cmd');
+	$business = $req->get('business');
+	$item_name = $req->get('item_name');
+	$item_number = $req->get('item_number');
+	$currency_code = $req->get('currency_code');
+	$lc = $req->get('lc');
+	$bn = $req->get('bn');
+	$payamt = $req->get('payamt');
+	$lowrespath = $req->get('lowrespath');
+
+	$payer = new Payer();
+	$payer->setPaymentMethod('paypal');
+	$item_1 = new Item();
+	$item_1->setName($item_name)
+	    ->setCurrency('USD')
+	    ->setQuantity(1)
+	    ->setPrice($payamt);
+	$item_list = new ItemList();
+	$item_list->setItems(array($item_1));
+
+	$amount = new Amount();
+	$amount->setCurrency('USD')
+	    ->setTotal($payamt);
+
+	$transaction = new Transaction();
+	$transaction->setAmount($amount)
+	    ->setItemList($item_list)
+	    ->setDescription("Buying premium content");
+
+	$redirect_urls = new RedirectUrls();
+	$redirect_urls->setReturnUrl(URL::route('paypalsuccess'))
+	    ->setCancelUrl(URL::route('paypalcancel'));
+
+	$payment = new Payment();
+	$payment->setIntent('Sale')
+	    ->setPayer($payer)
+	    ->setRedirectUrls($redirect_urls)
+	    ->setTransactions(array($transaction));
+
+	try{
+	    $payment->create($this->_api_context);
+	}
+	catch(\PayPal\Exception\PPConnectionException $ex){
+	    if (\Config::get('app.debug')) {
+		\Session::put('error', 'Connection timeout');
+		return Redirect::route('paypalpayment');
+	    }
+	    else{
+		\Session::put('error', 'Some error occur, sorry for inconvenient');
+		return Redirect::route('paypalpayment');
+	    }
+	}
+
+	foreach ($payment->getLinks() as $link) {
+	    if ($link->getRel() == 'approval_url') {
+		$redirect_url = $link->getHref();
+		break;
+	    }
+	}
+
+	Session::put('paypal_payment_id', $payment->getId());
+	if (isset($redirect_url)) {
+	    return Redirect::away($redirect_url);
+	}
+
+	\Session::put('error', 'Unknown error occurred');
+	return Redirect::route('paypalpayment');
     }
 
     public function cardpaymentbystripe(Request $req){

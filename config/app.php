@@ -161,6 +161,8 @@ return [
 
 	Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
 
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+
     ],
 
     /*
