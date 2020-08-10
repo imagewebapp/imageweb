@@ -36,6 +36,8 @@ use App\Validators\ReCaptcha;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 
+use Srmklive\PayPal\Services\ExpressCheckout;
+
 use imagescompare;
 
 
@@ -1214,6 +1216,7 @@ class ImagesController extends BaseController
 	return view('termsandconditions')->with(array('username' => $username, 'profileimage' => $profileimagepath));
     }
 
+
     public function paymentbypaypal(Request $req){
 	$imageprice = 0;
         $lowrespath = "";
@@ -1600,18 +1603,18 @@ class ImagesController extends BaseController
     function maketransfer(Request $req){
         $s = checksession();
         if(!$s){
-            $message = "You are not logged in. Please login to download the image. The image will get downloaded once you login into your account";
+            $message = "You are not logged in. Please login to do financial transactions.";
             $queryurl = $req->fullUrl();
             return Redirect::to('login?url='.urlencode($queryurl))->withErrors([$message]);
         }
         $sessionid = Session::getId();
         $sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
         if(!$sessobj){
-            return("Invalid session. Please login into the website and then try to download the image.");
+            return("Invalid session. Please login into the website and then try to do financial transactions.");
         }
         $sessionstatus = $sessobj->sessionstatus;
         if(!$sessionstatus){
-            return("Invalid session status. Please login into the website and then try to download the image.");
+            return("Invalid session status. Please login into the website and then try to do financial transactions.");
         }
         $userid = $sessobj->userid;
 	$userobj = DB::table('users')->where('id', $userid)->first();

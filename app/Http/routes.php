@@ -123,6 +123,14 @@ Route::post('paypalpayment', array(
     'uses' => 'ImagesController@makepaymentbypaypal'
 ));
 
+Route::get('paypalsuccess', array(
+    'uses' => 'ImagesController@paymentsuccess'
+));
+
+Route::get('paypalcancel', array(
+    'uses' => 'ImagesController@paymentcancel'
+));
+
 Route::post('getcurrencyrate', array(
     'uses' => 'ImagesController@currencyrate'
 ));
