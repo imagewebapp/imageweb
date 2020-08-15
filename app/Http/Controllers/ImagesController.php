@@ -1323,6 +1323,82 @@ class ImagesController extends BaseController
 		break;
 	    }
 	}
+	// Validate the amount with the image
+        $recs = DB::table('images')->where([ ['price', '=', (float)$payamt], ['lowresfilename', '=', $lowrespath] ])->get();
+        if(count($recs) == 0){
+            $msg = "Invalid price and/or image specification";
+            return($msg);
+        }
+        $imageid = $recs[0]->id;
+        $ownerid = $recs[0]->userid;
+        $origimgpath = $recs[0]->imagepath;
+        $s = checksession();
+        $userid = -1;
+	$customername = "";
+	$addressline1 = "";
+	$addressline2 = "";
+	$city = "";
+	$state = "";
+	$country = "";
+	$zipcode = "";
+	$tokenid = "";
+	$emailid = "";
+	// Get payment_id and assign it to tokenid.
+        if($s){
+            $sessionid = Session::getId();
+            $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+            $userid = $session->userid;
+	    $userobj = DB::table('users')->where('id', $userid)->first();
+	    $customername = $userobj->firstname." ".$userobj->lastname;
+	    $emailid = $userobj->email;
+        }
+        $client_ip = "";
+        $client_ip = get_client_ip();
+        $details = json_decode(file_get_contents("http://ipinfo.io/{$client_ip}/json"), true);
+        $geoloc = "";
+        try{
+            if(array_key_exists("city", $details)){
+                $geoloc = $details['city'];
+            }
+        }
+        catch(Exception $e){
+        }
+
+	$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2.", ".$city.", ".$state.", ".$country.", PIN Code: ".$zipcode, 'tokenid' => $tokenid, 'userid' => $userid);
+	$paymentid = DB::table('payments')->insertGetId($paymentsdata);
+	$hostname = $req->getHost();
+        $hostportname = $req->getHttpHost();
+        $rooturl = "http://".$hostportname;
+        //$rooturl = "https://".$hostportname;
+	$origimgpathparts = explode("users", $origimgpath);
+        $origimgurl = "/image".$origimgpathparts[1];
+        $downloadimageurl = $rooturl."/getimage?imgurl=".$origimgurl."&imgpath=".$origimgpath."&tokenid=".$tokenid;
+        $mailcontent = "<a href='".$downloadimageurl."'>Download Image Here</a>";
+        $maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
+        $subject = "Download Image Link";
+        Mail::send('downloadlinkmail', $maildata, function ($mailcontent) use($emailid, $customername, $subject){
+                   $mailcontent->to($emailid, $customername)->subject($subject);
+                    $mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
+        });
+        $hittime = date("Y-m-d H:i:s");
+        $useragent = $_SERVER['HTTP_USER_AGENT'];
+        $imghitsdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $userid, 'ipaddress' => $client_ip, 'geolocation' => $geoloc, 'user_agent' => $useragent, 'hittime' => $hittime);
+        DB::table('imagehits')->insert($imghitsdata);
+	// 1. Add a record in transactions table with all appropriate values.
+	$currency = "USD";
+        $transactionrec = array('imgownerid' => $ownerid, 'buyerid' => $userid, 'paymentid' => $paymentid, 'amount' => $payamt, 'currency' => $currency);
+        DB::table('transactions')->insert($transactionrec);
+	// 2. Adjust 'fundstatus' table record for this user so that the user's finances on this website are correctly reflected.
+        $fundstatusrecs = DB::table('fundstatus')->where('userid', $ownerid)->get();
+        if(count($fundstatusrecs) > 0){
+            $existing_amt = $fundstatusrecs[0]->accountbalance;
+            $new_amt = $existing_amt + $payamt;
+            DB::table('fundstatus')->where('userid', $ownerid)->update(array('accountbalance' => $new_amt));
+        }
+        else{
+            $fundstatusrec = array('userid' => $ownerid, 'accountbalance' => $new_amt);
+            DB::table('fundstatus')->insert($fundstatusrec);
+        }
 
 	Session::put('paypal_payment_id', $payment->getId());
 	if (isset($redirect_url)) {
