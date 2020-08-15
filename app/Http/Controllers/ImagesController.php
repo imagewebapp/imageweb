@@ -1271,30 +1271,33 @@ class ImagesController extends BaseController
 	$payamt = $req->get('payamt');
 	$lowrespath = $req->get('lowrespath');
 
-	$payer = new Payer();
+	$payer = new \PayPal\Api\Payer();
 	$payer->setPaymentMethod('paypal');
-	$item_1 = new Item();
+	$item_1 = new \PayPal\Api\Item();
 	$item_1->setName($item_name)
 	    ->setCurrency('USD')
 	    ->setQuantity(1)
 	    ->setPrice($payamt);
-	$item_list = new ItemList();
+	$item_list = new \PayPal\Api\ItemList();
 	$item_list->setItems(array($item_1));
 
-	$amount = new Amount();
+	$amount = new \PayPal\Api\Amount();
 	$amount->setCurrency('USD')
 	    ->setTotal($payamt);
 
-	$transaction = new Transaction();
+	$transaction = new \PayPal\Api\Transaction();
 	$transaction->setAmount($amount)
 	    ->setItemList($item_list)
 	    ->setDescription("Buying premium content");
+	
+	$schemeandhost = $req->getSchemeAndHttpHost();
+	$redirect_urls = new \PayPal\Api\RedirectUrls();
+	//$redirect_urls->setReturnUrl(URL::route('paypalsuccess'))
+	//    ->setCancelUrl(URL::route('paypalcancel'));
+	$redirect_urls->setReturnUrl($schemeandhost."/paypalsuccess")
+	    ->setCancelUrl($schemeandhost."/paypalcancel");
 
-	$redirect_urls = new RedirectUrls();
-	$redirect_urls->setReturnUrl(URL::route('paypalsuccess'))
-	    ->setCancelUrl(URL::route('paypalcancel'));
-
-	$payment = new Payment();
+	$payment = new \PayPal\Api\Payment();
 	$payment->setIntent('Sale')
 	    ->setPayer($payer)
 	    ->setRedirectUrls($redirect_urls)
@@ -1329,6 +1332,7 @@ class ImagesController extends BaseController
 	\Session::put('error', 'Unknown error occurred');
 	return Redirect::route('paypalpayment');
     }
+
 
     public function cardpaymentbystripe(Request $req){
 	$imageprice = 0;
