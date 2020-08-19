@@ -36,7 +36,6 @@ use App\Validators\ReCaptcha;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 
-use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 
@@ -781,7 +780,10 @@ class ImagesController extends BaseController
         $imagepathparts = explode("/", $imagepath);
 	$pathpartslength = count($imagepathparts);
 	$imgfilename = $imagepathparts[$pathpartslength-1];
-	$imagerecord = DB::table('images')->where([ ['lowresfilename', '=', $imgfilename ], ['removed', '=', 0] ])->first();
+	$ownername = $imagepathparts[$pathpartslength-2];
+	$user= DB::table('users')->where([ ['username', '=', $ownername] ])->first();
+	$ownerid = $user->id;
+	$imagerecord = DB::table('images')->where([ ['lowresfilename', '=', $imgfilename ], ['removed', '=', 0], ['userid','=', $ownerid ] ])->first();
 	$imagecategory = $imagerecord->categories;
 	$imagetags = $imagerecord->imagetags;
 	$imageprice = $imagerecord->price;
@@ -1260,7 +1262,7 @@ class ImagesController extends BaseController
     	    	env('PAYPAL_SECRET')
   	    )
 	);
-	$customername = $req->get('customername');
+	$paypalacctid = $req->get('paypalacctid');
 	$cmd = $req->get('cmd');
 	$business = $req->get('business');
 	$item_name = $req->get('item_name');
@@ -1294,8 +1296,8 @@ class ImagesController extends BaseController
 	$redirect_urls = new \PayPal\Api\RedirectUrls();
 	//$redirect_urls->setReturnUrl(URL::route('paypalsuccess'))
 	//    ->setCancelUrl(URL::route('paypalcancel'));
-	$redirect_urls->setReturnUrl($schemeandhost."/paypalsuccess")
-	    ->setCancelUrl($schemeandhost."/paypalcancel");
+	$redirect_urls->setReturnUrl($schemeandhost."/paypalsuccess?payamt=".$payamt."&lowresfilename=".$lowrespath)
+	    ->setCancelUrl($schemeandhost."/paypalcancel?payamt=".$payamt."&lowresfilename=".$lowrespath);
 
 	$payment = new \PayPal\Api\Payment();
 	$payment->setIntent('Sale')
@@ -1323,7 +1325,20 @@ class ImagesController extends BaseController
 		break;
 	    }
 	}
-	// Validate the amount with the image
+	Session::put('paypal_payment_id', $payment->getId());
+	if (isset($redirect_url)) {
+	    return Redirect::away($redirect_url);
+	}
+
+	\Session::put('error', 'Unknown error occurred');
+	return Redirect::route('paypalpayment');
+    }
+
+
+    public function paymentsuccess(Request $req){
+	$payamt = $req->get('payamt');
+	$lowrespath = $req->get('lowresfilename');
+	// Validate the image file
         $recs = DB::table('images')->where([ ['price', '=', (float)$payamt], ['lowresfilename', '=', $lowrespath] ])->get();
         if(count($recs) == 0){
             $msg = "Invalid price and/or image specification";
@@ -1334,7 +1349,20 @@ class ImagesController extends BaseController
         $origimgpath = $recs[0]->imagepath;
         $s = checksession();
         $userid = -1;
-	$customername = "";
+        // Get payment_id and assign it to tokenid.
+        if($s){
+            $sessionid = Session::getId();
+            $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+            $userid = $session->userid;
+        }
+	else{
+	    return("You need to login first before you can use the paypal session");
+	}
+	$userobj = DB::table('users')->where('id', '=', $userid)->first();
+	if(!$userobj){
+	    return("The user identified by the Id ".$userid." doesn't exist");
+	}
+	$customername = $userobj->firstname." ".$userobj->lastname;
 	$addressline1 = "";
 	$addressline2 = "";
 	$city = "";
@@ -1342,17 +1370,6 @@ class ImagesController extends BaseController
 	$country = "";
 	$zipcode = "";
 	$tokenid = "";
-	$emailid = "";
-	// Get payment_id and assign it to tokenid.
-        if($s){
-            $sessionid = Session::getId();
-            $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
-            $userid = $session->userid;
-	    $userobj = DB::table('users')->where('id', $userid)->first();
-	    $customername = $userobj->firstname." ".$userobj->lastname;
-	    $emailid = $userobj->email;
-        }
-        $client_ip = "";
         $client_ip = get_client_ip();
         $details = json_decode(file_get_contents("http://ipinfo.io/{$client_ip}/json"), true);
         $geoloc = "";
@@ -1363,14 +1380,13 @@ class ImagesController extends BaseController
         }
         catch(Exception $e){
         }
-
 	$paymentsdata = array('imageid' => $imageid, 'amount' => $payamt, 'downloaded' => false, 'customername' => $customername, 'address' => $addressline1." ".$addressline2.", ".$city.", ".$state.", ".$country.", PIN Code: ".$zipcode, 'tokenid' => $tokenid, 'userid' => $userid);
-	$paymentid = DB::table('payments')->insertGetId($paymentsdata);
-	$hostname = $req->getHost();
+        $paymentid = DB::table('payments')->insertGetId($paymentsdata);
+        $hostname = $req->getHost();
         $hostportname = $req->getHttpHost();
         $rooturl = "http://".$hostportname;
         //$rooturl = "https://".$hostportname;
-	$origimgpathparts = explode("users", $origimgpath);
+        $origimgpathparts = explode("users", $origimgpath);
         $origimgurl = "/image".$origimgpathparts[1];
         $downloadimageurl = $rooturl."/getimage?imgurl=".$origimgurl."&imgpath=".$origimgpath."&tokenid=".$tokenid;
         $mailcontent = "<a href='".$downloadimageurl."'>Download Image Here</a>";
@@ -1384,11 +1400,11 @@ class ImagesController extends BaseController
         $useragent = $_SERVER['HTTP_USER_AGENT'];
         $imghitsdata = array('imageid' => $imageid, 'owneruserid' => $ownerid, 'visitor' => $userid, 'ipaddress' => $client_ip, 'geolocation' => $geoloc, 'user_agent' => $useragent, 'hittime' => $hittime);
         DB::table('imagehits')->insert($imghitsdata);
-	// 1. Add a record in transactions table with all appropriate values.
-	$currency = "USD";
+        // 1. Add a record in transactions table with all appropriate values.
+        $currency = "USD";
         $transactionrec = array('imgownerid' => $ownerid, 'buyerid' => $userid, 'paymentid' => $paymentid, 'amount' => $payamt, 'currency' => $currency);
         DB::table('transactions')->insert($transactionrec);
-	// 2. Adjust 'fundstatus' table record for this user so that the user's finances on this website are correctly reflected.
+        // 2. Adjust 'fundstatus' table record for this user so that the user's finances on this website are correctly reflected.
         $fundstatusrecs = DB::table('fundstatus')->where('userid', $ownerid)->get();
         if(count($fundstatusrecs) > 0){
             $existing_amt = $fundstatusrecs[0]->accountbalance;
@@ -1399,14 +1415,13 @@ class ImagesController extends BaseController
             $fundstatusrec = array('userid' => $ownerid, 'accountbalance' => $new_amt);
             DB::table('fundstatus')->insert($fundstatusrec);
         }
+	return("Payment was successful");
+    }
 
-	Session::put('paypal_payment_id', $payment->getId());
-	if (isset($redirect_url)) {
-	    return Redirect::away($redirect_url);
-	}
 
-	\Session::put('error', 'Unknown error occurred');
-	return Redirect::route('paypalpayment');
+    public function paymentcancel(Request $req){
+	// Handle the cancellation of the transaction - return appropriate message to confirm with the user.
+	return("Payment was cancelled");
     }
 
 

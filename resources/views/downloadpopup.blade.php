@@ -203,7 +203,7 @@
 	  if(e.button == 2) { // right click
 	    return false; // do nothing!
 	  }
-	}
+	});
     </script>
     <script>
 	imgpath = '<?php echo $imagepath; ?>';
@@ -588,6 +588,43 @@
             xmlhttp.setRequestHeader('X-CSRFToken', document.payment_form._token.value);
 	    xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xmlhttp.send(postdata);
+	}
+    </script>
+    <script type='text/javascript'>
+	function makepayment(){
+	    var xmlhttp;
+            if (window.XMLHttpRequest){
+                xmlhttp=new XMLHttpRequest();
+            }
+            else{
+	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+		//alert(xmlhttp.status);
+                if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+                    //alert(xmlhttp.responseText);
+		    screendiv = document.getElementById('transscreens');
+	  	    screendiv.innerHTML = xmlhttp.responseText;
+                }
+            }
+            targeturl = document.payment_form.action;
+	    cmd = document.payment_form.cmd.value;
+	    business = document.payment_form.business.value;
+	    item_name = document.payment_form.item_name.value;
+ 	    item_number = document.payment_form.item_number.value;
+	    currency_code = document.payment_form.currency_code.value;
+	    lc = document.payment_form.lc.value;
+	    bn = document.payment_form.bn.value;
+  	    payamt = document.payment_form.payamt.value;
+	    lowrespath = document.payment_form.lowrespath.value;
+	    csrftoken = document.payment_form._token.value;
+            postdata = "cmd=" + cmd + "&business=" + business + "&item_name=" + item_name + "&item_number=" + item_number + "&currency_code=" + currency_code + "&lc=" + lc + "&bn=" + bn + "&payamt=" + payamt + "&lowrespath=" + lowrespath + "&_token=" + csrftoken;
+	    //alert(postdata);
+            xmlhttp.open("POST",targeturl,true); // Make it an ajax call.
+            xmlhttp.setRequestHeader('X-CSRFToken', csrftoken);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send(postdata);
+
 	}
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
