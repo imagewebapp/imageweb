@@ -498,10 +498,22 @@ option {
 	function showoverlay(imgpath){
 	  //alert(imgpath);
   	  screendiv = document.getElementById('transscreens');
+	  if(screendiv.innerHTML != ""){
+	    closeimg();
+	    return(0);
+	  }
 	  screendiv.innerHTML = "<a href='#_' onclick='javascript:closeimg();' style='color:blue;font-weight:bold;'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");' style='color:blue;font-weight:bold;'>Download</a>";
   	  screendiv.innerHTML += "<br><img src='" + imgpath + "' style='width:100%;height:100%;'>";
 	  screendiv.innerHTML += "<br><a href='#_' onclick='javascript:closeimg();' style='color:blue;font-weight:bold;'>Close</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#_' onclick='javascript:showdownloadimage(\"" + imgpath + "\");' style='color:blue;font-weight:bold;'>Download</a>";
   	  screendiv.style.display = "";
+	}
+
+	function clearscreen(){
+	  screendiv = document.getElementById('transscreens');
+	  if(screendiv.innerHTML != ""){
+	    closeimg();
+	    return(0);
+	  }
 	}
         </script>
 	<script src="/template/js/common.js.download" defer=""></script>
@@ -594,7 +606,7 @@ else{
 		<!-- old css ends -->
 
 		<!-- Main -->
-			<div style='text-align:center;'>
+			<div style='text-align:center;' onclick='javascript:clearscreen();'>
 			<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){
@@ -630,12 +642,26 @@ else{
 				                        $lowrespath = "/image".$lowrespathparts[1];
 				                        $iconpathparts = explode("users", $img->iconpath);
 				                        $iconpath = "/image".$iconpathparts[1];
+							$actualimagesize = getimagesize($img->lowrespath);
+							$actualimageheight = $actualimagesize[1];
+							$actualimagewidth = $actualimagesize[0];
+							$desiredwidth = $actualimagewidth;
+							$desiredheight = $actualimageheight;
+							if($actualimagewidth > $actualimageheight){ // landscape
+							    $maxwidth = 4160;
+							    $desiredwidth = $maxwidth;
+							    $desiredheight = ($actualimageheight/$actualimagewidth) * $desiredwidth;
+							}
+							else{ // portrait
+							    $maxheight = 6240;
+							    $desiredheight = $maxheight;
+							    $desiredwidth = ($actualimagewidth/$actualimageheight) * $desiredheight;
+							}
 				                        ?>
-
 
 							<div class="image fit">
 								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
-								<img src="<?php echo $lowrespath; ?>">
+								<img src="<?php echo $lowrespath; ?>" style="width:<?php echo $desiredwidth?>;height:<?php echo $desiredheight?>;">
 								</a>
 							</div>
 							<?php
@@ -661,7 +687,7 @@ else{
 
 
 				<br /><br />
-				<div style='text-align:center;'>
+				<div style='text-align:center;' onclick="javascript:clearscreen();">
 				<div class='paginate'>
 				    <?php
 					 if($startpoint < $totalcount){

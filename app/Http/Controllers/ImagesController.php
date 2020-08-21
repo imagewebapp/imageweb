@@ -569,7 +569,7 @@ class ImagesController extends BaseController
             $lastpoint = $_GET['lastpoint'];
 	    $startpoint = $lastpoint;
         }
-        $chunksize = 30;
+        $chunksize = 36;
         $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
         if($mode == ""){
@@ -1732,7 +1732,7 @@ class ImagesController extends BaseController
     function showwithdrawscreen(Request $req){
 	$s = checksession();
         if(!$s){
-            $message = "You are not logged in. Please login to download the image. The image will get downloaded once you login into your account";
+            $message = "You are not logged in. Please login to withdraw your funds.";
             $queryurl = $req->fullUrl();
             return Redirect::to('login?url='.urlencode($queryurl))->withErrors([$message]);
         }
