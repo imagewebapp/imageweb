@@ -24,7 +24,7 @@
     
 </head>
 <body>
-@include('toppanel')
+
 <span class="container" style="width:100%;">
 <div class="card">
 			<div class="container-fliud">
