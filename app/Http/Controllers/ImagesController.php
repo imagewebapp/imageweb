@@ -125,19 +125,37 @@ function createlowresimage($imagefile){
     $imgparts = explode(".", $imagefile);
     $imgparts[0] = $imgparts[0]."_lowres";
     $lowresimagefile = $imgparts[0].".".$imgparts[1];
-    $im = imagecreatefromany($imagefile);
+    list($source_width, $source_height) = getimagesize($imagefile);
+    $newwidth = 282;
+    $newheight = 188;
+    if($source_width < $source_height){
+        $newwidth = 282;
+        $newheight = 424;
+    }
+    try{
+	$im = imagecreatefromany($imagefile);
+	$thumb = imagecreatetruecolor($newwidth, $newheight);
+        imagecopyresized($thumb, $im, 0, 0, 0, 0, $newwidth, $newheight, $source_width, $source_height);
+    }
+    catch(Exception $e){
+	return $e->getMessage();
+    }
     switch($imtype){
         case 1:
-            imagegif($im, $lowresimagefile, 75);
+            //imagegif($im, $lowresimagefile, 75);
+            imagegif($thumb, $lowresimagefile, 75);
             break;
         case 2:
-            imagejpeg($im, $lowresimagefile, 75);
+            //imagejpeg($im, $lowresimagefile, 75);
+            imagejpeg($thumb, $lowresimagefile, 75);
             break;
         case 3:
-            imagepng($im, $lowresimagefile, 75);
+            //imagepng($im, $lowresimagefile, 75);
+            imagepng($thumb, $lowresimagefile, 75);
             break;
         case 6:
-            imagewbmp($im, $lowresimagefile, 75);
+            //imagewbmp($im, $lowresimagefile, 75);
+            imagewbmp($thumb, $lowresimagefile, 75);
             break;
     }
     return $lowresimagefile;
@@ -569,7 +587,7 @@ class ImagesController extends BaseController
             $lastpoint = $_GET['lastpoint'];
 	    $startpoint = $lastpoint;
         }
-        $chunksize = 36;
+        $chunksize = 30;
         $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
         if($mode == ""){
