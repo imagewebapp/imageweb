@@ -642,26 +642,15 @@ else{
 				                        $lowrespath = "/image".$lowrespathparts[1];
 				                        $iconpathparts = explode("users", $img->iconpath);
 				                        $iconpath = "/image".$iconpathparts[1];
-							$actualimagesize = getimagesize($img->lowrespath);
-							$actualimageheight = $actualimagesize[1];
-							$actualimagewidth = $actualimagesize[0];
-							$desiredwidth = $actualimagewidth;
-							$desiredheight = $actualimageheight;
-							if($actualimagewidth > $actualimageheight){ // landscape
-							    $maxwidth = 4160;
-							    $desiredwidth = $maxwidth;
-							    $desiredheight = ($actualimageheight/$actualimagewidth) * $desiredwidth;
-							}
-							else{ // portrait
-							    $maxheight = 6240;
-							    $desiredheight = $maxheight;
-							    $desiredwidth = ($actualimagewidth/$actualimageheight) * $desiredheight;
-							}
+							$resolution = $img->resolution;
+							$resparts = explode("x", $resolution);
+							$width = $resparts[0];
+							$height = $resparts[1];
 				                        ?>
 
 							<div class="image fit">
 								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
-								<img src="<?php echo $lowrespath; ?>" style="width:<?php echo $desiredwidth?>;height:<?php echo $desiredheight?>;">
+								<img src="<?php echo $lowrespath; ?>">
 								</a>
 							</div>
 							<?php
