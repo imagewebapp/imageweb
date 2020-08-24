@@ -26,18 +26,26 @@
 <body>
 
 <span class="container" style="width:100%;">
-<div class="card">
-			<div class="container-fliud">
-				<div class="wrapper row">
-					<div class="preview col-md-6">
-						
-						<div class="preview-pic tab-content">
-						  <div class="tab-pane active" id="pic-1"><?php echo $statusmessage; ?></div>
-						</div>
-					</div>
-				</div>
-			</div>
+<div class="row">
+        <div class="col-md-6 col-md-offset-3" style="width:100%;display:block;margin-left:10px;margin-right:auto;text-align:center;">
+            <div class="panel panel-default credit-card-box">
+                <div class="panel-heading display-table" >
+                    <div class="row display-tr" >
+			<?php
+			if($status == "fail"){
+			    $color = "red";
+			}
+			else{
+			    $color = "blue";
+			}
+			?>
+                        <p class="panel-title display-td" style="color:<?php echo $color; ?>;"><?php echo $statusmessage; ?></p>
+                    </div>                    
+                </div>
+	    </div>
+	</div>
 </div>
+
 </body>
 </html>
 
