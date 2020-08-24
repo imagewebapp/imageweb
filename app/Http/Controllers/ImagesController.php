@@ -1596,11 +1596,13 @@ class ImagesController extends BaseController
 			$fundstatusrec = array('userid' => $ownerid, 'accountbalance' => $new_amt);
 			DB::table('fundstatus')->insert($fundstatusrec);
 		    }
-		    return ('payment successful. A link has been sent to the email you have specified. You may download the image by clicking on that link in the email.');
+		    $successmessage = 'payment successful. A link has been sent to the email you have specified. You may download the image by clicking on that link in the email.';
+		    return view('stripestatus')->with(array('statusmessage' => $successmessage));
 		}
 		else{
 		    \Session::put('error','Payment was not successful!!');
-		    return ('payment was NOT successful');
+		    $failmessage = "payment was NOT successful";
+		    return view('stripestatus')->with(array('statusmessage' => $failmessage));
 		}
 	    }
 	    catch(Exception $e){
