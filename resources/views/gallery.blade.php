@@ -646,11 +646,20 @@ else{
 							$resparts = explode("x", $resolution);
 							$width = $resparts[0];
 							$height = $resparts[1];
+							list($source_width, $source_height) = getimagesize($img->lowrespath);
+							$newwidth = 282;
+							$newheight = 424;
+							if($source_width > $source_height){
+							    $newheight = 188;
+							    $newwidth = 282;
+							    //$newheight = 424;
+							    //$newwidth = (int)(($source_width/$source_height) * $newheight);
+							}
 				                        ?>
 
 							<div class="image fit">
 								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
-								<img src="<?php echo $lowrespath; ?>">
+								<img src="<?php echo $lowrespath; ?>" width="<?php echo $newwidth; ?>px" height="<?php echo $newheight; ?>px">
 								</a>
 							</div>
 							<?php
