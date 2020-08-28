@@ -587,7 +587,7 @@ class ImagesController extends BaseController
             $lastpoint = $_GET['lastpoint'];
 	    $startpoint = $lastpoint;
         }
-        $chunksize = 30;
+        $chunksize = 40;
         $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
         if($mode == ""){
@@ -1282,7 +1282,7 @@ class ImagesController extends BaseController
 	);
 	$paypalacctid = $req->get('paypalacctid');
 	$cmd = $req->get('cmd');
-	$business = $req->get('business');
+	$business = "imagewebapp@gmail.com";
 	$item_name = $req->get('item_name');
 	$item_number = $req->get('item_number');
 	$currency_code = $req->get('currency_code');
@@ -1607,15 +1607,15 @@ class ImagesController extends BaseController
 	    }
 	    catch(Exception $e){
 		\Session::put('error',$e->getMessage());
-		return ($e->getMessage());
+		return view('stripestatus')->with(array('statusmessage' => $e->getMessage(), 'status' => 'fail'));
 	    }
 	    catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
 		\Session::put('error',$e->getMessage());
-		return ($e->getMessage());
+		return view('stripestatus')->with(array('statusmessage' => $e->getMessage(), 'status' => 'fail'));
 	    }
 	    catch(\Cartalyst\Stripe\Exception\MissingParameterException $e) {
 		\Session::put('error',$e->getMessage());
-		return ($e->getMessage());
+		return view('stripestatus')->with(array('statusmessage' => $e->getMessage(), 'status' => 'fail'));
 	    }
 	}
     }

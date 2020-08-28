@@ -55,7 +55,6 @@
 			$lowresfilename = $lowrespathparts[$numparts-1];
 		    ?>
 		    <input type="hidden" name="cmd" value="_xclick">
-		    <input type="hidden" name="business" value="imagewebapp@gmail.com">
 		    <input type="hidden" name="item_name" value="<?php echo $lowresfilename; ?>">
 		    <input type="hidden" name="item_number" value="1">
 		    <input type="hidden" name="currency_code" value="USD">

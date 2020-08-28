@@ -554,7 +554,7 @@
 	    }
 	    document.getElementById('btnpay').disabled = true;
 	    waitdivelem = document.getElementById('waitdiv');
-	    waitdivelem.innerHTML = "Please wait while we process your payment.";
+	    waitdivelem.innerHTML = "Please wait while we process your payment.<img src='/images/loading_small.gif'>";
 	    document.payment_form.submit();
 	}
 
@@ -602,12 +602,17 @@
             xmlhttp.onreadystatechange = function(){
 		//alert(xmlhttp.status);
                 if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-                    //alert(xmlhttp.responseText);
-		    screendiv = document.getElementById('transscreens');
-	  	    screendiv.innerHTML = xmlhttp.responseText;
+		    pgdivelem = document.getElementById('pgdiv');
+	            pgdivelem.style.display = "";
+	  	    pgdivelem.innerHTML = xmlhttp.responseText;
                 }
             }
             targeturl = document.payment_form.action;
+	    paypalacctid = document.payment_form.paypalacctid.value;
+	    if(paypalacctid.trim() == ""){
+		alert("Account name cannot be empty");
+		return(false);
+	    }
 	    cmd = document.payment_form.cmd.value;
 	    business = document.payment_form.business.value;
 	    item_name = document.payment_form.item_name.value;
@@ -624,7 +629,6 @@
             xmlhttp.setRequestHeader('X-CSRFToken', csrftoken);
             xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xmlhttp.send(postdata);
-
 	}
     </script>
     <link rel="stylesheet" href="template/css/main.css" />
