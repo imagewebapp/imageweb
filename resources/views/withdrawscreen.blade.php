@@ -1274,13 +1274,20 @@ function populateacctinfo(){
     }
 }
 
+
 function handlepaypalwithdrawal(){
-    withdrawal_amount = document.withdrawal_form.withdraw_amount.value;
-    if(withdrawal_amount > <?php echo $balanceamount; ?>){
-	alert("Withdrawal amount cannot be larger than your balance amount");
+    yn = confirm("Confirm withdrawal action");
+    if(!yn){
 	return(false);
     }
-    document.withdrawal_form.submit();
+    else{
+        withdrawal_amount = document.withdrawal_form.withdraw_amount.value;
+        if(withdrawal_amount > <?php echo $balanceamount; ?>){
+	    alert("Withdrawal amount cannot be larger than your balance amount");
+	    return(false);
+        }
+        document.withdrawal_form.submit();
+    }
 }
 </script>
 
@@ -1317,18 +1324,21 @@ function handlepaypalwithdrawal(){
 
 <div class='form-row row'>
     <div class='col-xs-12 form-group required'>
-	<!-- <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-small.png" alt="Buy now with PayPal"  onclick="javascript:handlepaypalwithdrawal();"/> -->
-        <input type="image" src="https://www.paypal.com/en_AU/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." onclick="javascript:handlepaypalwithdrawal();">
-<img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
+	<input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-small.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." onclick="javascript:handlepaypalwithdrawal();">
+	<img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
     </div>
 </div>
 </div>
 </form>
 <div class='form-row row'>
     <div class='col-xs-12 form-group required'>
+	<ul class="form-section" id="section_16">
+	<li id="cid_16" class="form-input-wide" data-type="control_collapse">
         <h2 id="header_1" data-component="header">
-	 <label class='control-label'>OR</label>
+	 <label class='control-label' align='center'>OR</label>
 	</h2>
+	</li>
+	</ul>
     </div>
 </div>
 
@@ -1348,6 +1358,9 @@ function handlepaypalwithdrawal(){
             </span>
           </div>
         </li>
+	<h2 id="header_1" data-component="header">
+	Withdraw to your bank account
+	</h2>
         <li class="form-line" data-type="control_fullname" id="id_2">
           <label class="form-label form-label-left" id="label_2" for="first_2"> Full Name </label>
           <div id="cid_2" class="form-input">
