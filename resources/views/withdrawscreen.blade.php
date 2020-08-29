@@ -1324,7 +1324,8 @@ function handlepaypalwithdrawal(){
 
 <div class='form-row row'>
     <div class='col-xs-12 form-group required'>
-	<input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-small.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." onclick="javascript:handlepaypalwithdrawal();">
+	<!-- <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-small.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." onclick="javascript:handlepaypalwithdrawal();"> -->
+	<input type="button" border="0" name="btnsubmit" value="Checkout with PayPal" alt="PayPal - The safer, easier way to pay online." onclick="javascript:handlepaypalwithdrawal();">
 	<img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
     </div>
 </div>
