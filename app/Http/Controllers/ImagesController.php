@@ -400,7 +400,7 @@ function paypalwithdrawal($amount, $paypal_id){
     $ch = curl_init();
     $PAYPAL_CLIENT_ID = env("PAYPAL_CLIENT_ID");
     $PAYPAL_SECRET = env("PAYPAL_SECRET");
-    curl_setopt($ch, CURLOPT_URL, "ttps://api.sandbox.paypal.com/v1/oauth2/token");
+    curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/oauth2/token");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -415,8 +415,8 @@ function paypalwithdrawal($amount, $paypal_id){
     $results = curl_exec($ch);
     $getresult = json_decode($results);
 
-    // PayPal Payout API for Send Payment from PayPal to PayPal account
-    curl_setopt($ch, CURLOPT_URL, "ttps://api.sandbox.paypal.com/v1/payments/payouts");
+    // PayPal Payout API for Send Payment from website to PayPal account
+    curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/payments/payouts");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
     $array = array('sender_batch_header' => array(
@@ -1918,7 +1918,7 @@ class ImagesController extends BaseController{
 
 	    // 1. Make transfer through razorpay
 	    // 2. Add a record in 'transactions' table with all the required fields.
-	    $transactionrec = array('imgownerid' => $userid, 'buyerid' => '', paymentid => '', 'amount' => $amount, 'currency' => 'USD', 'accountid' => $acctid, 'trx_type' => 'c');
+	    $transactionrec = array('imgownerid' => $userid, 'buyerid' => $userid, paymentid => NULL, 'amount' => $amount, 'currency' => 'USD', 'accountid' => $acctid, 'trx_type' => 'c'); // imgownerid is incorrectly set to $userid so that the foreign key constraint is satisfied.
 	    DB::table('transactions')->insert($transactionrec);
 	    // 3. Update 'fundstatus' table to reflect the status of the user's finances on this website. 
 	    $fundstatusrec = DB::table('fundstatus')->where('userid', $userid)->first();
@@ -1955,9 +1955,25 @@ class ImagesController extends BaseController{
 	$paypaluserid = $req->input('paypalacctid');
 	$withdrawamount = $req->input('withdraw_amount');
 	$retval = paypalwithdrawal($withdrawamount, $paypaluserid);
-	if($retval == 1){
+	if((int)$retval == 1){
 	    // Update pgsql tables.
+	    // 1. Add a record in transactions table with all appropriate values.
+	    $transactionrec = array('imgownerid' => $userid, 'buyerid' => $userid, 'paymentid' => NULL, 'amount' => $withdrawamount, 'currency' => 'USD', 'trx_type' => 'c'); // imgownerid is incorrectly set to $userid so that the foreign key constraint is satisfied.
+	    DB::table('transactions')->insert($transactionrec);
+	    $fundstatusrecs = DB::table('fundstatus')->where('userid', $userid)->get();
+	    if(count($fundstatusrecs) > 0){
+	        $existing_amt = $fundstatusrecs[0]->accountbalance;
+	 	if($existing_amt < $withdrawamount){
+		    return("Cannot withdraw funds - This account does not contain sufficient funds.");
+		}
+		$new_amt = $existing_amt - $withdrawamount;
+		DB::table('fundstatus')->where('userid', $userid)->update(array('accountbalance' => $new_amt));
+	    }
+	    else{
+                return("Cannot withdraw funds - No funds available for withdrawal");
+            }
 	}
+	return("Transfer completed successfully");
     }
 
 }
