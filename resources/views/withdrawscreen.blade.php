@@ -1273,25 +1273,69 @@ function populateacctinfo(){
     	document.frmwithdrawal.branch_id_code.value = branchcode;
     }
 }
+
+function handlepaypalwithdrawal(){
+    withdrawal_amount = document.withdrawal_form.withdraw_amount.value;
+    if(withdrawal_amount > <?php echo $balanceamount; ?>){
+	alert("Withdrawal amount cannot be larger than your balance amount");
+	return(false);
+    }
+    document.withdrawal_form.submit();
+}
 </script>
 
 </head>
 <body>
 @include('toppanel')
+
+<form action="/withdrawpaypal" method="POST" class="require-validation" data-cc-on-file="false" id="withdrawal-form" name="withdrawal_form">
+{{ csrf_field() }}
+<div role="main" class="form-all">
+    <ul class="form-section page-section">
+      <li id="cid_1" class="form-input-wide" data-type="control_head">
+        <div class="form-header-group  header-large">
+          <div class="header-text httal htvam">
+            <h2 id="header_1" class="form-header" data-component="header">
+              Funds Withdrawal Form
+            </h2>
+          </div>
+        </div>
+      </li>
+      <h2 id="header_1" data-component="header">
+	 Withdraw to your paypal account
+      </h2>
+<div class='form-row row'>
+    <div class='col-xs-12 form-group required'>
+        <label class="form-label form-label-left" id="paypalid">PayPal Account Id</label> <input class='form-control' size='4' type='text' name="paypalacctid">
+    </div>
+</div>
+<div class='form-row row'>
+    <div class='col-xs-12 form-group required'>
+        <label class="form-label form-label-left" id="paypalid">Withdraw Amount</label> <input class='form-control' size='4' type='text' name="withdraw_amount" value="<?php echo $balanceamount; ?>">
+    </div>
+</div>
+
+<div class='form-row row'>
+    <div class='col-xs-12 form-group required'>
+        <input type="image" src="https://www.paypal.com/en_AU/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online." onclick="javascript:handlepaypalwithdrawal();">
+<img alt="" border="0" src="https://www.paypal.com/en_AU/i/scr/pixel.gif" width="1" height="1">
+    </div>
+</div>
+</div>
+</form>
+<div class='form-row row'>
+    <div class='col-xs-12 form-group required'>
+        <h2 id="header_1" data-component="header">
+	 <label class='control-label'>OR</label>
+	</h2>
+    </div>
+</div>
+
 <form class="jotform-form" action="/withdrawscreen" method="post" name="frmwithdrawal" id="frmwithdrawal" accept-charset="utf-8" autocomplete="on">
   {{ csrf_field() }}
   <div id="transscreens" class="semitrans" style="max-height:100%;max-width:100%;display:none;"></div>
   <div role="main" class="form-all">
     <ul class="form-section page-section">
-      <li id="cid_1" class="form-input-wide" data-type="control_head">
-        <div class="form-header-group  header-large">
-          <div class="header-text httal htvam">
-            <h1 id="header_1" class="form-header" data-component="header">
-              Funds Withdrawal Form
-            </h1>
-          </div>
-        </div>
-      </li>
       <ul class="form-section" id="section_16">
         <li id="cid_16" class="form-input-wide" data-type="control_collapse">
           <div class="form-collapse-table form-collapse-hidden" id="collapse_16" data-component="collapse">

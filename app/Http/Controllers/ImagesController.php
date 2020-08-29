@@ -396,18 +396,66 @@ function checkcardvalidity($cardno){
 }
 
 
+function paypalwithdrawal($amount, $paypal_id){
+    $ch = curl_init();
+    $PAYPAL_CLIENT_ID = env("PAYPAL_CLIENT_ID");
+    $PAYPAL_SECRET = env("PAYPAL_SECRET");
+    curl_setopt($ch, CURLOPT_URL, "ttps://api.sandbox.paypal.com/v1/oauth2/token");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_USERPWD, $PAYPAL_CLIENT_ID.":".$PAYPAL_SECRET);
 
-class ImagesController extends BaseController
-{
+    $headers = array();
+    $headers[] = "Accept: application/json";
+    $headers[] = "Accept-Language: en_US";
+    $headers[] = "Content-Type: application/x-www-form-urlencoded";
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-    /*
-        List the resource
-    */
-    public function index(){
+    $results = curl_exec($ch);
+    $getresult = json_decode($results);
 
+    // PayPal Payout API for Send Payment from PayPal to PayPal account
+    curl_setopt($ch, CURLOPT_URL, "ttps://api.sandbox.paypal.com/v1/payments/payouts");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    $array = array('sender_batch_header' => array(
+           "sender_batch_id" => time(),
+           "email_subject" => "Funds withdrawal - USD ".$amount,
+           "email_message" => "You have withdrawn USD ". $amount." from your imageweb account to your paypal account."
+    ),
+    'items' => array(array(
+           "recipient_type" => "EMAIL",
+           "amount" => array(
+           "value" => $amount,
+           "currency" => "USD"
+    ),
+           "note" => "Thanks for the payout!",
+           "sender_item_id" => time(),
+           "receiver" => $paypal_id
+    ))
+    );
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($array));
+    curl_setopt($ch, CURLOPT_POST, 1);
+
+    $headers = array();
+    $headers[] = "Content-Type: application/json";
+    $headers[] = "Authorization: Bearer $getresult->access_token";
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $payoutResult = curl_exec($ch);
+    //print_r($result);
+    $getPayoutResult = json_decode($payoutResult);
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
     }
+    curl_close($ch);
+    return(1); // Success code
+}
 
 
+
+class ImagesController extends BaseController{
     /*
         Create the resource by uploading the image
     */
@@ -1883,6 +1931,33 @@ class ImagesController extends BaseController
 	    }
 	}
 	return("Transfer completed successfully");
+    }
+
+
+    function withdrawpaypal(Request $req){
+	$s = checksession();
+        if(!$s){
+            $message = "You are not logged in. Please login to do financial transactions.";
+            $queryurl = $req->fullUrl();
+            return Redirect::to('login?url='.urlencode($queryurl))->withErrors([$message]);
+        }
+        $sessionid = Session::getId();
+        $sessobj = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        if(!$sessobj){
+            return("Invalid session. Please login into the website and then try to do financial transactions.");
+        }
+        $sessionstatus = $sessobj->sessionstatus;
+        if(!$sessionstatus){
+            return("Invalid session status. Please login into the website and then try to do financial transactions.");
+        }
+        $userid = $sessobj->userid;
+        $userobj = DB::table('users')->where('id', $userid)->first();
+	$paypaluserid = $req->input('paypalacctid');
+	$withdrawamount = $req->input('withdraw_amount');
+	$retval = paypalwithdrawal($withdrawamount, $paypaluserid);
+	if($retval == 1){
+	    // Update pgsql tables.
+	}
     }
 
 }
