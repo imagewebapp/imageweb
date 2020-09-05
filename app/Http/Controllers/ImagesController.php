@@ -437,13 +437,17 @@ function paypalwithdrawal($amount, $paypal_id){
     );
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($array));
     curl_setopt($ch, CURLOPT_POST, 1);
-
     $headers = array();
     $headers[] = "Content-Type: application/json";
     $headers[] = "Authorization: Bearer $getresult->access_token";
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    $payoutResult = curl_exec($ch);
+    try{
+        $payoutResult = curl_exec($ch);
+    }
+    catch (Exception $e){
+	echo $e->getMessage();
+	return(0);
+    }
     //print_r($result);
     $getPayoutResult = json_decode($payoutResult);
     if (curl_errno($ch)) {
@@ -1988,8 +1992,9 @@ class ImagesController extends BaseController{
 	    else{
                 return("Cannot withdraw funds - No funds available for withdrawal");
             }
+	    return("Transfer completed successfully");
 	}
-	return("Transfer completed successfully");
+	return("Error occurred during transaction");
     }
 
 }
