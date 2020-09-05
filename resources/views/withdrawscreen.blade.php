@@ -1289,8 +1289,9 @@ function handlepaypalwithdrawal(){
         document.withdrawal_form.submit();
     }
 }
-</script>
 
+</script>
+<script src="/template/js/profileimage.js" type="text/javascript"></script>
 </head>
 <body>
 @include('toppanel')
