@@ -18,7 +18,7 @@
 <link type="text/css" media="print" rel="stylesheet" href="https://cdn.jotfor.ms/css/printForm.css?3.3.19109" />
 <link type="text/css" rel="stylesheet" href="https://cdn.jotfor.ms/css/styles/payment/payment_feature.css?3.3.19109" />
 
-
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
  <!-- Bootstrap minified JS CDN link -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <!-- Bootstrap minified theme CDN link -->
@@ -1185,7 +1185,7 @@ table.form-address-table {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.min.js"></script>
 <script src="https://cdn.jotfor.ms/static/prototype.forms.js" type="text/javascript"></script>
 <script src="https://cdn.jotfor.ms/static/jotform.forms.js?3.3.19109" type="text/javascript"></script>
-<script src="https://cdn.jotfor.ms/js/paypal.js?v=3.3.19109" type="text/javascript"></script>
+
 <script src="https://cdn.jotfor.ms/js/vendor/math-processor.js?v=3.3.19109" type="text/javascript"></script>
 <script type="text/javascript">
 function do_transfer(){
