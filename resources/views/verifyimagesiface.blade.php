@@ -205,7 +205,7 @@ function submitverification(){
 
 </script>
 <script src="/template/js/common.js.download" defer=""></script>
-
+<script src="/template/js/profileimage.js" type="text/javascript"></script>
 </head>
 
 <body>
