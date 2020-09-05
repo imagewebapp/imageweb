@@ -1239,7 +1239,7 @@ function do_transfer(){
 
 function populateacctinfo(){
     <?php
-    $bankdetails = "bankaccounts = {";
+    $bankdetails = "bankaccounts = {'";
     foreach ($bankaccts as $acctname => $acctvalue){
 	$bankdetails = $bankdetails."'".$acctname."' : new Array('".$acctvalue['holdername']."', '".$acctvalue['bankname']."', '".$acctvalue['branchname']."', '".$acctvalue['bankcode']."', '".$acctvalue['accountnumber']."'),";
     }
