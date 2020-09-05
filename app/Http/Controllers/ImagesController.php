@@ -450,6 +450,22 @@ function paypalwithdrawal($amount, $paypal_id){
         echo 'Error:' . curl_error($ch);
     }
     curl_close($ch);
+    //Send email to paypal email Id.
+    $sessionid = Session::getId();
+    $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+    $userid = $session->userid;
+    $user = DB::table('users')->where('id', $userid)->first();
+    $firstname = $user->firstname;
+    $lastname = $user->lastname;
+    $emailid = $user->email;
+    $mailcontent = "You have withdrawn USD ".$amount." to the paypal account identified by ".$paypal_id.". If this is not what you wanted, please contact support at support@imageweb.com. <br/><br/>Thanks<br/>Admin\n";
+    $hostname = request()->getHttpHost();
+    $maildata = array('name' => $hostname." admin", 'mailcontent' => $mailcontent);
+    $subject = "Funds withdrawal to ".$paypal_id;
+    Mail::send('fundswithdrawalpaypal', $maildata, function ($mailcontent) use($emailid, $firstname, $lastname, $subject){
+          $mailcontent->to($emailid, $firstname." ".$lastname)->subject($subject);
+          $mailcontent->from('supmit2k3@yahoo.com', 'imageweb admin');
+    });
     return(1); // Success code
 }
 

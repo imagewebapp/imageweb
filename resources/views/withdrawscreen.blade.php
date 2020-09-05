@@ -1188,6 +1188,12 @@ table.form-address-table {
 
 <script src="https://cdn.jotfor.ms/js/vendor/math-processor.js?v=3.3.19109" type="text/javascript"></script>
 <script type="text/javascript">
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+}
+
 function do_transfer(){
     //alert("hi");
     firstname = document.frmwithdrawal.first_name.value;
@@ -1281,11 +1287,16 @@ function handlepaypalwithdrawal(){
 	return(false);
     }
     else{
-        withdrawal_amount = document.withdrawal_form.withdraw_amount.value;
+        withdrawal_amount = document.withdrawal_form.withdraw_amount.value.trim();
         if(withdrawal_amount > <?php echo $balanceamount; ?>){
 	    alert("Withdrawal amount cannot be larger than your balance amount");
 	    return(false);
         }
+        if(document.withdrawal_form.paypalacctid.value.trim() == ""){
+	    alert("Please enter a valid paypal account");
+	    document.withdrawal_form.paypalacctid.focus();
+	    return(false);
+	}
         document.withdrawal_form.submit();
     }
 }
