@@ -639,7 +639,6 @@ else{
 							    $secondarylist[$j] = $landscapes[$j];
 							}
 						    }
-						    //foreach ($mainlist as $key => $lmg){
 						    for($i = 0; $i < count($mainlist); $i++){
 							if(!$switch){
 							    $lmg = $mainlist[$i];
@@ -648,7 +647,7 @@ else{
 							    $newwidth = 282;
 							}
 							else{
-							    $i--;
+							    $i--; // Decrease $i to compensate for extra increment in secondart list.
 							    if(array_key_exists($i, $secondarylist)){
 							    	$lmg = $secondarylist[$i];
 							    }
