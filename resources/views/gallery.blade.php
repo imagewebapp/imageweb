@@ -598,39 +598,80 @@ else{
 
 					<div class="columns">
 						<?php 
-						    $ctr = 1;
+						    $portraits = array();
+						    $landscapes = array();
 						?>
 						@foreach ($images as $img)
 				                        <?php
-				                        $imagepathparts = explode("users", $img->imagepath);
-				                        $imagepath = "/image".$imagepathparts[1];
-				                        $lowrespathparts = explode("users", $img->lowrespath);
-				                        $lowrespath = "/image".$lowrespathparts[1];
-				                        $iconpathparts = explode("users", $img->iconpath);
-				                        $iconpath = "/image".$iconpathparts[1];
-							$resolution = $img->resolution;
-							$resparts = explode("x", $resolution);
-							$width = $resparts[0];
-							$height = $resparts[1];
 							list($source_width, $source_height) = getimagesize($img->lowrespath);
-							$newwidth = 282;
-							$newheight = 424;
-							if($source_width > $source_height){
+							//echo $img->lowrespath, $source_width, $source_height;
+							if($source_height > $source_width){
+							    array_push($portraits, $img->lowrespath);
+							    continue;
+							}
+							else{
+							    array_push($landscapes, $img->lowrespath);
+							    continue;
+							}
+				                        ?>
+						@endforeach
+						<?php
+						    $switch = 0;
+						    $landcount = count($landscapes);
+						    $portcount = count($portraits);
+						    $mainlist = array();
+						    $secondarylist = array();
+						    if($landcount > $portcount){
+							$switch = 1;
+							for($i=0; $i < count($landscapes); $i++){
+							    $mainlist[$i] = $landscapes[$i];
+							}
+							for($j=0; $j < count($portraits); $j++){
+							    $secondarylist[$j] = $portraits[$j];
+							}
+						    }
+						    else{
+							$switch = 1;
+							for($i=0; $i < count($portraits); $i++){
+							    $mainlist[$i] = $portraits[$i];
+							}
+							for($j=0; $j < count($landscapes); $j++){
+							    $secondarylist[$j] = $landscapes[$j];
+							}
+						    }
+						    //foreach ($mainlist as $key => $lmg){
+						    for($i = 0; $i < count($mainlist); $i++){
+							if(!$switch){
+							    $lmg = $mainlist[$i];
+							    $switch = 1;
 							    $newheight = 188;
 							    $newwidth = 282;
 							}
-				                        ?>
-
+							else{
+							    $i--;
+							    if(array_key_exists($i, $secondarylist)){
+							    	$lmg = $secondarylist[$i];
+							    }
+							    else{
+								$switch = 0;
+								continue;
+							    }
+							    $switch = 0;
+							    $newwidth = 282;
+							    $newheight = 386;
+							}
+							$lowrespathparts = explode("users", $lmg);
+				                        $lowrespath = "/image".$lowrespathparts[1];
+							
+						?>
 							<div class="image fit">
 								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
 								<img src="<?php echo $lowrespath; ?>" width="<?php echo $newwidth; ?>px" height="<?php echo $newheight; ?>px">
 								</a>
 							</div>
-							<?php
-							    $ctr++;
-							?>
-
-						@endforeach
+						<?php 
+						    } 
+						?>
 						<div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"></div>
 
 						<form name='frmdummy'>
