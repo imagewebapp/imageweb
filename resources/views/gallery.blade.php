@@ -622,7 +622,7 @@ else{
 						    $mainlist = array();
 						    $secondarylist = array();
 						    if($landcount > $portcount){
-							$switch = 1;
+							$switch = 0;
 							for($i=0; $i < count($landscapes); $i++){
 							    $mainlist[$i] = $landscapes[$i];
 							}
