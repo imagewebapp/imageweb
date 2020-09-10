@@ -600,29 +600,25 @@ else{
 						<?php 
 						    $portraits = array();
 						    $landscapes = array();
-						?>
-						@foreach ($images as $img)
-				                        <?php
+						    foreach ($images as $img){
 							list($source_width, $source_height) = getimagesize($img->lowrespath);
 							//echo $img->lowrespath, $source_width, $source_height;
 							if($source_height > $source_width){
 							    array_push($portraits, $img->lowrespath);
-							    continue;
 							}
 							else{
 							    array_push($landscapes, $img->lowrespath);
-							    continue;
 							}
-				                        ?>
-						@endforeach
-						<?php
+				                    }
 						    $switch = 0;
 						    $landcount = count($landscapes);
 						    $portcount = count($portraits);
 						    $mainlist = array();
 						    $secondarylist = array();
+						    $mainlisttype = "land";
 						    if($landcount > $portcount){
 							$switch = 0;
+							$mainlisttype = "land";
 							for($i=0; $i < count($landscapes); $i++){
 							    $mainlist[$i] = $landscapes[$i];
 							}
@@ -632,6 +628,7 @@ else{
 						    }
 						    else{
 							$switch = 1;
+							$mainlisttype = "port";
 							for($i=0; $i < count($portraits); $i++){
 							    $mainlist[$i] = $portraits[$i];
 							}
@@ -643,8 +640,14 @@ else{
 							if(!$switch){
 							    $lmg = $mainlist[$i];
 							    $switch = 1;
-							    $newheight = 188;
-							    $newwidth = 282;
+							    if($mainlisttype == "land"){
+							        $newheight = 188;
+							        $newwidth = 282;
+							    }
+							    else{
+								$newwidth = 282;
+							    	$newheight = 386;
+							    }
 							}
 							else{
 							    $i--; // Decrease $i to compensate for extra increment in secondart list.
@@ -656,8 +659,14 @@ else{
 								continue;
 							    }
 							    $switch = 0;
-							    $newwidth = 282;
-							    $newheight = 386;
+							    if($mainlisttype == "land"){
+							        $newheight = 386;
+							        $newwidth = 282;
+							    }
+							    else{
+								$newwidth = 282;
+							    	$newheight = 188;
+							    }
 							}
 							$lowrespathparts = explode("users", $lmg);
 				                        $lowrespath = "/image".$lowrespathparts[1];
