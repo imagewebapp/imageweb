@@ -646,7 +646,7 @@ else{
 							    }
 							    else{
 								$newwidth = 282;
-							    	$newheight = 386;
+							    	$newheight = 388;
 							    }
 							}
 							else{
@@ -660,7 +660,7 @@ else{
 							    }
 							    $switch = 0;
 							    if($mainlisttype == "land"){
-							        $newheight = 386;
+							        $newheight = 388;
 							        $newwidth = 282;
 							    }
 							    else{
@@ -670,7 +670,6 @@ else{
 							}
 							$lowrespathparts = explode("users", $lmg);
 				                        $lowrespath = "/image".$lowrespathparts[1];
-							
 						?>
 							<div class="image fit">
 								<a href="#_" onclick="javascript:showoverlay('<?php echo $lowrespath; ?>');">
@@ -678,7 +677,7 @@ else{
 								</a>
 							</div>
 						<?php 
-						    } 
+						    	} 
 						?>
 						<div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"></div>
 

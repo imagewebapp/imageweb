@@ -556,7 +556,7 @@ function removeimage(imagefilename, userid, ctr){
 
 										<!-- <th class="cell100 column3">Low Res File</th> -->
 
-										<th class="cell100 column4">Icon File</th>
+										<!-- <th class="cell100 column4">Icon File</th> -->
 
 										<th class="cell100 column5">Upload Date</th>
 										
@@ -613,9 +613,9 @@ function removeimage(imagefilename, userid, ctr){
 										}
 										?>
 										-->
-										<td class="cell100 column3"><img src='{{$lowrespath}}' width='200' height='200'></td>
+										<td class="cell100 column3"><img src='{{$lowrespath}}' width='282'></td>
 
-										<td class="cell100 column4"><img src='{{$iconpath}}' width='50' height='50'></td>
+										<!-- <td class="cell100 column4"><img src='{{$iconpath}}' width='50' height='50'></td> -->
 
 										<td class="cell100 column5" style="font-family:droid sans;">{{$img->uploadts}}</td>
 										
@@ -642,8 +642,9 @@ function removeimage(imagefilename, userid, ctr){
 										$counthits = count($imghits);
 										?>
 										<td class="cell100 column8" style="text-align:center;font-family:droid sans;">{{$counthits}}</td>
-									<!-- Add pagination here -->
+									
 									</tr>
+									<tr><td colspan='8'>&nbsp;</td></tr>
 									<?php $ctr++; ?>
                                                                   @endforeach
 
@@ -651,6 +652,7 @@ function removeimage(imagefilename, userid, ctr){
 								</tbody>
 
 							</table>
+							<!-- Add pagination here -->
 							<div style='text-align:center'>
 							<div class='paginate'>
 							<?php
