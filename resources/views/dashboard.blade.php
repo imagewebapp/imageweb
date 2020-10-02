@@ -509,10 +509,6 @@ function removeimage(imagefilename, userid, ctr){
   statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
 }
 
-function openbulkupload(){
-  screendiv = document.getElementById('transscreens');
-  screendiv.style.display = "";
-}
 </script>
     <!-- Bulk Upload CSS and JS Starts here. -->
     <link rel="stylesheet" href="/template/css/Dragio.css">
@@ -521,7 +517,7 @@ function openbulkupload(){
     function operate_dragio(){
 	dragio = new Dragio({
     	'ID': "x",
-    	"URL": "<?php echo request()->getSchemeAndHttpHost(); ?>/handlebulk",
+    	"URL": "<?php echo request()->getSchemeAndHttpHost(); ?>/bulkupload",
     	"pasteURL": "<?php echo request()->getSchemeAndHttpHost(); ?>/paste",
     	"debug": true,
         });
@@ -531,8 +527,6 @@ function openbulkupload(){
     	}
     	*/
 	dragio.open();
-	screendiv = document.getElementById('transscreens');
-  	screendiv.style.display = "none";
     }
     
     </script>
@@ -597,7 +591,7 @@ function openbulkupload(){
 					<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 					@endforeach
 					</select>&nbsp;&nbsp; <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'></div><div style="background-color:lightblue;white-space:nowrap">&nbsp;&nbsp;<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>&nbsp;&nbsp;<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();' style='font-family : verdana;font-size:12px;font-weight:bold;color:blue;'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus' style="font-family:verdana;font-size:12px;color:#0000AA;"></div></div></form>
-					&nbsp;OR&nbsp;<a href='#_' onClick='javascript:openbulkupload();'>Go to Bulk Upload</a><div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"><div style="background-image: url('/template/img/bulkupload.png'); width: 100%; height: 100%;"> </div><img src="/template/img/bulkupload.png" style="width: 300px; height: auto;"><button onclick="operate_dragio();">Upload file</button></div>
+					&nbsp;OR&nbsp;<a href='#_' onClick='javascript:operate_dragio();'>Go to Bulk Upload</a>
 					</div>
 					</td>
 

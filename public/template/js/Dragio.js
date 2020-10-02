@@ -352,7 +352,7 @@ Dragio.prototype._dragLeave = function (e) {
     if (!e.clientX && !e.clientY) {
         this.close();
         document.getElementById("dragio__" + this._ID + "__info").innerHTML = `Drag 'n' drop files here or <span class="dragio__click" id="dragio__` + this._ID + `__click">click here</span>.`;
-        document.getElementById("dragio__" + this._ID + "__hint").innerHTML = "Or press Ctrl + V to upload image from clipboard.";
+        //document.getElementById("dragio__" + this._ID + "__hint").innerHTML = "Or press Ctrl + V to upload image from clipboard.";
     }
 }
 
@@ -433,7 +433,7 @@ Dragio.prototype.displayMessage = function(msg, error = false) {
     let id = this._ID;
     setTimeout(function() {
         document.getElementById("dragio__" + id + "__info").innerHTML = `Drag 'n' drop files here or <span class="dragio__click" id="dragio__` + id + `__click">click here</span>.`;
-        document.getElementById("dragio__" + id + "__hint").innerHTML = "Or press Ctrl + V to upload image from clipboard.";
+        //document.getElementById("dragio__" + id + "__hint").innerHTML = "Or press Ctrl + V to upload image from clipboard.";
         document.getElementById("dragio__" + id + "__click").addEventListener("click",function () {
             document.getElementById("dragio__" + id + "__fileToUpload").click();
         });
@@ -541,9 +541,9 @@ Dragio.prototype._init = function () {
             <div class="dragio__flex-item" id="dragio__` + this._ID + `__info">
                 Drag 'n' drop files here or <span class="dragio__click" id="dragio__` + this._ID + `__click">click here</span>.
             </div>
-            <div class="dragio__flex-item" id="dragio__` + this._ID + `__hint">
+            <!-- <div class="dragio__flex-item" id="dragio__` + this._ID + `__hint">
                 Or press Ctrl + V to upload image from clipboard.
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="dragio__files" id="dragio__`+ this._ID + `__files">
@@ -556,6 +556,7 @@ Dragio.prototype._init = function () {
         </div>
     </div>
     <form action="`+this._URL+`" method="post" enctype="multipart/form-data" style="display: none;" id="dragio__` + this._ID + `__uploadForm">
+	{{ csrf_field() }}
         <input type="file" name="fileToUpload[]" id="dragio__` + this._ID + `__fileToUpload" multiple>
         <input type="submit" value="Upload files" name="submit">
     </form>

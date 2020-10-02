@@ -575,7 +575,42 @@ class ImagesController extends BaseController{
 
     /* Handle Bulk Upload files */
     public function handlebulk(Request $req){
+	$s = checksession();
+        if(!$s){
+            return "User is not logged in to upload images. Please login and try again.";
+        }
+        // Check captcha:
+        $arr = [
+            'g-recaptcha-response' => ['required'],
+        ];
+        $validator = Validator::make(Input::all() , $arr);
 
+        if ($validator->fails()){
+            $response = Response::make("Captcha validation failed", 200);
+            $response->header("Content-Type", "Text/Plain");
+            return $response;
+        }
+        $imagedumppath = "/var/www/html/imageweb/storage/users/";
+	$sessionid = Session::getId();
+        $session = DB::table('sessions')->where('sessionid', $sessionid)->first();
+        $user = DB::table('users')->where('id', $session->userid)->first();
+        $username = $user->username;
+        $userid = $session->userid;
+	$allowedfileExtension= ["jpg", "jpeg"];
+	$files = $req->file('fileToUpload');
+	foreach($files as $file){
+	    $filename = $file->getClientOriginalName();
+	    echo $filename;
+	    $extension = $file->getClientOriginalExtension();
+	    $check = in_array($extension,$allowedfileExtension);
+	    if($check){
+		//Store the file in appropriate location.
+		$targetdir = $imagedumppath.$username."/";
+	    }
+	    else{
+		return("You may upload JPEG files only.");
+	    }
+	}
     }
 
 
