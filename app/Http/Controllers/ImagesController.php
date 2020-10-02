@@ -567,6 +567,17 @@ class ImagesController extends BaseController{
         }
     }
 
+    /* Show Bulk Upload Screen */
+    public function showbulkupload(Request $req){
+	return view('bulkupload');
+    }
+
+
+    /* Handle Bulk Upload files */
+    public function handlebulk(Request $req){
+
+    }
+
 
     /*
         Display clicked image (in gallery) on an overlay
@@ -655,7 +666,8 @@ class ImagesController extends BaseController{
             $lastpoint = $_GET['lastpoint'];
 	    $startpoint = $lastpoint;
         }
-        $chunksize = 40;
+        //$chunksize = 40;
+        $chunksize = env('CHUNKSIZE');
         $totalcount = 0; //initialize totalcount here.
 	$mode = $req->input('selmode');
         if($mode == ""){
@@ -1215,12 +1227,12 @@ class ImagesController extends BaseController{
 	// Send email with status
 	$emailid = "imagewebapp@gmail.com";
 	$mailcontent = "Hi,
-	    Images with the following IDs have been accepted.\n";
-	$mailcontent .= implode("\n", $accepted);
-	$mailcontent .= "\n\nThe following images (IDs) have been rejected.\n";
-	$mailcontent .= implode("\n", $rejected);
-	$mailcontent .= "\n\nThanks and Regards,
-		Admin";
+	    Images with the following IDs have been accepted.<br>";
+	$mailcontent .= implode("<br>", $accepted);
+	$mailcontent .= "<br><br>The following images (IDs) have been rejected.<br>";
+	$mailcontent .= implode("<br>", $rejected);
+	$mailcontent .= "<br><br>Thanks and Regards,
+		<br>Admin";
 	$subject = "Image Verification";
 	$firstname = $user->firstname;
 	$lastname = $user->lastname;

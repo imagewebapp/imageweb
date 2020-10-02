@@ -63,6 +63,10 @@ Route::post('upload', array(
     'uses' => 'ImagesController@create'
 ));
 
+Route::post('bulkupload', array(
+    'uses' => 'ImagesController@handlebulk'
+));
+
 Route::get('download', array(
     'uses' => 'ImagesController@download'
 ));
@@ -158,6 +162,9 @@ Route::post('withdrawscreen', array(
     'uses' => 'ImagesController@maketransfer'
 ));
 
+Route::post('withdrawpaypal', array(
+    'uses' => 'ImagesController@withdrawpaypal'
+));
 Route::get('image/{username}/{filename}', 'ImagesController@displayimage')->name('image.displayimage');
 Route::get('image/{username}/profileimage/{filename}', 'ImagesController@displayprofileimage')->name('image.displayprofileimage');
 

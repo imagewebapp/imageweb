@@ -321,6 +321,21 @@ div {
     background-color: lightgray;
 }
 </style>
+
+    <style>
+
+	.semitrans {
+		  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		  filter: alpha(opacity=100);
+		  opacity: 1.0;
+		  -moz-opacity: 1.0; 
+		  -khtml-opacity: 1.0;
+		  background-color:#FFFFFF;
+		  color:#0000AA;
+		  position:fixed; top:10px; left:10px; width:auto; height:auto; max-width:50%; max-height:50%; text-align:center; cursor: default;outline: none;align-items: center; overflow-y:scroll;
+		}
+
+    </style>
     
     <!-- load stylesheets -->
 
@@ -494,7 +509,76 @@ function removeimage(imagefilename, userid, ctr){
   statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
 }
 
+function openbulkupload(){
+  screendiv = document.getElementById('transscreens');
+  screendiv.style.display = "";
+}
 </script>
+    <!-- Bulk Upload CSS and JS Starts here. -->
+    <link rel="stylesheet" href="/template/css/Dragio.css">
+    <script src="/template/js/Dragio.js"></script>
+    <script type='text/javascript'>
+    function operate_dragio(){
+	dragio = new Dragio({
+    	'ID': "x",
+    	"URL": "<?php echo request()->getSchemeAndHttpHost(); ?>/handlebulk",
+    	"pasteURL": "<?php echo request()->getSchemeAndHttpHost(); ?>/paste",
+    	"debug": true,
+        });
+    	/*
+    	"callback": function(e, id) {
+        console.log("Dragio#" + id, e);
+    	}
+    	*/
+	dragio.open();
+	screendiv = document.getElementById('transscreens');
+  	screendiv.style.display = "none";
+    }
+    
+    </script>
+
+    <style>
+    /*************************************************/
+    @font-face {
+        font-family: Poppins-Regular;
+        src: url('./fonts/poppins/Poppins-Regular.ttf');
+    }
+
+    @font-face {
+        font-family: Poppins-Medium;
+        src: url('./fonts/poppins/Poppins-Medium.ttf');
+    }
+
+    @font-face {
+        font-family: Poppins-Bold;
+        src: url('./fonts/poppins/Poppins-Bold.ttf');
+    }
+
+    @font-face {
+        font-family: Poppins-SemiBold;
+        src: url('./fonts/poppins/Poppins-SemiBold.ttf');
+    }
+
+
+    * {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+    }
+
+    body,
+    html {
+        height: 100%;
+        font-family: Poppins-Regular, sans-serif;
+    }
+
+    .no-overflow {
+        overflow: hidden;
+    }
+
+    </style>
+    <!-- Bulk Upload CSS and JS ends here. -->
+
 <script src="/template/js/searchgallery.js"></script>
 <script src="/template/js/profileimage.js" type="text/javascript"></script>
 </head>
@@ -513,6 +597,7 @@ function removeimage(imagefilename, userid, ctr){
 					<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 					@endforeach
 					</select>&nbsp;&nbsp; <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'></div><div style="background-color:lightblue;white-space:nowrap">&nbsp;&nbsp;<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>&nbsp;&nbsp;<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();' style='font-family : verdana;font-size:12px;font-weight:bold;color:blue;'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus' style="font-family:verdana;font-size:12px;color:#0000AA;"></div></div></form>
+					&nbsp;OR&nbsp;<a href='#_' onClick='javascript:openbulkupload();'>Go to Bulk Upload</a><div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"><div style="background-image: url('/template/img/bulkupload.png'); width: 100%; height: 100%;"> </div><img src="/template/img/bulkupload.png" style="width: 300px; height: auto;"><button onclick="operate_dragio();">Upload file</button></div>
 					</div>
 					</td>
 
