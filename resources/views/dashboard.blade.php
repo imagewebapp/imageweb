@@ -509,69 +509,80 @@ function removeimage(imagefilename, userid, ctr){
   statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
 }
 
-</script>
-    <!-- Bulk Upload CSS and JS Starts here. -->
-    <link rel="stylesheet" href="/template/css/Dragio.css">
-    <script src="/template/js/Dragio.js"></script>
-    <script type='text/javascript'>
-    function operate_dragio(){
-	dragio = new Dragio({
-    	'ID': "x",
-    	"URL": "<?php echo request()->getSchemeAndHttpHost(); ?>/bulkupload",
-    	"pasteURL": "<?php echo request()->getSchemeAndHttpHost(); ?>/paste",
-    	"debug": true,
-        });
-    	/*
-    	"callback": function(e, id) {
-        console.log("Dragio#" + id, e);
+
+function openbulkupload(){
+    screendiv = document.getElementById('transscreens');
+    screendiv.style.display = "";
+}
+
+
+function dobulkupload(){
+    var xmlhttp;
+    statusdiv = document.getElementById('bulkuploadstatus');
+    if (window.XMLHttpRequest){
+        xmlhttp=new XMLHttpRequest();
+    }
+    else{
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function(){
+        if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+            statusdiv.innerHTML = "<p style='color:#0000AA;font-family:verdana;font-size:12px;'>" + xmlhttp.responseText + ".</p>";
+        }
+    }
+    var files = document.getElementById('bulkimages').files;
+    formdata = new FormData();
+    csrftoken = document.bulkuploadfrm._token.value;
+    formdata.append("_token", csrftoken);
+    imgtags = document.getElementById('bulktags').value;
+    if(imgtags.trim() == ""){
+        alert("Please enter at least one tag word.");
+        return(false);
+    }
+    formdata.append('bulktags', imgtags);
+    price = document.bulkuploadfrm.bulkprice.value;
+    formdata.append('bulkprice', price);
+    captcharesponse = grecaptcha.getResponse();
+    formdata.append('g-recaptcha-response', captcharesponse);
+    sel = document.bulkuploadfrm.bulkcategories;
+    selectedcats = "";
+    for(i=0; i < sel.options.length; i++){
+    	if(sel.options[i].selected){
+            selectedcats += sel.options[i].value + ",";
     	}
-    	*/
-	dragio.open();
     }
-    
-    </script>
-
-    <style>
-    /*************************************************/
-    @font-face {
-        font-family: Poppins-Regular;
-        src: url('./fonts/poppins/Poppins-Regular.ttf');
+    if(selectedcats.trim() == ""){
+    	alert("Please select at least one category");
+    	return(false);
     }
-
-    @font-face {
-        font-family: Poppins-Medium;
-        src: url('./fonts/poppins/Poppins-Medium.ttf');
+    formdata.append('bulkcategories', selectedcats);
+    for(var i=0;i < files.length; i++){
+	file = files[i];
+        fname = file.name;
+	//alert(fname);
+        if(!fname.includes(".")){
+            alert("The file extension is not supported. This file cannot be uploaded");
+            return(false);
+        }
+        fext = fname.split(".")[1];
+        if(fext != "jpg" && fext != "jpeg"){
+            alert("You may upload jpeg files only");
+            return(false);
+        }
+	formdata.append("bulkimages[]", file);
     }
-
-    @font-face {
-        font-family: Poppins-Bold;
-        src: url('./fonts/poppins/Poppins-Bold.ttf');
-    }
-
-    @font-face {
-        font-family: Poppins-SemiBold;
-        src: url('./fonts/poppins/Poppins-SemiBold.ttf');
-    }
+    xmlhttp.open('POST', "/bulkupload", true);
+    xmlhttp.send(formdata);
+    statusdiv.style.display = "";
+    statusdiv.innerHTML = "<img src='/images/loading_small.gif'>";
+}
 
 
-    * {
-        margin: 0px;
-        padding: 0px;
-        box-sizing: border-box;
-    }
-
-    body,
-    html {
-        height: 100%;
-        font-family: Poppins-Regular, sans-serif;
-    }
-
-    .no-overflow {
-        overflow: hidden;
-    }
-
-    </style>
-    <!-- Bulk Upload CSS and JS ends here. -->
+function closebulkupload(){
+    screendiv = document.getElementById('transscreens');
+    screendiv.style.display = "none";
+}
+</script>
 
 <script src="/template/js/searchgallery.js"></script>
 <script src="/template/js/profileimage.js" type="text/javascript"></script>
@@ -591,14 +602,20 @@ function removeimage(imagefilename, userid, ctr){
 					<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
 					@endforeach
 					</select>&nbsp;&nbsp; <label>Price: USD($)</label><input type='text' name='price' value='0.00' id='price'></div><div style="background-color:lightblue;white-space:nowrap">&nbsp;&nbsp;<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span>&nbsp;&nbsp;<input type='button' name='submitform' value='Upload' onClick='javascript:uploadfile();' style='font-family : verdana;font-size:12px;font-weight:bold;color:blue;'><input type="hidden" name="_token" value="{{ csrf_token() }}"><div id='uploadstatus' style="font-family:verdana;font-size:12px;color:#0000AA;"></div></div></form>
-					&nbsp;OR&nbsp;<a href='#_' onClick='javascript:operate_dragio();'>Go to Bulk Upload</a>
+					&nbsp;OR&nbsp;<a href='#_' onClick='javascript:openbulkupload();'>Go to Bulk Upload</a><div id="transscreens" class="semitrans" style="max-height:80%;max-width:80%;display:none;"><form name='bulkuploadfrm' method='POST' action='/bulkupload' enctype="multipart/form-data"><input type="file" class="form-control" name="bulkimages[]" id='bulkimages' multiple /><br /><br /><label>Select Default Categories:</label><select name='bulkcategories' size='3' class="select-css" multiple>
+					@foreach ($categories as $category)
+					<option value='<?php echo $category->categoryname; ?>'><?php echo $category->categoryname; ?></option>
+					@endforeach
+					</select><br /><br />
+					&nbsp;&nbsp;<label>Enter Default Tags</label><input type='text' name='bulktags' id='bulktags' value='' placeholder='Enter tags here'><br /><br />
+					<label>Default Price: USD($)</label><input type='text' name='bulkprice' value='0.00' id='bulkprice'><br /><br />
+					<span class="g-recaptcha" data-sitekey="6LdR4fUUAAAAALCtrHM_1X9W1S-Q0s5JvL-Zln2s"></span><br /><br />
+					<input type="button" class="btn btn-primary" value="Bulk Upload" onClick="javascript:dobulkupload();"/>&nbsp;&nbsp;<div id='bulkuploadstatus' style="font-family:verdana;font-size:12px;color:#0000AA;"></div>&nbsp;&nbsp;<input type="button" class="btn btn-primary" value="Close Screen" onClick="javascript:closebulkupload();"/><input type="hidden" name="_token" value="{{ csrf_token() }}"> </form></div>
 					</div>
 					</td>
 
 				</tr>
-
-
-						</table>
+				</table>
 
 					</div>
 
